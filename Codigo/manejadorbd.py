@@ -69,9 +69,7 @@ def crear_tabla_planes_por_cliente(con):
     cursor_obj = con.cursor()
     cursor_obj.execute("""CREATE TABLE IF NOT EXISTS planes_cliente(
                         id_cliente INTEGER(12) NOT NULL,
-                        id_plan INT(1) NOT NULL,
-                        FOREIGN KEY(id_cliente) REFERENCES clientes(id_cliente),
-                        FOREIGN KEY(id_plan) REFERENCES planes(id_plan))""")
+                        id_plan INT(1) NOT NULL)""")
 
     con.commit()
 
@@ -86,6 +84,6 @@ def borrar(con, nombre_tabla):
 def close(con):
     con.close()
 
-#mi_conexion = sql_conexion()
-#borrar(mi_conexion, 'listas')
+# mi_conexion = sql_conexion()
+# borrar(mi_conexion, 'canciones')
 

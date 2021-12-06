@@ -15,12 +15,10 @@ def cliente(con):
     numero_tc = validacion_datos.validacion_numeros_str(input('Ingrese el numero de su tarjeta de credito\n'+
     'sin espacios ni caracteres especiales: '), 19)
     estado_pago = 'Activo'
-    planes = planes_disponibles(con)
-    print(planes)
+    planes_disponibles(con)
     plan = int(input('Ingresa el ID del plan que desea contratar: '))
     datos_cliente = (id_cliente ,nombre, apellido, pais, ciudad, celular, correo, fecha_pago, numero_tc, estado_pago, plan)
     return datos_cliente
-
 
 # funcion que registra un cliente en la base de datos
 def registrar_cliente(con, tupla):
@@ -28,14 +26,14 @@ def registrar_cliente(con, tupla):
     datos_cliente = tupla
     cursor.execute('''INSERT INTO clientes VALUES (?,?,?,?,?,?,?,?,?,?)''', datos_cliente[0:-1])
     con.commit()
-    print("¡¡El registro se ha realizado exitosamente!!")
+    print("¡El registro se ha realizado exitosamente!")
 
 # funcion que realiza una consulta rapida de los planes el la base de datos
 def planes_disponibles(con):
     cursor_obj = con.cursor()
     cursor_obj.execute('SELECT * FROM  planes')
     cantidad_planes = cursor_obj.fetchall()  
-    print ("\n{:<5} {:<20} {:<20} {:<20} ".format('ID', 'NOMBRE', 'VALOR', 'CANTIDAD CANCIONES'))
+    print ("\n{:<5} {:<20} {:<20} {:<20} ".format('ID', 'NOMBRE_PLAN', 'VALOR', 'CANTIDAD CANCIONES'))
     for row in cantidad_planes:
         id, nombre, valor, cantidad_canciones = row
         print ("{:<5} {:<20} {:<20} {:<20} ".format(id, nombre, valor, cantidad_canciones))
@@ -141,6 +139,17 @@ def actualizar_celular_cliente(con):
     con.commit()
     print("!Su numero de celular se ha actualizado exitosamente¡")
 
+# funcion para modificar el correo de un cliente
+def actualizar_correo_cliente(con):
+    cursor_obj = con.cursor()
+    id = input('Ingrese su identificación para modificar su correo: ')
+    correo = input('Ingrese su nuevo correo: ')
+    actualizar = 'UPDATE clientes SET correo = "'+correo+'" WHERE id_cliente = '
+    id_actualizar = actualizar + id
+    cursor_obj.execute(id_actualizar)
+    con.commit()
+    print("!Su dirección de correo se ha actualizado exitosamente¡")
+
 
 # funcion para modificar el numero de tarjeta de credito de un cliente registrada inicialmente
 def actualizar_tarjeta_credito_cliente(con):
@@ -186,6 +195,7 @@ def borrar_cliente(con):
     cursor.execute(borrar)
     con.commit()
     print("\nSu registro a sido eliminado :)")
+    
 
 # funcion que crea un menu para actualizar de manera individual los datos basicos de un cliente
 def actualizar_datos_cliente(con):
@@ -196,7 +206,9 @@ def actualizar_datos_cliente(con):
                         3. Celular
                         4. Tarjeta de credito
                         5. Pais
-                        6. Ciudad\n''')
+                        6. Ciudad
+                        7. Correo
+                        8. Ir al menu anterior\n''')
         
         opc = input("\tDigite una opcion: ") 
         if (opc =='1'):        
@@ -223,15 +235,9 @@ def actualizar_datos_cliente(con):
             actualizar_ciudad_cliente(con)
             # salir = True
 
-#  funcion que elimina de la base de datos la tabla clientes
-def eliminar_tabla_clientes(con):
-    cursor_obj = con.cursor()
-    cursor_obj.execute('DROP TABLE clientes')
-    con.commit()
+        elif (opc == '7'):        
+            actualizar_correo_cliente(con)
 
+        elif (opc == '8'):
+            pass
 
-# actualizar_nombre_cliente(mi_conexion)
-# actualizar_apellido_cliente(mi_conexion)
-# consulta_individual_cliente(mi_conexion)
-# menu_clientes(mi_conexion)
-# eliminar_tabla_clientes(mi_conexion)

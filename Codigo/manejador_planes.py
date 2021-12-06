@@ -3,8 +3,8 @@ import validacion_datos
 
 # funcion que pide los datos de un plan antes de registrarlo
 def plan():
-    id_plan = validacion_datos.validacion_numero(input("id plan: "),1)
-    nombre_plan = input("nombre: ")
+    id_plan = validacion_datos.validacion_numero(input("Id plan: "),1)
+    nombre_plan = input("Nombre: ")
     valor = validacion_datos.validacion_numero(input("Valor plan: "),5)
     cant_canciones = validacion_datos.validacion_numero(input("Cantidad de canciones: "),4)
     datos_plan = (id_plan, nombre_plan, valor, cant_canciones)
@@ -15,6 +15,7 @@ def registrar_plan(con):
     insercion = plan()
     cursor_obj=con.cursor()
     cursor_obj.execute('''INSERT INTO planes VALUES(?,?,?,?)''', insercion)
+    print('¡El plan se ha registrado exitosamente!')
     con.commit()
 
 # Funcion que permite modificar el nombre de un plan
@@ -58,10 +59,10 @@ def consulta_tabla_planes(con):
     cursor_obj.execute('SELECT * FROM  planes')
     cantidad_planes = cursor_obj.fetchall()  
     orden_salida = orden_consulta(cantidad_planes)
-    print ("\n{:<5} {:<20} {:<20} {:<20} ".format('ID', 'NOMBRE', 'VALOR', 'CANTIDAD CANCIONES'))
+    print ("\n{:<5} {:<15} {:<10} {:<10} ".format('ID', 'NOMBRE PLAN', 'VALOR', 'CANTIDAD CANCIONES'))
     for row in orden_salida:
         id, nombre, valor, cantidad_canciones = row
-        print ("{:<5} {:<20} {:<20} {:<20} ".format(id, nombre, valor, cantidad_canciones))
+        print ("{:<5} {:<15} {:<10} {:<10} ".format(id, nombre, valor, cantidad_canciones))
 
 # funcion que ordena la consulta de distintas maneras
 def orden_consulta(lista):
@@ -98,7 +99,7 @@ def consulta_individual_plan(con):
     id_busqueda = busqueda + str(id)
     cursor_obj.execute(id_busqueda)
     datos_plan = cursor_obj.fetchall()
-    print ("\n{:<5} {:<15} {:<10} {:<10} ".format('ID', 'NOMBRE', 'VALOR', 'CANTIDAD CANCIONES'))
+    print ("\n{:<5} {:<15} {:<10} {:<10} ".format('ID', 'NOMBRE_PLAN', 'VALOR', 'CANTIDAD CANCIONES'))
     for row in datos_plan:
         id, nombre, valor, cantidad_canciones = row
         print ("{:<5} {:<15} {:<10} {:<10} ".format(id, nombre, valor, cantidad_canciones))

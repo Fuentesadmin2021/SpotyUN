@@ -15,7 +15,7 @@ def menu_canciones(con):
                         MENU SECCIÓN CANCIONES
                     1. Registrar una canción
                     2. Consultar canciones disponibles
-                    3. Consulta individual de una cancion
+                    3. Consulta individual de una canción
                     4. Actualizar datos de una canción
                     5. Ir al menu anterior\n''')
 
@@ -44,23 +44,22 @@ def menu_clientes(con):
         
         print('''
                         MENU SECCIÓN CLIENTES
-                    1. Registrar un cliente
+                    1. Registrarse
                     2. Consulta individual cliente
                     3. Consulta general de clientes
-                    4. Actualizar cliente
+                    4. Actualizar información de cliente
                     5. Eliminar cliente
                     6. Ir al menu anterir\n''')
 
         opc = input("\tDigite una opcion: ")                
         if(opc == '1'):
-            from manejador_planes_cliente import plan_desde_cliente, registrar_plan_cliente
             salir = True
             while salir:
                 try:
                     info = cliente(con)
                     info_plan_cliente = plan_desde_cliente(con, info)
                     registrar_cliente(con, info)
-                    registrar_plan_cliente(con,info_plan_cliente)
+                    registrar_plan_cliente(con, info_plan_cliente)
                     salir = False
                 except:
                     print('¡ERROR! El número de identificación no puede estar repetido')
@@ -119,32 +118,42 @@ def menu_principal(con):
     terminar_programa = False
     while not terminar_programa:
         print('''
-                            MENU PRINCIPAL
-                        1. Sección canciones
-                        2. Sección clientes
-                        3. Sección planes
-                        4. Sección planes por cliente
-                        5. Sección de lista cliente
-                        6. Salir\n''')
+                        MENU PRINCIPAL
+                    1. Sección planes
+                    2. Sección canciones
+                    3. Sección clientes
+                    4. Sección planes cliente
+                    5. Sección de lista cliente
+                    6. Salir\n''')
 
         opc = input("\tDigite una opcion: ")
         if(opc == '1'):
-            menu_canciones(con)
-        elif(opc == '2'):
-            menu_clientes(con)
-        elif(opc == '3'):
             menu_planes(con)
+
+        elif(opc == '2'):
+            menu_canciones(con)
+
+        elif(opc == '3'):
+            menu_clientes(con) 
+
         elif(opc == '4'):
-            print("Menu planes cliente")
+            id = verificacion_cliente_plan(con)
+            if not id:
+                menu_clientes(con)
+            else:
+                menu_planes_cliente(con, id)
+
         elif(opc == '5'):
-            print("Menu para la creacion de listas")
             id = verificacion_cliente(con)
             if not id:
                 menu_clientes(con)
             else:
                 menu_lista(con, id)
+        elif(opc == '6'):
+            terminar_programa= True
         else:
-            terminar_programa = True
+            print("\tOpcion no valida")
+            menu_principal(con)
 
         
 # funcion main que ejecuta el programa

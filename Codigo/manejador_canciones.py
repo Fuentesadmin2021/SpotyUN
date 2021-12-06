@@ -113,7 +113,7 @@ def orden_consulta(lista):
         return orden
 
     elif(opc == '5'):
-        orden = sorted(lista, key = lambda interprete : interprete[3])
+        orden = sorted(lista, key = lambda interprete : interprete[4])
         return orden
 
 '''funcion que hace una consulta individual de una cancion 
@@ -244,18 +244,3 @@ def crear_directorio_repro():
     ruta = subprocess.call(['mkdir', 'Canciones_reproducidas'], shell=True)
     return ruta
 
-#mi_conexion = sql_conexion()
-#reproducir_cancion(mi_conexion)
-# menu_canciones(mi_conexion)
-# actualizar_datos_cancion(mi_conexion)
-# obtener_dir_cancion(mi_conexion)
-# reproducir_cancion(mi_conexion)
-#registrar_cancion(mi_conexion)
-# consulta_tabla_canciones(mi_conexion)
-# consulta_individual_cancion(mi_conexion)
-# actualizar_nombre_cancion(mi_conexion)
-# actualizar_genero_cancion(mi_conexion)
-# actualizar_album_cancion(mi_conexion)
-# actualizar_interprete_cancion(mi_conexion)
-# eliminar_toda_la_informacion_canciones(mi_conexion)
-# eliminar_tabla_canciones(mi_conexion)
