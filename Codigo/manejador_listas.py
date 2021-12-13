@@ -3,6 +3,7 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from manejador_clientes import consulta_correo_cliente, verificacion_cliente
 from manejador_canciones import reproducir_cancion
+from tabulate import tabulate
 from manejadorbd import sql_conexion
 
 # Función para realizar la consulta de datos de la canción como id_canción, nombre_canción, interprete, album
@@ -82,7 +83,7 @@ def consulta_tabla_listas_email(con: 'sql_conexion', id_c: int) -> list:
     lista_str = ''
     for row in cantidad_canciones:
         id, nombre, interprete, album = row
-        lista_str += ("\n{:<20} {:<40} {:<60} {:60}".format(id, nombre, interprete, album))
+        lista_str += ("\n{:<20} {:<40} {:<40} {:40}".format(id, nombre, interprete, album))
     return lista_str
 
 # Función para enviar el mensaje con la lista de reproducción del cliente
@@ -90,7 +91,7 @@ def enviar_mensaje(con: 'sql_conexion', id_c: int):
     titulo_lista = ("\n{:<20} {:<40} {:<60} {:<60}".format('ID_CANCIÓN', 'NOMBRE', 'INTERPRETE', 'ALBUM'))
     mensaje = MIMEMultipart()
     mensaje['Subject'] = 'CONFIRMACION DE LISTA DE REPRODUCCIÓN'
-    cuerpo = f'{titulo_lista}\n{consulta_tabla_listas_email(con, id_c)}'
+    cuerpo = f'Señor usuario su lista de reproducción se muestra a continuación:\n\n\n{titulo_lista}\n{consulta_tabla_listas_email(con, id_c)}'
     mensaje.attach(MIMEText(cuerpo, 'plain'))
     texto = mensaje.as_string()
     servidor = smtplib.SMTP('smtp.gmail.com', 587)
@@ -111,7 +112,7 @@ def menu_lista(con: 'sql_conexion', id: int):
         2. Consultar lista
         3. Actualizar lista
         4. Eliminar lista
-        5. Envia por correo lista
+        5. Envia correo con lista de reproducción
         6. Reproducir canciones
         7. Ir al menu anterior
     
@@ -159,3 +160,4 @@ def menu_lista(con: 'sql_conexion', id: int):
 
 
 """----------------------------- Pruebas -----------------------------"""
+
