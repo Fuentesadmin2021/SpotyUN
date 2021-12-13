@@ -1,25 +1,25 @@
 from manejadorbd import sql_conexion
-import validacion_datos
+from validacion_datos import validacion_numero
 
-# funcion que pide los datos de un plan antes de registrarlo
-def plan():
-    id_plan = validacion_datos.validacion_numero(input("Id plan: "),1)
+# Función que pide los datos de un plan antes de registrarlo
+def plan() -> tuple:
+    id_plan = int(validacion_numero(input("Id plan: "),1))
     nombre_plan = input("Nombre: ")
-    valor = validacion_datos.validacion_numero(input("Valor plan: "),5)
-    cant_canciones = validacion_datos.validacion_numero(input("Cantidad de canciones: "),4)
+    valor = int(validacion_numero(input("Valor plan: "),5))
+    cant_canciones = int(validacion_numero(input("Cantidad de canciones: "),4))
     datos_plan = (id_plan, nombre_plan, valor, cant_canciones)
     return datos_plan
 
-# funcion para registrar los planes en la base de datos
-def registrar_plan(con):
+# Función para registrar los planes en la tabla planes
+def registrar_plan(con: 'sql_conexion'):
     insercion = plan()
     cursor_obj=con.cursor()
     cursor_obj.execute('''INSERT INTO planes VALUES(?,?,?,?)''', insercion)
     print('¡El plan se ha registrado exitosamente!')
     con.commit()
 
-# Funcion que permite modificar el nombre de un plan
-def actualizar_nombre_plan(con):
+# Función que permite modificar el nombre de un plan
+def actualizar_nombre_plan(con: 'sql_conexion'):
     cursor_obj = con.cursor()
     id = int(input('Ingrese el id del plan al que quiere modificarle el nombre: '))
     nombre = input("Ingrese el nombre del plan: ")
@@ -29,8 +29,8 @@ def actualizar_nombre_plan(con):
     print("!El nombre del plan se ha modificado exitosamente¡")
     con.commit()
 
-# Funcion que permite modificar el valor de un plan
-def actualizar_valor_plan(con):
+# Función que permite modificar el valor de un plan
+def actualizar_valor_plan(con: 'sql_conexion'):
     cursor_obj = con.cursor()
     id = int(input('Ingrese el id del plan al que quiere modificarle el valor: '))
     valor = input("Ingrese el valor del plan: ")
@@ -40,8 +40,8 @@ def actualizar_valor_plan(con):
     print("!La información se ha modificado exitosamente¡")
     con.commit()
 
-# Funcion que permite modificar el valor de un plan
-def actualizar_cantidad_canciones_plan(con):
+# Función que permite modificar la cantidad de canciones de un plan
+def actualizar_cantidad_canciones_plan(con: 'sql_conexion'):
     cursor_obj = con.cursor()
     id = int(input('Ingrese el id del plan al que quiere modificarle la cantidad de canciones: '))
     cantidad = input("Ingrese la cantidad de canciones del plan: ")
@@ -51,10 +51,9 @@ def actualizar_cantidad_canciones_plan(con):
     print("!La información se ha modificado exitosamente¡")
     con.commit()
    
-'''funcion que hace una consulta de todos los
-planes registradas en la base de datos y los 
-muestra al usuario'''
-def consulta_tabla_planes(con):
+# Función que realiza la consulta de todos los planes en la tabla planes
+# y los muestra al usuario
+def consulta_tabla_planes(con: 'sql_conexion'):
     cursor_obj = con.cursor()
     cursor_obj.execute('SELECT * FROM  planes')
     cantidad_planes = cursor_obj.fetchall()  
@@ -64,8 +63,9 @@ def consulta_tabla_planes(con):
         id, nombre, valor, cantidad_canciones = row
         print ("{:<5} {:<15} {:<10} {:<10} ".format(id, nombre, valor, cantidad_canciones))
 
-# funcion que ordena la consulta de distintas maneras
-def orden_consulta(lista):
+
+# Función que ordena la consulta de distintas maneras
+def orden_consulta(lista: list) -> tuple:
     print('''
                         ¿EN QUE ORDEN DESEA OBTENER LA CONSULTA?
                     1. Por id
@@ -90,9 +90,9 @@ def orden_consulta(lista):
         orden = sorted(lista, key = lambda cantidad_canciones : cantidad_canciones[3])
         return orden  
 
-'''funcion que permite hacer una consulta individual
-de un cliente por medio de su identificacion registrada'''
-def consulta_individual_plan(con):
+
+# Función que permite hacer una consulta individual de un cliente por medio de su identificacion registrada
+def consulta_individual_plan(con: 'sql_conexion'):
     cursor_obj = con.cursor()
     id = int(input('Ingrese un id: '))
     busqueda = 'SELECT * FROM planes WHERE id_plan = '
@@ -104,8 +104,8 @@ def consulta_individual_plan(con):
         id, nombre, valor, cantidad_canciones = row
         print ("{:<5} {:<15} {:<10} {:<10} ".format(id, nombre, valor, cantidad_canciones))
 
-# funcion que crea un menu para actualizar de manera individual los datos basicos de un plan
-def actualizar_datos_plan(con):
+# Función que realiza la gestión del la sección planes por medio de menú
+def actualizar_datos_plan(con: 'sql_conexion'):
     salir_actualizar = False
     while not salir_actualizar:
         print('''
@@ -127,7 +127,10 @@ def actualizar_datos_plan(con):
             
         elif(opc == '4'):
             salir_actualizar = True
+
                 
+"""----------------------------- Pruebas -----------------------------"""
+
 
 #mi_conexion = sql_conexion()
 # menu_planes(mi_conexion)

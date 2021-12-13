@@ -6,11 +6,11 @@ from manejador_planes_cliente import *
 from manejador_listas import *
 
 
-# funcion que crea un menu con todas las posibles opciones de la seccion de canciones
-def menu_canciones(con):
-    salir_canciones= False
+# Función que crea un menu con todas las posibles opciones de la seccion de canciones
+def menu_canciones(con: 'sql_conmexion'):
+    salir_canciones = False
     while not salir_canciones:
-        
+
         print('''
                         MENU SECCIÓN CANCIONES
                     1. Registrar una canción
@@ -19,29 +19,29 @@ def menu_canciones(con):
                     4. Actualizar datos de una canción
                     5. Ir al menu anterior\n''')
 
-        opc = input("\tDigite una opcion: ")                
-        if(opc == '1'):
+        opc = input("\tDigite una opcion: ")
+        if (opc == '1'):
             registrar_cancion(con)
 
-        elif(opc == '2'):
+        elif (opc == '2'):
             consulta_tabla_canciones(con)
 
-        elif(opc == '3'):
+        elif (opc == '3'):
             consulta_individual_cancion(con)
 
-        elif(opc == '4'):
+        elif (opc == '4'):
             actualizar_datos_cancion(con)
 
-        elif(opc == '5'):
+        elif (opc == '5'):
             salir_canciones = True
             menu_principal(con)
 
 
-# funcion que crea un menu con todas las posibles opciones de la seccion de clientes
-def menu_clientes(con):
-    salir= False
+# Función que crea un menu con todas las posibles opciones de la seccion de clientes
+def menu_clientes(con: 'sql_conexion'):
+    salir = False
     while not salir:
-        
+
         print('''
                         MENU SECCIÓN CLIENTES
                     1. Registrarse
@@ -51,8 +51,8 @@ def menu_clientes(con):
                     5. Eliminar cliente
                     6. Ir al menu anterir\n''')
 
-        opc = input("\tDigite una opcion: ")                
-        if(opc == '1'):
+        opc = input("\tDigite una opcion: ")
+        if (opc == '1'):
             salir = True
             while salir:
                 try:
@@ -64,29 +64,29 @@ def menu_clientes(con):
                 except:
                     print('¡ERROR! El número de identificación no puede estar repetido')
                     print('')
-  
-        elif(opc == '2'):
+
+        elif (opc == '2'):
             consulta_individual_cliente(con)
-  
-        elif(opc == '3'):
+
+        elif (opc == '3'):
             consulta_tabla_clientes(con)
 
-        elif(opc == '4'):
+        elif (opc == '4'):
             actualizar_datos_cliente(con)
 
-        elif(opc == '5'):
+        elif (opc == '5'):
             borrar_cliente(con)
-        
-        elif(opc == '6'):
+
+        elif (opc == '6'):
             salir = True
             menu_principal(con)
 
 
-# funcion que crea un menu con todas las posibles opciones de la seccion de canciones
-def menu_planes(con):
+# Función que crea un menu con todas las posibles opciones de la seccion de canciones
+def menu_planes(con: 'sql_conexion'):
     salir_planes = False
     while not salir_planes:
-        
+
         print('''
                         MENU SECCIÓN PLANES
                     1. Registrar un plan
@@ -95,26 +95,28 @@ def menu_planes(con):
                     4. Actualizar la información de un plan
                     5. Ir al menu anterior\n''')
 
-
-        opc = input("\tDigite una opcion: ")                
-        if(opc == '1'):
+        opc = input("\tDigite una opcion: ")
+        if (opc == '1'):
             registrar_plan(con)
 
-        elif(opc == '2'):
+        elif (opc == '2'):
             consulta_tabla_planes(con)
-        
-        elif(opc == '3'):
+
+        elif (opc == '3'):
             consulta_individual_plan(con)
 
-        elif(opc == '4'):
+        elif (opc == '4'):
             actualizar_datos_plan(con)
-        
-        elif(opc == '5'):
-            salir_planes = True
-            menu_principal(con)   
 
-# menu pricipal del programa
-def menu_principal(con):
+        elif (opc == '5'):
+            salir_planes = True
+            menu_principal(con)
+
+        # menu pricipal del programa
+
+
+# Función para gestionar toda el programa desde un menú principal
+def menu_principal(con: 'sql_conexion'):
     terminar_programa = False
     while not terminar_programa:
         print('''
@@ -127,44 +129,45 @@ def menu_principal(con):
                     6. Salir\n''')
 
         opc = input("\tDigite una opcion: ")
-        if(opc == '1'):
+        if (opc == '1'):
             menu_planes(con)
 
-        elif(opc == '2'):
+        elif (opc == '2'):
             menu_canciones(con)
 
-        elif(opc == '3'):
-            menu_clientes(con) 
+        elif (opc == '3'):
+            menu_clientes(con)
 
-        elif(opc == '4'):
-            id = verificacion_cliente_plan(con)
+        elif (opc == '4'):
+            id = verificacion_cliente(con)
             if not id:
                 menu_clientes(con)
             else:
                 menu_planes_cliente(con, id)
 
-        elif(opc == '5'):
+        elif (opc == '5'):
             id = verificacion_cliente(con)
             if not id:
                 menu_clientes(con)
             else:
                 menu_lista(con, id)
-        elif(opc == '6'):
-            terminar_programa= True
+        elif (opc == '6'):
+            terminar_programa = True
         else:
             print("\tOpcion no valida")
             menu_principal(con)
 
-        
-# funcion main que ejecuta el programa
-def main():               
+
+# Funcion main desde la cual se va a ejecuta el programa
+def main():
     conexion_bd = sql_conexion()
     crear_tabla_canciones(conexion_bd)
     crear_tabla_planes(conexion_bd)
     crear_tabla_clientes(conexion_bd)
     crear_tabla_listas(conexion_bd)
-    crear_tabla_planes_por_cliente(conexion_bd)  
+    crear_tabla_planes_por_cliente(conexion_bd)
     menu_principal(conexion_bd)
-                
+
+
 if __name__ == '__main__':
     main()

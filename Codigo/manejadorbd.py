@@ -1,7 +1,7 @@
 import sqlite3
 from sqlite3 import Error
 
-# función para crear la bases de datos
+# Función para crear la bases de datos y la conexion con la base
 def sql_conexion():
     try:
         con = sqlite3.connect('SpotyUN.db')
@@ -10,7 +10,7 @@ def sql_conexion():
     except Error:
         print(Error)
 
-# función para crear la tabla 'canciones' en la base de datos
+# Función para crear la tabla 'canciones' en la base de datos
 def crear_tabla_canciones(con):
     cursor_obj = con.cursor()
     cursor_obj.execute("""CREATE TABLE IF NOT EXISTS canciones(
@@ -21,10 +21,9 @@ def crear_tabla_canciones(con):
                         interprete TEXT(100) NOT NULL,
                         imagen BLOB,
                         cancion BLOB)""")
-
     con.commit()
 
-# función para crear la tabla 'planes' en la base de datos
+# Función para crear la tabla 'planes' en la base de datos
 def crear_tabla_planes(con):
     cursor_obj = con.cursor()
     cursor_obj.execute("""CREATE TABLE IF NOT EXISTS planes(
@@ -35,7 +34,7 @@ def crear_tabla_planes(con):
 
     con.commit()
 
-# funcion para crear la tabla 'clientes' en la base de datos
+# Función para crear la tabla 'clientes' en la base de datos
 def crear_tabla_clientes(con):
     cursor_obj = con.cursor()
     cursor_obj.execute("""CREATE TABLE IF NOT EXISTS clientes(
@@ -52,7 +51,7 @@ def crear_tabla_clientes(con):
 
     con.commit()
 
-# funcion que crea la tabla 'listas' en la base de datos
+# Función para crear la tabla 'listas' en la base de datos
 def crear_tabla_listas(con):
     cursor_obj = con.cursor()
     cursor_obj.execute("""CREATE TABLE IF NOT EXISTS listas(
@@ -64,7 +63,7 @@ def crear_tabla_listas(con):
 
     con.commit()
 
-# funcion que crea la tabla 'planes cliente' en la base de datos
+# Función para crear la tabla 'planes_cliente' en la base de datos
 def crear_tabla_planes_por_cliente(con):
     cursor_obj = con.cursor()
     cursor_obj.execute("""CREATE TABLE IF NOT EXISTS planes_cliente(
@@ -74,15 +73,19 @@ def crear_tabla_planes_por_cliente(con):
     con.commit()
 
 
-# función para borrar tablas
+# Función para borrar tablas
 def borrar(con, nombre_tabla):
     cursorObj = con.cursor()
     cursorObj.execute(f'DROP TABLE {nombre_tabla}')
     con.commit()
 
-# función para cerrrar la base de datos
+# Función para cerrar la base de datos
 def close(con):
     con.close()
+
+
+"""----------------------------- Pruebas -----------------------------"""
+
 
 # mi_conexion = sql_conexion()
 # borrar(mi_conexion, 'canciones')
