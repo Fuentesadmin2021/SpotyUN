@@ -9,8 +9,15 @@ def cancion() -> tuple:
     album = validacion_letra(input('Album: '), 100)
     interprete = validacion_letra(input('Interprete(s): '), 100)
     # imagen = None
-    nombre_cancion = input('Nombre de la canción tal cual esta almacenada en su equipo: ')
-    cancion = registrar_cancion_bd(nombre_cancion)
+    state = False
+    while not state:
+        try:
+            nombre_cancion = input('Nombre de la canción tal cual esta almacenada en su equipo: ')
+            cancion = registrar_cancion_bd(nombre_cancion)
+            state = True
+        except:
+            print('\n¡Error en los datos de la canción en el equipo\n por favor verifique e ingrese de nuevo la información!\n ')
+
     datos_cancion = (nombre, genero, album, interprete, cancion)
     return datos_cancion
 

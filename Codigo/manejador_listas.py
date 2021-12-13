@@ -24,7 +24,7 @@ def id_cancion_lista(con: 'sql_conexion') -> list:
 # Función para consultar la cantidad de canciones por plan de acuerdo al registro del cliente
 def plan_cliente(con: 'sql_conexion', id: int) -> int:
     cursor_obj = con.cursor()
-    cursor_obj.execute(f'SELECT id_plan_contrato FROM planes_cliente WHERE id_cliente = {id}')
+    cursor_obj.execute(f'SELECT id_plan FROM planes_cliente WHERE id_cliente = {id}')
     id_plan_cliente = cursor_obj.fetchone()
     cursor_obj.execute(f'SELECT cantidad_canciones FROM planes WHERE id_plan = {id_plan_cliente[0]}')
     cant_canciones = cursor_obj.fetchone()
@@ -118,7 +118,7 @@ def menu_lista(con: 'sql_conexion', id: int):
         Digite una opción: """)
         if opc == "1":
             print("Ya estas registrado puedes crear una lista\nNúmero de canciones que puedes agregar: ",
-                  plan_cliente(con, id))
+                  plan_cliente(con, id)[0])
             cont_canciones = 1
             state_lista = True
             while state_lista and cont_canciones <= plan_cliente(con, id)[0]:

@@ -57,7 +57,7 @@ def menu_clientes(con: 'sql_conexion'):
             while salir:
                 try:
                     info = cliente(con)
-                    info_plan_cliente = plan_desde_cliente(con, info)
+                    info_plan_cliente = plan_desde_cliente(info)
                     registrar_cliente(con, info)
                     registrar_plan_cliente(con, info_plan_cliente)
                     salir = False

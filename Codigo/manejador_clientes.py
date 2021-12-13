@@ -19,7 +19,17 @@ def cliente(con: 'sql_conexion') -> tuple:
     planes_disponibles(con)
     plan = int(input('Ingresa el ID del plan que desea contratar: '))
     datos_cliente = (
-    id_cliente, nombre, apellido, pais, ciudad, celular, correo, fecha_pago, numero_tc, estado_pago, plan)
+        id_cliente,
+        nombre,
+        apellido,
+        pais,
+        ciudad,
+        celular,
+        correo,
+        fecha_pago,
+        numero_tc,
+        estado_pago,
+        plan)
     return datos_cliente
 
 
