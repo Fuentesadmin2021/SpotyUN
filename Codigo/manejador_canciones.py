@@ -131,11 +131,7 @@ def consulta_individual_cancion(con: 'sql_conexion'):
         print ("{:<12} {:<30} {:<30} {:30} {:30}".format(id, nombre, genero, album, interprete))
 
 
-# Función que elimina la información de la tabla canciones
-def eliminar_toda_la_informacion_canciones(con: 'sql_conexion'):
-    cursor_obj = con.cursor()
-    cursor_obj.execute('DELETE from canciones')
-    con.commit()
+
 
 
 # Función que obtiene la dirección de la canción que esta en la base de datos
