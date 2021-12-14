@@ -73,7 +73,7 @@ def crear_tabla_planes_por_cliente(con):
     con.commit()
 
 # Función que elimina la información de la tabla canciones
-def eliminar_info_tablas(con: 'sql_conexion', nombre_tabla: str):
+def eliminar_info_tablas(con, nombre_tabla: str):
     cursor_obj = con.cursor()
     cursor_obj.execute(f'DELETE from {nombre_tabla}')
     con.commit()

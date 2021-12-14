@@ -12,7 +12,7 @@ def plan_desde_cliente(info_cliente: tuple) -> tuple:
     return datos
 
 # Función que registra plan en la tabla planes_cliente
-def registrar_plan_cliente(con: 'sql_conexion', datos: tuple):
+def registrar_plan_cliente(con, datos: tuple):
     cursor_obj=con.cursor()
     insercion = datos
     cursor_obj.execute('''INSERT INTO planes_cliente VALUES(?,?)''', insercion)
@@ -20,7 +20,7 @@ def registrar_plan_cliente(con: 'sql_conexion', datos: tuple):
 
 
 # Función que pide a un usuario los datos necesarios para registrar un plan
-def plan_cliente(con: 'sql_conexion', id: int) -> tuple:
+def plan_cliente(con, id: int) -> tuple:
     id_cliente = id
     planes_disponibles(con)
     id_plan = input('Ingresa el ID del plan que quieres contratar: ')   
@@ -29,7 +29,7 @@ def plan_cliente(con: 'sql_conexion', id: int) -> tuple:
 
 
 # Función que consulta los planes contratados por el cliente
-def consulta_planes_cliente(con: 'sql_conexion', id: int):
+def consulta_planes_cliente(con, id: int):
     cursor_obj = con.cursor()
     cursor_obj.execute(f'SELECT * FROM planes_cliente WHERE id_cliente = {id}')
     planes = cursor_obj.fetchall()
@@ -40,7 +40,7 @@ def consulta_planes_cliente(con: 'sql_conexion', id: int):
 
 
 # Función que agrega plan a la base de datos
-def agregar_plan_cliente(con: 'sql_conexion', nuevo_plan: tuple) -> str:
+def agregar_plan_cliente(con, nuevo_plan: tuple) -> str:
     cursor_obj = con.cursor()
     cursor_obj.execute('''INSERT INTO planes_cliente VALUES(?,?)''', nuevo_plan)
     con.commit()
@@ -48,7 +48,7 @@ def agregar_plan_cliente(con: 'sql_conexion', nuevo_plan: tuple) -> str:
 
 
 # Función que consulta el plan contratado por el cliente
-def consulta_individual_plan_cliente(con: 'sql_conexion', id: int):
+def consulta_individual_plan_cliente(con, id: int):
     cursor_obj = con.cursor()
     id_plan = input("Ingrese el ID del plan contratado que desea consultar:")
     info_plan = cursor_obj.execute(f'SELECT * FROM planes WHERE id_plan = {id_plan}')

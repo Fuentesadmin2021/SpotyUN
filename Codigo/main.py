@@ -7,7 +7,7 @@ from manejador_listas import *
 
 
 # Función que crea un menu con todas las posibles opciones de la seccion de canciones
-def menu_canciones(con: 'sql_conmexion'):
+def menu_canciones(con):
     salir_canciones = False
     while not salir_canciones:
 
@@ -38,7 +38,7 @@ def menu_canciones(con: 'sql_conmexion'):
 
 
 # Función que crea un menu con todas las posibles opciones de la seccion de clientes
-def menu_clientes(con: 'sql_conexion'):
+def menu_clientes(con):
     salir = False
     while not salir:
 
@@ -83,7 +83,7 @@ def menu_clientes(con: 'sql_conexion'):
 
 
 # Función que crea un menu con todas las posibles opciones de la seccion de canciones
-def menu_planes(con: 'sql_conexion'):
+def menu_planes(con):
     salir_planes = False
     while not salir_planes:
 
@@ -116,7 +116,7 @@ def menu_planes(con: 'sql_conexion'):
 
 
 # Función para gestionar toda el programa desde un menú principal
-def menu_principal(con: 'sql_conexion'):
+def menu_principal(con):
     terminar_programa = False
     while not terminar_programa:
         print('''

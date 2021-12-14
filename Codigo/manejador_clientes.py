@@ -4,7 +4,7 @@ from datetime import datetime
 
 
 # funcion que obtiene los datos de un cliente antes de registrarlo
-def cliente(con: 'sql_conexion') -> tuple:
+def cliente(con) -> tuple:
     id_cliente = int(validacion_numero(input('Numero de identificacion: '), 12))
     nombre = validacion_letra(input('Nombre: '), 30)
     apellido = validacion_letra(input('Apellido: '), 30)
@@ -34,7 +34,7 @@ def cliente(con: 'sql_conexion') -> tuple:
 
 
 # funcion que registra un cliente en la base de datos
-def registrar_cliente(con: 'sql_conexion', tupla: tuple):
+def registrar_cliente(con, tupla: tuple):
     cursor = con.cursor()
     datos_cliente = tupla
     cursor.execute('''INSERT INTO clientes VALUES (?,?,?,?,?,?,?,?,?,?)''', datos_cliente[0:-1])
@@ -43,7 +43,7 @@ def registrar_cliente(con: 'sql_conexion', tupla: tuple):
 
 
 # funcion que realiza una consulta rapida de los planes el la base de datos
-def planes_disponibles(con: 'sql_conexion'):
+def planes_disponibles(con):
     cursor_obj = con.cursor()
     cursor_obj.execute('SELECT * FROM  planes')
     cantidad_planes = cursor_obj.fetchall()
@@ -57,7 +57,7 @@ def planes_disponibles(con: 'sql_conexion'):
 clientes registradas en la base de datos'''
 
 
-def consulta_tabla_clientes(con: 'sql_conexion'):
+def consulta_tabla_clientes(con):
     cursor_obj = con.cursor()
     cursor_obj.execute('SELECT id_cliente, nombre_cliente, apellido FROM  clientes')
     cantidad_clientes = cursor_obj.fetchall()
@@ -94,7 +94,7 @@ def orden_consulta(lista: list) -> tuple:
 por medio del id_cliente registrado en la base de datos'''
 
 
-def consulta_individual_cliente(con: 'sql_conexion'):
+def consulta_individual_cliente(con):
     cursor_obj = con.cursor()
     id = int(input('Ingrese su identificación: '))
     busqueda = 'SELECT * FROM clientes WHERE id_cliente = '
@@ -116,7 +116,7 @@ def consulta_individual_cliente(con: 'sql_conexion'):
                                                           fecha_pago, numero_tc, estado))
 
 
-def consulta_correo_cliente(con: 'sql_conexion', id: int) -> str:
+def consulta_correo_cliente(con, id: int) -> str:
     cursor_obj = con.cursor()
     cursor_obj.execute(f'SELECT correo FROM clientes WHERE id_cliente = {id}')
     correo = cursor_obj.fetchall()
@@ -124,7 +124,7 @@ def consulta_correo_cliente(con: 'sql_conexion', id: int) -> str:
 
 
 # funcion para modificar el nombre de un cliente
-def actualizar_nombre_cliente(con: 'sql_conexion'):
+def actualizar_nombre_cliente(con):
     cursor_obj = con.cursor()
     id = input('Ingrese su identificación para modificar el nombre: ')
     nombre = input('Ingrese el nuevo nombre: ')
@@ -136,7 +136,7 @@ def actualizar_nombre_cliente(con: 'sql_conexion'):
 
 
 # funcion para modificar el apellido de un cliente
-def actualizar_apellido_cliente(con: 'sql_conexion'):
+def actualizar_apellido_cliente(con):
     cursor_obj = con.cursor()
     id = input('Ingrese su identificación para modificar el apellido: ')
     apellido = input('Ingrese el nuevo apellido: ')
@@ -148,7 +148,7 @@ def actualizar_apellido_cliente(con: 'sql_conexion'):
 
 
 # funcion para modificar el numero de celular de un cliente
-def actualizar_celular_cliente(con: 'sql_conexion'):
+def actualizar_celular_cliente(con):
     cursor_obj = con.cursor()
     id = input('Ingrese su identificación para modificar su numero celular: ')
     celular = input('Ingrese su nuevo numero de celular: ')
@@ -160,7 +160,7 @@ def actualizar_celular_cliente(con: 'sql_conexion'):
 
 
 # funcion para modificar el correo de un cliente
-def actualizar_correo_cliente(con: 'sql_conexion'):
+def actualizar_correo_cliente(con):
     cursor_obj = con.cursor()
     id = input('Ingrese su identificación para modificar su correo: ')
     correo = input('Ingrese su nuevo correo: ')
@@ -172,7 +172,7 @@ def actualizar_correo_cliente(con: 'sql_conexion'):
 
 
 # funcion para modificar el numero de tarjeta de credito de un cliente registrada inicialmente
-def actualizar_tarjeta_credito_cliente(con: 'sql_conexion'):
+def actualizar_tarjeta_credito_cliente(con):
     cursor_obj = con.cursor()
     id = input('Ingrese su identificación para modificar su TC: ')
     tc = input('Ingrese su nuevo numero de Tarjeta Credito: ')
@@ -184,7 +184,7 @@ def actualizar_tarjeta_credito_cliente(con: 'sql_conexion'):
 
 
 # funcion para modificar el pais que registro el cliente inicialmente
-def actualizar_pais_cliente(con: 'sql_conexion'):
+def actualizar_pais_cliente(con):
     cursor_obj = con.cursor()
     id = input('Ingrese su identificación para modificar el pais: ')
     pais = input('Ingrese su pais: ')
@@ -196,7 +196,7 @@ def actualizar_pais_cliente(con: 'sql_conexion'):
 
 
 # funcion para modificar la ciudad que registro el cliente inicialmente
-def actualizar_ciudad_cliente(con: 'sql_conexion'):
+def actualizar_ciudad_cliente(con):
     cursor_obj = con.cursor()
     id = input('Ingrese su identificación para modificar la ciudad: ')
     ciudad = input('Ingrese su nueva ciudad: ')
@@ -208,7 +208,7 @@ def actualizar_ciudad_cliente(con: 'sql_conexion'):
 
 
 # Función para verificar si un cliente esta registrado o no
-def verificacion_cliente(con: 'sql_conexion') -> False or int:
+def verificacion_cliente(con) -> False or int:
     id_cliente = input('Ingrese su identificacion: ')
     cursor_obj = con.cursor()
     cursor_obj.execute(f'SELECT id_cliente FROM clientes WHERE id_cliente = {id_cliente}')
@@ -220,7 +220,7 @@ def verificacion_cliente(con: 'sql_conexion') -> False or int:
         return int(id[0])
 
 # funcion que elimina el registro de un cliente en la base de datos
-def borrar_cliente(con: 'sql_conexion'):
+def borrar_cliente(con):
     cursor = con.cursor()
     id = input("Identificación cliente: ")
     borrar = "DELETE FROM clientes WHERE id_cliente = %s" % id
@@ -230,7 +230,7 @@ def borrar_cliente(con: 'sql_conexion'):
 
 
 # funcion que crea un menu para actualizar de manera individual los datos basicos de un cliente
-def actualizar_datos_cliente(con: 'sql_conexion'):
+def actualizar_datos_cliente(con):
     print('''
                             ACTUALIZAR DATOS CLIENTE
                         1. Nombre

@@ -3,11 +3,10 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from manejador_clientes import consulta_correo_cliente, verificacion_cliente
 from manejador_canciones import reproducir_cancion
-from tabulate import tabulate
 from manejadorbd import sql_conexion
 
 # Función para realizar la consulta de datos de la canción como id_canción, nombre_canción, interprete, album
-def id_cancion_lista(con: 'sql_conexion') -> list:
+def id_cancion_lista(con) -> list:
     canciones = input('\nIngrese el id de cancion que desea agregar a su lista: ')
     while canciones == '0':
         break
@@ -23,7 +22,7 @@ def id_cancion_lista(con: 'sql_conexion') -> list:
     return lista_info_cancion
 
 # Función para consultar la cantidad de canciones por plan de acuerdo al registro del cliente
-def plan_cliente(con: 'sql_conexion', id: int) -> int:
+def plan_cliente(con, id: int) -> int:
     cursor_obj = con.cursor()
     cursor_obj.execute(f'SELECT id_plan FROM planes_cliente WHERE id_cliente = {id}')
     id_plan_cliente = cursor_obj.fetchone()
@@ -32,7 +31,7 @@ def plan_cliente(con: 'sql_conexion', id: int) -> int:
     return cant_canciones
 
 # Función para consultar las canciones existentes y mostrarlas en pantalla
-def consulta_tabla_canciones_lista(con: 'sql_conexion'):
+def consulta_tabla_canciones_lista(con):
     cursor_obj = con.cursor()
     cursor_obj.execute('SELECT id_cancion, nombre_cancion, genero, album, interprete  FROM canciones')
     cantidad_canciones = cursor_obj.fetchall()
@@ -43,14 +42,14 @@ def consulta_tabla_canciones_lista(con: 'sql_conexion'):
 
 # Función para agregar en un tupla la información correspondiente para la tabla listas
 # necestamos el id_cliente y la lista info_canciones
-def info_lista(con: 'sql_conexion', id_cliente: int) -> tuple:
+def info_lista(con, id_cliente: int) -> tuple:
     id_c = id_cliente
     info_canciones = id_cancion_lista(con)
     info_canciones.append(id_c)
     return info_canciones
 
 # Función para registrar la información en la tabla listas
-def registrar_lista_cliente(con: 'sql_conexion', tupla: tuple):
+def registrar_lista_cliente(con, tupla: tuple):
     cursor = con.cursor()
     cursor.execute('''INSERT INTO listas VALUES (?,?,?,?,?)''', tupla)
     con.commit()
@@ -58,7 +57,7 @@ def registrar_lista_cliente(con: 'sql_conexion', tupla: tuple):
 
 
 # Función para consultar la lista de canciones registradas por el cliente
-def consulta_tabla_listas(con: 'sql_conexion', id_c: int):
+def consulta_tabla_listas(con, id_c: int):
     cursor_obj = con.cursor()
     cursor_obj.execute(f'SELECT id_cancion, nombre_cancion, interprete, album FROM listas WHERE id_cliente = {id_c}')
     cantidad_canciones = cursor_obj.fetchall()
@@ -69,14 +68,15 @@ def consulta_tabla_listas(con: 'sql_conexion', id_c: int):
 
 
 # Función que borra una lista de la base de datos
-def borrar_lista(con: 'sql_conexion', id_cliente: int) -> str:
+def borrar_lista(con, id_cliente: int) -> str:
     cursor_obj = con.cursor()
     cursor_obj.execute(f'DELETE FROM listas WHERE id_cliente = {id_cliente}')
     con.commit()
     return 'Tu lista ha sido eliminada'
 
+
 # Función para realizar la consulta de la tabla listas para poder enviarla en el correo electrónico
-def consulta_tabla_listas_email(con: 'sql_conexion', id_c: int) -> list:
+def consulta_tabla_listas_email(con, id_c: int) -> list:
     cursor_obj = con.cursor()
     cursor_obj.execute(f'SELECT id_cancion, nombre_cancion, interprete, album FROM listas WHERE id_cliente = {id_c}')
     cantidad_canciones = cursor_obj.fetchall()
@@ -86,8 +86,9 @@ def consulta_tabla_listas_email(con: 'sql_conexion', id_c: int) -> list:
         lista_str += ("\n{:<20} {:<40} {:<40} {:40}".format(id, nombre, interprete, album))
     return lista_str
 
+
 # Función para enviar el mensaje con la lista de reproducción del cliente
-def enviar_mensaje(con: 'sql_conexion', id_c: int):
+def enviar_mensaje(con, id_c: int):
     titulo_lista = ("\n{:<20} {:<40} {:<60} {:<60}".format('ID_CANCIÓN', 'NOMBRE', 'INTERPRETE', 'ALBUM'))
     mensaje = MIMEMultipart()
     mensaje['Subject'] = 'CONFIRMACION DE LISTA DE REPRODUCCIÓN'
@@ -102,8 +103,9 @@ def enviar_mensaje(con: 'sql_conexion', id_c: int):
     servidor.quit()
     print("Envio exitoso")
 
+
 # Función para realizar la gestión de la sección listas de reproducción
-def menu_lista(con: 'sql_conexion', id: int):
+def menu_lista(con, id: int):
     state = True
     while state:
         opc = input("""
