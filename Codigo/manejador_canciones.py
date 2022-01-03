@@ -1,8 +1,8 @@
-# librerias fundamentales para funcionamiento del programa
+# Libreria necesaria para la reproduccion de la musica
 from pygame import mixer
 from validacion_datos import validacion_letra
 
-# Función que obtiene los datos de una canción antes de registrarla
+# Esta funcion se encarga de solicitar la informacion de una cancion para su registro
 def cancion() -> tuple:
     nombre = validacion_letra(input('Nombre: '), 100)
     genero = validacion_letra(input('Genero: '), 30)
@@ -22,14 +22,14 @@ def cancion() -> tuple:
     return datos_cancion
 
 
-# Función que registra una canción en la tabla canciones
+# Funcion que se encarga de registrar la informacion y audio de una canción en la base de datos
 def registrar_cancion(con):
     cursor_obj = con.cursor()
     insercion = cancion()
     cursor_obj.execute('''INSERT INTO canciones VALUES(NULL, ?, ?, ?, ?, NULL, ?)''', insercion)
     con.commit()
 
-# Función para modificar el nombre de una canción
+# Función que permite modificar el 'nombre' de una canción que este almacenada en la base de datos
 def actualizar_nombre_cancion(con):
     cursor_obj = con.cursor()
     id = int(input('Ingrese el id de la canción a la que quiere modificarle el nombre: '))
@@ -41,7 +41,7 @@ def actualizar_nombre_cancion(con):
     print("!El nombre de la cancion se ha modificado exitosamente¡")
 
 
-# Función para modificar el género de una canción
+# Función para actualizar o modificar el 'genero' de una canción que este almacenada en la base de datos
 def actualizar_genero_cancion(con):
     cursor_obj = con.cursor()
     id = int(input('Ingrese el id de la cancion a la que quiere modificarle el genero: '))
@@ -53,7 +53,7 @@ def actualizar_genero_cancion(con):
     print("!El genero de la cancion se ha modificado exitosamente¡")
 
     
-# Función para modificar el album de una canción
+# Función para actualizar o modificar el 'album' de una canción que este almacenada en la base de datos
 def actualizar_album_cancion(con):
     cursor_obj = con.cursor()
     id = int(input('Ingrese el id de la canción a la que quiere modificarle el nombre de su album: '))
@@ -65,7 +65,7 @@ def actualizar_album_cancion(con):
     print("!El nombre del album de la cancion se ha modificado exitosamente¡")
 
     
-# Función para modificar el interprete de una canción
+# Función para actualizar o modificar el 'interprete(s)' de una canción que este almacenada en la base de datos
 def actualizar_interprete_cancion(con):
     cursor_obj = con.cursor()
     id = int(input('Ingrese el id de la canción a la que quiere modificarle el interprete: '))
@@ -78,7 +78,7 @@ def actualizar_interprete_cancion(con):
     
 
 
-# Función que realiza la consulta de todas las canciones registradas en la base de datos
+# Función para realizar una consulta de todas las canciones registradas en la base de datos
 def consulta_tabla_canciones(con):
     cursor_obj = con.cursor()
     cursor_obj.execute('SELECT id_cancion, nombre_cancion, genero, album, interprete  FROM canciones')
@@ -91,7 +91,7 @@ def consulta_tabla_canciones(con):
 
 
 
-# Función que ordena las canciones según como el usuario lo desee
+# Función que ordena la consulta de la canciones segun el usuario lo desee
 def orden_consulta(lista: list) -> tuple:
     
     print('''
@@ -124,7 +124,7 @@ def orden_consulta(lista: list) -> tuple:
         return orden
 
 
-# Función que realiza la consulta individual de una canción por medio del id_canción registrado en al base de datos
+# Función para realizar la consulta individual de una canción por medio del id_canción registrado en al base de datos
 def consulta_individual_cancion(con):
     cursor_obj = con.cursor()
     id = int(input('Ingrese el id de la canción: '))
@@ -139,9 +139,7 @@ def consulta_individual_cancion(con):
 
 
 
-
-
-# Función que obtiene la dirección de la canción que esta en la base de datos
+# Función para obtener la dirección de la canción que esta en la base de datos
 def obtener_dir_cancion(con):
     cursor_obj = con.cursor()
     id = int(input('Ingrese el id de la canción que desea escuchar: '))

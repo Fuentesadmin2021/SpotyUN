@@ -1,3 +1,7 @@
+'''Acontinuación se importan todos los archivos con las funciones necesarias para que el programa funcine correctamente.
+ El archivo "main.py" funcionara como panel principal del programa.
+ Las librerias para cumplir con algunas funciones del programa estan importadas al inicio de cada archivo. Si es necesaria alguna'''
+
 from manejadorbd import *
 from manejador_canciones import *
 from manejador_clientes import *
@@ -6,7 +10,7 @@ from manejador_planes_cliente import *
 from manejador_listas import *
 
 
-# Función que crea un menu con todas las posibles opciones de la seccion de canciones
+# Función que genera un menu con todas las posibles opciones de la seccion de canciones
 def menu_canciones(con):
     salir_canciones = False
     while not salir_canciones:
@@ -37,7 +41,7 @@ def menu_canciones(con):
             menu_principal(con)
 
 
-# Función que crea un menu con todas las posibles opciones de la seccion de clientes
+# Función que genera un menu con todas las posibles opciones de la seccion de clientes
 def menu_clientes(con):
     salir = False
     while not salir:
@@ -82,7 +86,7 @@ def menu_clientes(con):
             menu_principal(con)
 
 
-# Función que crea un menu con todas las posibles opciones de la seccion de canciones
+# Función que genera un menu con todas las posibles opciones de la seccion de canciones
 def menu_planes(con):
     salir_planes = False
     while not salir_planes:
@@ -115,7 +119,7 @@ def menu_planes(con):
         # menu pricipal del programa
 
 
-# Función para gestionar toda el programa desde un menú principal
+# Función que genera un menú pricipal que permite gestionar todo el programa
 def menu_principal(con):
     terminar_programa = False
     while not terminar_programa:
@@ -158,7 +162,7 @@ def menu_principal(con):
             menu_principal(con)
 
 
-# Funcion main desde la cual se va a ejecuta el programa
+# La funcion 'main()' a continuacion es la encargada de ejecutar todo el programa
 def main():
     conexion_bd = sql_conexion()
     crear_tabla_canciones(conexion_bd)
@@ -167,7 +171,6 @@ def main():
     crear_tabla_listas(conexion_bd)
     crear_tabla_planes_por_cliente(conexion_bd)
     menu_principal(conexion_bd)
-
 
 if __name__ == '__main__':
     main()
