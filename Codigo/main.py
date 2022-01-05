@@ -1,6 +1,6 @@
-'''Acontinuación se importan todos los archivos con las funciones necesarias para que el programa funcine correctamente.
- El archivo "main.py" funcionara como panel principal del programa.
- Las librerias para cumplir con algunas funciones del programa estan importadas al inicio de cada archivo. Si es necesaria alguna'''
+'''Acontinuación se importan todos los modulos con las funciones necesarias para que el programa funcine correctamente.
+ El modulo "main.py" funcionara como panel principal del programa.
+ Las librerias para cumplir con algunas funciones del programa estan importadas al inicio de cada modulo. Si es necesaria alguna'''
 
 from manejadorbd import *
 from manejador_canciones import *
