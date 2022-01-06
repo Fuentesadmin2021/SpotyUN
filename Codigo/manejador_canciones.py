@@ -1,4 +1,4 @@
-# Libreria necesaria para la reproduccion de la musica
+# El paquete mixer del modulo pygame importado a continuación es utilizado como herramienta para la reproducción de las canciones.
 from pygame import mixer
 from validacion_datos import validacion_letra
 
@@ -150,15 +150,15 @@ def obtener_dir_cancion(con):
         return dir[0]
 
 
-# Función que convierte a binario una cancion
-def registrar_cancion_bd(audio: str) -> 'blob-bin':
+# Función que convierte a binario una cancion -> 'blob-bin'
+def registrar_cancion_bd(audio):
     cancion = f'../Canciones/{audio}.mp3'
     with open(cancion, 'rb') as file:
         blob = file.read()
         return blob
 
-# Función que guarda la canción en el equipo en formato mp3
-def guardar_cancion(data: bin, filename: str) -> 'mp3':
+# Función que guarda la canción en el equipo en formato mp3 -> 'mp3':
+def guardar_cancion(data: bin, filename: str):
     try:
         with open(filename, 'wb') as file:
             return file.write(data)
@@ -244,6 +244,10 @@ def actualizar_datos_cancion(con):
   
         elif(opc == '5'):
             salir_actualizar = True
+        
+        else:
+            print("\t\n¡Opcion no valida. Digite una opción nuevamente!")
+
 
 
 # Función que creara un directorio donde se almacenaran las canciones a reproducir

@@ -1,4 +1,4 @@
-'''Acontinuación se importan todos los modulos con las funciones necesarias para que el programa funcine correctamente.
+'''Acontinuación se importan todos los modulos con las funciones necesarias para que el programa funcione correctamente.
  El modulo "main.py" funcionara como panel principal del programa.
  Las librerias para cumplir con algunas funciones del programa estan importadas al inicio de cada modulo. Si es necesaria alguna'''
 
@@ -38,7 +38,9 @@ def menu_canciones(con):
 
         elif (opc == '5'):
             salir_canciones = True
-            menu_principal(con)
+
+        else:
+             print("\t\n¡Opcion no valida. Digite una opción nuevamente!")
 
 
 # Función que genera un menu con todas las posibles opciones de la seccion de clientes
@@ -83,7 +85,7 @@ def menu_clientes(con):
 
         elif (opc == '6'):
             salir = True
-            menu_principal(con)
+          
 
 
 # Función que genera un menu con todas las posibles opciones de la seccion de canciones
@@ -114,9 +116,9 @@ def menu_planes(con):
 
         elif (opc == '5'):
             salir_planes = True
-            menu_principal(con)
 
-        # menu pricipal del programa
+        else:
+            print("\t\n¡Opcion no valida. Digite una opción nuevamente!")
 
 
 # Función que genera un menú pricipal que permite gestionar todo el programa
@@ -158,9 +160,7 @@ def menu_principal(con):
         elif (opc == '6'):
             terminar_programa = True
         else:
-            print("\tOpcion no valida")
-            menu_principal(con)
-
+            print("\t\n¡Opcion no valida. Digite una opción nuevamente!")
 
 # La funcion 'main()' a continuacion es la encargada de ejecutar todo el programa
 def main():

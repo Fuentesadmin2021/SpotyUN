@@ -1,7 +1,7 @@
+#--- el modulo 'datetime' importado a continuación lo utilizamos como herramienta para obtener la fecha en la cual un cliente se registra 
+from datetime import datetime
 from manejadorbd import sql_conexion
 from validacion_datos import *
-from datetime import datetime
-
 
 # funcion que obtiene los datos de un cliente antes de registrarlo
 def cliente(con) -> tuple:
@@ -231,47 +231,47 @@ def borrar_cliente(con):
 
 # funcion que crea un menu para actualizar de manera individual los datos basicos de un cliente
 def actualizar_datos_cliente(con):
-    print('''
-                            ACTUALIZAR DATOS CLIENTE
-                        1. Nombre
-                        2. Apellido
-                        3. Celular
-                        4. Tarjeta de credito
-                        5. Pais
-                        6. Ciudad
-                        7. Correo
-                        8. Ir al menu anterior\n''')
+    salir_actualizar_datos = False
+    while not salir_actualizar_datos:
 
-    opc = input("\tDigite una opcion: ")
-    if (opc == '1'):
-        actualizar_nombre_cliente(con)
-        # salir = True
+        print('''
+                                ACTUALIZAR DATOS CLIENTE
+                            1. Nombre
+                            2. Apellido
+                            3. Celular
+                            4. Tarjeta de credito
+                            5. Pais
+                            6. Ciudad
+                            7. Correo
+                            8. Ir al menu anterior\n''')
 
-    elif (opc == '2'):
-        actualizar_apellido_cliente(con)
-        # salir = True
+        opc = input("\tDigite una opcion: ")
+        if (opc == '1'):
+            actualizar_nombre_cliente(con)
+            
+        elif (opc == '2'):
+            actualizar_apellido_cliente(con)
 
-    elif (opc == '3'):
-        actualizar_celular_cliente(con)
-        # salir = True
+        elif (opc == '3'):
+            actualizar_celular_cliente(con)
+        
+        elif (opc == '4'):
+            actualizar_tarjeta_credito_cliente(con)
+            
+        elif (opc == '5'):
+            actualizar_pais_cliente(con)
+            
+        elif (opc == '6'):
+            actualizar_ciudad_cliente(con)
 
-    elif (opc == '4'):
-        actualizar_tarjeta_credito_cliente(con)
-        # salir = True
+        elif (opc == '7'):
+            actualizar_correo_cliente(con)
 
-    elif (opc == '5'):
-        actualizar_pais_cliente(con)
-        # salir = True
-
-    elif (opc == '6'):
-        actualizar_ciudad_cliente(con)
-        # salir = True
-
-    elif (opc == '7'):
-        actualizar_correo_cliente(con)
-
-    elif (opc == '8'):
-        pass
+        elif (opc == '8'):
+            salir_actualizar_datos = True
+        
+        else:
+            print("\t\n¡Opcion no valida. Digite una opción nuevamente!")
 
 
 """----------------------------- Pruebas -----------------------------"""

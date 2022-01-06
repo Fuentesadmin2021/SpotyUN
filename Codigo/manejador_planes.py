@@ -12,11 +12,14 @@ def plan() -> tuple:
 
 # Función para registrar los planes en la tabla planes
 def registrar_plan(con):
-    insercion = plan()
-    cursor_obj=con.cursor()
-    cursor_obj.execute('''INSERT INTO planes VALUES(?,?,?,?)''', insercion)
-    print('¡El plan se ha registrado exitosamente!')
-    con.commit()
+    try:
+        insercion = plan()
+        cursor_obj=con.cursor()
+        cursor_obj.execute('''INSERT INTO planes VALUES(?,?,?,?)''', insercion)
+        print('¡El plan se ha registrado exitosamente!')
+        con.commit()
+    except:
+        print('\t\n¡ERROR! Ya existe un plan con el \'Id plan\' ingresado. Si desea realizar el registro ingrese nuevamente la información.')
 
 # Función que permite modificar el nombre de un plan
 def actualizar_nombre_plan(con):
@@ -51,8 +54,7 @@ def actualizar_cantidad_canciones_plan(con):
     print("!La información se ha modificado exitosamente¡")
     con.commit()
    
-# Función que realiza la consulta de todos los planes en la tabla planes
-# y los muestra al usuario
+# Función que realiza la consulta de todos los planes en la tabla planes y los muestra al usuario
 def consulta_tabla_planes(con):
     cursor_obj = con.cursor()
     cursor_obj.execute('SELECT * FROM  planes')
@@ -127,16 +129,21 @@ def actualizar_datos_plan(con):
             
         elif(opc == '4'):
             salir_actualizar = True
+        
+        else:
+            print("\t\n¡Opcion no valida. Digite una opción nuevamente!")
+        
+
 
                 
 """----------------------------- Pruebas -----------------------------"""
 
 
-#mi_conexion = sql_conexion()
+# mi_conexion = sql_conexion()
 # menu_planes(mi_conexion)
 # registrar_plan(mi_conexion)
 # actualizar_nombre_plan(mi_conexion)
 # actualizar_valor_plan(mi_conexion)
 # actualizar_cantidad_canciones_plan(mi_conexion)
-#consulta_tabla_planes(mi_conexion)
+# consulta_tabla_planes(mi_conexion)
 # consulta_individual_plan(mi_conexion)

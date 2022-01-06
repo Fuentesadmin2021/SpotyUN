@@ -1,6 +1,8 @@
+#--------------- El conjunto de modulos importadados a continuación es utilizado como herramienta para el envio de correos---------------
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+#----------------------------------------------------------------------------------------------------------------------------------------
 from manejador_clientes import consulta_correo_cliente, verificacion_cliente
 from manejador_canciones import reproducir_cancion
 from manejadorbd import sql_conexion
@@ -98,8 +100,8 @@ def enviar_mensaje(con, id_c: int):
     servidor = smtplib.SMTP('smtp.gmail.com', 587)
     servidor.starttls()
     correo = consulta_correo_cliente(con, id_c)
-    servidor.login('ovillalbaunal@gmail.com', 'la cambio despues del parcial')
-    servidor.sendmail('ovillalbaunal@gmail.com', correo, texto)
+    servidor.login('conectandotropadelta@gmail.com', 'conectandodelta')
+    servidor.sendmail('conectandotropadelta@gmail.com', correo, texto)
     servidor.quit()
     print("Envio exitoso")
 
@@ -159,6 +161,10 @@ def menu_lista(con, id: int):
 
         elif opc == "7":
             state = False
+
+        else:
+            print("\t\n¡Opcion no valida. Digite una opción nuevamente!")
+
 
 
 """----------------------------- Pruebas -----------------------------"""

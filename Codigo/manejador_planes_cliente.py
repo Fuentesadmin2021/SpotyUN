@@ -84,8 +84,11 @@ def menu_planes_cliente(con, id):
 
         elif opc == "4":
             state = False
+        
+        else:
+            print("\t\n¡Opcion no valida. Digite una opción nuevamente!")
             
 
-# print(plan_desde_cliente(info_cliente))
+
 
 
