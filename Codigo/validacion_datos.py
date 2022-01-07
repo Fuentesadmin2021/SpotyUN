@@ -93,7 +93,7 @@ def validacion_decimal(dato: str, longitud: int) -> float:
 def validacion_longitud(dato: str, longitud: int) -> str:
     while not _validar_len(dato, longitud):
         dato = input('''¡ERROR! Verifique e ingrese de nuevo la información: ''')
-    return dato.upper()
+    return dato
 
 
 # Función para la autenticación de un usuario dentro de la plataforma

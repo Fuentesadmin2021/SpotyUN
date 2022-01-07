@@ -25,7 +25,7 @@ def menu_canciones(con):
                     4. Actualizar datos de una canción
                     5. Ir al menu anterior\n''')
 
-        opc = input("\tDigite una opcion: ")
+        opc = input("\tDigite una opcion: ").strip()
         if (opc == '1'):
             registrar_cancion(con)
 

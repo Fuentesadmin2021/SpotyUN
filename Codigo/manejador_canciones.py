@@ -1,6 +1,7 @@
 # El paquete mixer del modulo pygame importado a continuación es utilizado como herramienta para la reproducción de las canciones.
 from pygame import mixer
-from validacion_datos import validacion_letra
+from manejadorbd import *
+from validacion_datos import *
 
 # Esta funcion se encarga de solicitar la informacion de una cancion para su registro
 def cancion() -> tuple:
@@ -25,12 +26,32 @@ def cancion() -> tuple:
 # Funcion que se encarga de registrar la informacion y audio de una canción en la base de datos
 def registrar_cancion(con):
     cursor_obj = con.cursor()
-    insercion = cancion()
-    cursor_obj.execute('''INSERT INTO canciones VALUES(NULL, ?, ?, ?, ?, NULL, ?)''', insercion)
+    tupla = cancion()
+    cursor_obj.execute('''INSERT INTO canciones VALUES(NULL, ?, ?, ?, ?, NULL, ?)''', tupla)
     con.commit()
 
+def actualizar_cancion(con):
+    cursor_obj = con.cursor()
+    id = input('Ingrese el id de la canción a la que quiere modificar: ')
+    state = False
+    while not state:
+        try:
+            nombre_cancion = input('Nombre de la canción tal cual esta almacenada en su equipo: ')
+            cancion = registrar_cancion_bd(nombre_cancion)
+            state = True
+        except:
+            print(
+                '\n¡Error en los datos de la canción en el equipo\n por favor verifique e ingrese de nuevo la información!\n ')
+
+    actualizar = f'UPDATE canciones SET cancion = ? WHERE id_cancion = ?'
+    info_cancion = (cancion, id)
+    cursor_obj.execute(actualizar, info_cancion)
+    con.commit()
+    print("!El nombre de la cancion se ha modificado exitosamente¡")
+
+
 # Función que permite modificar el 'nombre' de una canción que este almacenada en la base de datos
-def actualizar_nombre_cancion(con):
+"""def actualizar_nombre_cancion(con):
     cursor_obj = con.cursor()
     id = int(input('Ingrese el id de la canción a la que quiere modificarle el nombre: '))
     nombre = input('Ingrese el nombre de la canción: ')
@@ -38,11 +59,11 @@ def actualizar_nombre_cancion(con):
     id_actualizar = actualizar + str(id)
     cursor_obj.execute(id_actualizar)
     con.commit()
-    print("!El nombre de la cancion se ha modificado exitosamente¡")
+    print("!El nombre de la cancion se ha modificado exitosamente¡")"""
 
 
 # Función para actualizar o modificar el 'genero' de una canción que este almacenada en la base de datos
-def actualizar_genero_cancion(con):
+"""def actualizar_genero_cancion(con):
     cursor_obj = con.cursor()
     id = int(input('Ingrese el id de la cancion a la que quiere modificarle el genero: '))
     genero = input('Ingrese el genero de la cancion: ')
@@ -50,11 +71,11 @@ def actualizar_genero_cancion(con):
     id_actualizar = actualizar + str(id)
     cursor_obj.execute(id_actualizar)
     con.commit()
-    print("!El genero de la cancion se ha modificado exitosamente¡")
+    print("!El genero de la cancion se ha modificado exitosamente¡")"""
 
     
 # Función para actualizar o modificar el 'album' de una canción que este almacenada en la base de datos
-def actualizar_album_cancion(con):
+"""def actualizar_album_cancion(con):
     cursor_obj = con.cursor()
     id = int(input('Ingrese el id de la canción a la que quiere modificarle el nombre de su album: '))
     album = input('Ingrese el nombre del album de la canción: ')
@@ -62,11 +83,11 @@ def actualizar_album_cancion(con):
     id_actualizar = actualizar + str(id)
     cursor_obj.execute(id_actualizar)
     con.commit()
-    print("!El nombre del album de la cancion se ha modificado exitosamente¡")
+    print("!El nombre del album de la cancion se ha modificado exitosamente¡")"""
 
     
 # Función para actualizar o modificar el 'interprete(s)' de una canción que este almacenada en la base de datos
-def actualizar_interprete_cancion(con):
+"""def actualizar_interprete_cancion(con):
     cursor_obj = con.cursor()
     id = int(input('Ingrese el id de la canción a la que quiere modificarle el interprete: '))
     interprete = input('Ingrese el nombre del interprete(s) de la canción: ')
@@ -74,20 +95,11 @@ def actualizar_interprete_cancion(con):
     id_actualizar = actualizar + str(id)
     cursor_obj.execute(id_actualizar)
     con.commit()
-    print("!El nombre del interprete de la canción se ha modificado exitosamente¡")
+    print("!El nombre del interprete de la canción se ha modificado exitosamente¡")"""
     
 
 
 # Función para realizar una consulta de todas las canciones registradas en la base de datos
-def consulta_tabla_canciones(con):
-    cursor_obj = con.cursor()
-    cursor_obj.execute('SELECT id_cancion, nombre_cancion, genero, album, interprete  FROM canciones')
-    cantidad_canciones = cursor_obj.fetchall()
-    orden_salida = orden_consulta(cantidad_canciones)
-    print ("\n{:<12} {:<30} {:<30} {:<30} {:<30}".format('ID', 'NOMBRE', 'GENERO', 'ALBUM', 'INTERPRETE(S)'))
-    for row in orden_salida:
-        id, nombre, genero, album, interprete = row
-        print ("{:<12} {:<30} {:<30} {:<30} {:<30}".format(id, nombre, genero, album, interprete))
 
 
 
@@ -136,7 +148,6 @@ def consulta_individual_cancion(con):
     for row in cancion:
         id, nombre, genero, album, interprete = row
         print ("{:<12} {:<30} {:<30} {:30} {:30}".format(id, nombre, genero, album, interprete))
-
 
 
 # Función para obtener la dirección de la canción que esta en la base de datos
@@ -216,6 +227,16 @@ def reproducir_cancion(con):
             pass
 
 
+def consulta_tabla_canciones(con):
+    cursor_obj = con.cursor()
+    cursor_obj.execute('SELECT id_cancion, nombre_cancion, genero, album, interprete  FROM canciones')
+    cantidad_canciones = cursor_obj.fetchall()
+    orden_salida = orden_consulta(cantidad_canciones)
+    print ("\n{:<12} {:<30} {:<30} {:<30} {:<30}".format('ID', 'NOMBRE', 'GENERO', 'ALBUM', 'INTERPRETE(S)'))
+    for row in orden_salida:
+        id, nombre, genero, album, interprete = row
+        print ("{:<12} {:<30} {:<30} {:<30} {:<30}".format(id, nombre, genero, album, interprete))
+
 # Función que crea un menú para actualizar de manera individual los datos básicos de una canción
 def actualizar_datos_cancion(con):
     salir_actualizar = False
@@ -227,32 +248,28 @@ def actualizar_datos_cancion(con):
                         2. Album
                         3. Genero
                         4. Interprete
-                        5. Ir al menu anterior\n''')
+                        5. Canción
+                        6. Ir al menu anterior\n''')
 
-        opc = input("\tDigite una opcion: ")
+        opc = input("\tDigite una opcion: ").strip()
         if (opc == '1'):
-            actualizar_nombre_cancion(con)
+            actualizar_info_tablas(con, nombre_tabla='canciones', nombre_columna='nombre_cancion', primary_key='id_cancion', info='el nombre de la canción', longitud=100)
         
         elif(opc == '2'):
-            actualizar_album_cancion(con)
+            actualizar_info_tablas(con, nombre_tabla='canciones', nombre_columna='album', primary_key='id_cancion', info='el album de la canción', longitud=100)
 
         elif(opc == '3'):
-            actualizar_genero_cancion(con)
+            actualizar_info_tablas(con, nombre_tabla='canciones', nombre_columna='genero', primary_key='id_cancion', info='el genero de la canción', longitud=30)
 
         elif(opc == '4'):
-            actualizar_interprete_cancion(con)
-  
-        elif(opc == '5'):
+            actualizar_info_tablas(con, nombre_tabla='canciones', nombre_columna='interprete', primary_key='id_cancion', info='el interprete de la canción', longitud=100)
+
+        elif (opc == '5'):
+            actualizar_cancion(con)
+
+        elif(opc == '6'):
             salir_actualizar = True
         
         else:
             print("\t\n¡Opcion no valida. Digite una opción nuevamente!")
-
-
-
-# Función que creara un directorio donde se almacenaran las canciones a reproducir
-def crear_directorio_repro() -> str:
-    import subprocess
-    ruta = subprocess.call(['mkdir', 'Canciones_reproducidas'], shell=True)
-    return ruta
 
