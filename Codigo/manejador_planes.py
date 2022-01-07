@@ -1,5 +1,6 @@
-from manejadorbd import sql_conexion
-from validacion_datos import validacion_numero
+from manejadorbd import *
+from validacion_datos import *
+
 
 
 def planes_disponibles(con):
@@ -10,60 +11,33 @@ def planes_disponibles(con):
     for row in cantidad_planes:
         id, nombre, valor, cantidad_canciones = row
         print("{:<5} {:<20} {:<20} {:<20} ".format(id, nombre, valor, cantidad_canciones))
-
-
 # Función que pide los datos de un plan antes de registrarlo
-def plan() -> tuple:
-    id_plan = int(validacion_numero(input("Id plan: "),1))
+
+
+
+def plan(con) -> tuple:
+    id = validacion_numero(input('Número de identificación: '), 1)
+    id_plan = validacion_existencia_todas(con, nombre_tabla='planes', nombre_columna='id_plan', primary_key='id_plan', id=id)
+    while id_plan == True:
+        print('\t\n¡ERROR! Ya existe un plan con el \'Id plan\' ingresado. Si desea realizar el registro ingrese nuevamente la información.')
+        id = validacion_numero(input('Número de identificación: '), 1)
+        id_plan = validacion_existencia_todas(con, nombre_tabla='planes', nombre_columna='id_plan', primary_key='id_plan', id=id)
     nombre_plan = input("Nombre: ")
     valor = int(validacion_numero(input("Valor plan: "),5))
     cant_canciones = int(validacion_numero(input("Cantidad de canciones: "),4))
     datos_plan = (id_plan, nombre_plan, valor, cant_canciones)
     return datos_plan
 
+#
+
 # Función para registrar los planes en la tabla planes
 def registrar_plan(con):
-    try:
-        insercion = plan()
-        cursor_obj=con.cursor()
-        cursor_obj.execute('''INSERT INTO planes VALUES(?,?,?,?)''', insercion)
-        print('¡El plan se ha registrado exitosamente!')
-        con.commit()
-    except:
-        print('\t\n¡ERROR! Ya existe un plan con el \'Id plan\' ingresado. Si desea realizar el registro ingrese nuevamente la información.')
-
-# Función que permite modificar el nombre de un plan
-def actualizar_nombre_plan(con):
+    tupla = plan(con)
     cursor_obj = con.cursor()
-    id = int(input('Ingrese el id del plan al que quiere modificarle el nombre: '))
-    nombre = input("Ingrese el nombre del plan: ")
-    actualizar = 'UPDATE planes SET nombre_plan = "'+nombre+'" WHERE id_plan = '
-    id_actualizar = actualizar + str(id)
-    cursor_obj.execute(id_actualizar)
-    print("!El nombre del plan se ha modificado exitosamente¡")
+    cursor_obj.execute('''INSERT INTO planes VALUES(?,?,?,?)''', tupla)
+    print('¡El plan se ha registrado exitosamente!')
     con.commit()
 
-# Función que permite modificar el valor de un plan
-def actualizar_valor_plan(con):
-    cursor_obj = con.cursor()
-    id = int(input('Ingrese el id del plan al que quiere modificarle el valor: '))
-    valor = input("Ingrese el valor del plan: ")
-    actualizar = 'UPDATE planes SET valor = "'+valor+'" WHERE id_plan = '
-    id_actualizar = actualizar + str(id)
-    cursor_obj.execute(id_actualizar)
-    print("!La información se ha modificado exitosamente¡")
-    con.commit()
-
-# Función que permite modificar la cantidad de canciones de un plan
-def actualizar_cantidad_canciones_plan(con):
-    cursor_obj = con.cursor()
-    id = int(input('Ingrese el id del plan al que quiere modificarle la cantidad de canciones: '))
-    cantidad = input("Ingrese la cantidad de canciones del plan: ")
-    actualizar = 'UPDATE planes SET cantidad_canciones = "'+cantidad+'" WHERE id_plan = '
-    id_actualizar = actualizar + str(id)
-    cursor_obj.execute(id_actualizar)
-    print("!La información se ha modificado exitosamente¡")
-    con.commit()
    
 # Función que realiza la consulta de todos los planes en la tabla planes y los muestra al usuario
 def consulta_tabla_planes(con):
@@ -130,13 +104,13 @@ def actualizar_datos_plan(con):
 
         opc = input("\tDigite una opcion: ")
         if (opc == '1'):
-            actualizar_nombre_plan(con)
+            actualizar_info_tablas(con, 'el nombre', nombre_columna='nombre_plan', nombre_tabla='planes', primary_key='id_plan', longitud=15)
             
         elif(opc == '2'):
-            actualizar_valor_plan(con)
+            actualizar_info_tablas(con, 'el valor', nombre_columna='valor', nombre_tabla='planes', primary_key='id_plan', longitud=5)
 
         elif(opc == '3'):
-            actualizar_cantidad_canciones_plan(con)
+            actualizar_info_tablas(con, 'la cantidad de canciones', nombre_columna='cantidad_canciones', nombre_tabla='planes', primary_key='id_plan', longitud=4)
             
         elif(opc == '4'):
             salir_actualizar = True
@@ -150,11 +124,3 @@ def actualizar_datos_plan(con):
 """----------------------------- Pruebas -----------------------------"""
 
 
-# mi_conexion = sql_conexion()
-# menu_planes(mi_conexion)
-# registrar_plan(mi_conexion)
-# actualizar_nombre_plan(mi_conexion)
-# actualizar_valor_plan(mi_conexion)
-# actualizar_cantidad_canciones_plan(mi_conexion)
-# consulta_tabla_planes(mi_conexion)
-# consulta_individual_plan(mi_conexion)

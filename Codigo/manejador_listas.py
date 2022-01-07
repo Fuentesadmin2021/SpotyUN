@@ -6,8 +6,10 @@ from email.mime.multipart import MIMEMultipart
 from manejador_clientes import consulta_correo_cliente, verificacion_cliente
 from manejador_canciones import reproducir_cancion
 from manejadorbd import sql_conexion
+from decorador import *
 
 # Función para realizar la consulta de datos de la canción como id_canción, nombre_canción, interprete, album
+@decorador_funcion
 def id_cancion_lista(con) -> list:
     canciones = input('\nIngrese el id de cancion que desea agregar a su lista: ')
     while canciones == '0':
@@ -21,7 +23,7 @@ def id_cancion_lista(con) -> list:
         interprete = row[4]
         album = row[3]
     lista_info_cancion = [id_cancion, nombre_cancion, interprete, album]
-    return lista_info_cancion
+    return type(lista_info_cancion)
 
 # Función para consultar la cantidad de canciones por plan de acuerdo al registro del cliente
 def plan_cliente(con, id: int) -> int:
@@ -134,6 +136,11 @@ def menu_lista(con, id: int):
                     print('Falta {} canciones para completar el plan'.format(
                         plan_cliente(con, id)[0] - cont_canciones))
                     cont_canciones += 1
+                    salir = input("\n¡¡Registro exitoso!!\n¿Desea agregar otra canción? y/n: ")
+                    if salir == 'y' or salir == 'Y':
+                        state_lista = False
+                    else:
+                        continue
                 except:
                     print('¡Canción no encontrada en la base de datos!')
         elif opc == "2":

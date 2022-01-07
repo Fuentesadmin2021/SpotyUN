@@ -30,7 +30,7 @@ def crear_tabla_planes(con):
     cursor_obj.execute("""CREATE TABLE IF NOT EXISTS planes(
                         id_plan INT(1) PRIMARY KEY UNIQUE,
                         nombre_plan TEXT(15) NOT NULL,
-                        valor SHORT(5) NOT NULL,
+                        valor INT(5) NOT NULL,
                         cantidad_canciones SHORT(4))""")
 
     con.commit()
@@ -91,12 +91,19 @@ def actualizar_info_tablas(con, info: str, nombre_columna: str, nombre_tabla: st
     con.commit()
     print(f"!Su {info} se ha actualizado exitosamente¡")
 
-# Función que elimina la información de la tabla canciones
+# Función que elimina la información de la tabla
 def eliminar_info_tablas(con, nombre_tabla: str):
     cursor_obj = con.cursor()
     cursor_obj.execute(f'DELETE from {nombre_tabla}')
     con.commit()
 
+def borrar_info(con, nombre_tabla: str):
+    cursor = con.cursor()
+    id = input("Id de la información a eliminar: ")
+    borrar = f'DELETE FROM {nombre_tabla} WHERE id_cliente = %s' % id
+    cursor.execute(borrar)
+    con.commit()
+    print("\nSu registro a sido eliminado :)")
 
 # Función para borrar tablas
 def borrar(con, nombre_tabla):

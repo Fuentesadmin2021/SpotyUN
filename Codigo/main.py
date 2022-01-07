@@ -107,7 +107,8 @@ def menu_planes(con):
                     2. Consulta imformación planes
                     3. Consulta individual de la información de un plan
                     4. Actualizar la información de un plan
-                    5. Ir al menu anterior\n''')
+                    5. Borrar un plan
+                    6. Ir al menu anterior\n''')
 
         opc = input("\tDigite una opcion: ").strip()
         if (opc == '1'):
@@ -123,6 +124,9 @@ def menu_planes(con):
             actualizar_datos_plan(con)
 
         elif (opc == '5'):
+            pass
+
+        elif (opc == '6'):
             salir_planes = True
 
         else:

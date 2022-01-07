@@ -11,7 +11,9 @@ def cliente(con) -> tuple:
     id_cliente = validacion_existencia_todas(con, nombre_tabla='clientes', nombre_columna='id_cliente', primary_key='id_cliente', id=id)
     while id_cliente == True:
         print('\n¡El número de identificación ya existe, por favor ingrese otro número de identificación!')
-        id_cliente = validacion_existencia(con, validacion_numero(input('Número de identificación: '), 12))
+        id = validacion_numero(input('Número de identificación: '), 12)
+        id_cliente = validacion_existencia_todas(con, nombre_tabla='clientes', nombre_columna='id_cliente', primary_key='id_cliente', id=id)
+
     nombre = validacion_letra(input('Nombre: '), 30)
     apellido = validacion_letra(input('Apellido: '), 30)
     pais = validacion_letra(input('Pais: '), 30)
@@ -124,93 +126,6 @@ def consulta_correo_cliente(con, id: int) -> str:
     return correo
 
 
-
-
-
-# funcion para modificar el nombre de un cliente
-"""def actualizar_nombre_cliente(con):
-    cursor_obj = con.cursor()
-    id = input('Ingrese su identificación para modificar el nombre: ')
-    nombre = input('Ingrese el nuevo nombre: ')
-    actualizar = 'UPDATE clientes SET nombre_cliente = "' + nombre + '" WHERE id_cliente = '
-    id_actualizar = actualizar + id
-    cursor_obj.execute(id_actualizar)
-    con.commit()
-    print("!Su nombre se ha actualizado exitosamente¡")"""
-
-
-# funcion para modificar el apellido de un cliente
-"""def actualizar_apellido_cliente(con):
-    cursor_obj = con.cursor()
-    id = input('Ingrese su identificación para modificar el apellido: ')
-    apellido = input('Ingrese el nuevo apellido: ')
-    actualizar = 'UPDATE clientes SET apellido = "' + apellido + '" WHERE id_cliente = '
-    id_actualizar = actualizar + id
-    cursor_obj.execute(id_actualizar)
-    con.commit()
-    print("!Su apellido se ha actualizado exitosamente¡")"""
-
-
-# funcion para modificar el numero de celular de un cliente
-"""def actualizar_celular_cliente(con):
-    cursor_obj = con.cursor()
-    id = input('Ingrese su identificación para modificar su numero celular: ')
-    celular = input('Ingrese su nuevo numero de celular: ')
-    actualizar = 'UPDATE clientes SET celular = "' + celular + '" WHERE id_cliente = '
-    id_actualizar = actualizar + id
-    cursor_obj.execute(id_actualizar)
-    con.commit()
-    print("!Su numero de celular se ha actualizado exitosamente¡")"""
-
-
-# funcion para modificar el correo de un cliente
-"""def actualizar_correo_cliente(con):
-    cursor_obj = con.cursor()
-    id = input('Ingrese su identificación para modificar su correo: ')
-    correo = input('Ingrese su nuevo correo: ')
-    actualizar = 'UPDATE clientes SET correo = "' + correo + '" WHERE id_cliente = '
-    id_actualizar = actualizar + id
-    cursor_obj.execute(id_actualizar)
-    con.commit()
-    print("!Su dirección de correo se ha actualizado exitosamente¡")"""
-
-
-# funcion para modificar el numero de tarjeta de credito de un cliente registrada inicialmente
-"""def actualizar_tarjeta_credito_cliente(con):
-    cursor_obj = con.cursor()
-    id = input('Ingrese su identificación para modificar su TC: ')
-    tc = input('Ingrese su nuevo numero de Tarjeta Credito: ')
-    actualizar = 'UPDATE clientes SET numero_tc = "' + tc + '" WHERE id_cliente = '
-    id_actualizar = actualizar + id
-    cursor_obj.execute(id_actualizar)
-    con.commit()
-    print("!Su numero de Tarjeta de Credito se ha actualizado exitosamente¡")"""
-
-
-# funcion para modificar el pais que registro el cliente inicialmente
-"""def actualizar_pais_cliente(con):
-    cursor_obj = con.cursor()
-    id = input('Ingrese su identificación para modificar el pais: ')
-    pais = input('Ingrese su pais: ')
-    actualizar = 'UPDATE clientes SET pais = "' + pais + '" WHERE id_cliente = '
-    id_actualizar = actualizar + id
-    cursor_obj.execute(id_actualizar)
-    con.commit()
-    print("!Su pais registrado se ha actualizado exitosamente¡")"""
-
-
-# funcion para modificar la ciudad que registro el cliente inicialmente
-"""def actualizar_ciudad_cliente(con):
-    cursor_obj = con.cursor()
-    id = input('Ingrese su identificación para modificar la ciudad: ')
-    ciudad = input('Ingrese su nueva ciudad: ')
-    actualizar = 'UPDATE clientes SET ciudad = "' + ciudad + '" WHERE id_cliente = '
-    id_actualizar = actualizar + id
-    cursor_obj.execute(id_actualizar)
-    con.commit()
-    print("!La cuidad registrada se ha actualizado exitosamente¡")"""
-
-
 # Función para verificar si un cliente esta registrado o no
 def verificacion_cliente(con) -> bool or int:
     id_cliente = input('Ingrese su identificacion: ')
@@ -224,13 +139,7 @@ def verificacion_cliente(con) -> bool or int:
         return int(id[0])
 
 # funcion que elimina el registro de un cliente en la base de datos
-def borrar_cliente(con):
-    cursor = con.cursor()
-    id = input("Identificación cliente: ")
-    borrar = "DELETE FROM clientes WHERE id_cliente = %s" % id
-    cursor.execute(borrar)
-    con.commit()
-    print("\nSu registro a sido eliminado :)")
+
 
 
 # funcion que crea un menu para actualizar de manera individual los datos basicos de un cliente
@@ -252,7 +161,7 @@ def actualizar_datos_cliente(con):
 
         opc = input("\tDigite una opcion: ").strip()
         if (opc == '1'):
-            actualizar_info_tablas(con, 'el nombre', nombre_columna='nombre_cliente', nombre_tabla='clientes', primary_key='id_cliente', longitud=30)
+            actualizar_info_tablas(con, 'el nombre', nombre_columna='nombre_cliente', nombre_tabla_='clientes', primary_key='id_cliente', longitud=30)
 
         elif (opc == '2'):
             actualizar_info_tablas(con, 'el apellido', nombre_columna='apellido', nombre_tabla='clientes', primary_key='id_cliente', longitud=30)
@@ -283,3 +192,20 @@ def actualizar_datos_cliente(con):
 
 
 """----------------------------- Pruebas -----------------------------"""
+
+def actualizar_info_tablas(con, info: str, nombre_columna: str, nombre_tabla: str, primary_key: str, longitud: int):
+    cursor_obj = con.cursor()
+    state = True
+    while state:
+        id = input('Ingrese el id: ').strip()
+        if id_v := validacion_existencia_todas(con, nombre_tabla, nombre_columna, primary_key, id) == True:
+            id = int(id)
+            state = False
+        else:
+            print('\nEl id ingresado no existe en la base de datos')
+    elemento = validacion_longitud(input(f'Ingrese el nuevo {info}: '), longitud)
+    actualizar = f'UPDATE {nombre_tabla} SET {nombre_columna} = ? WHERE {primary_key} = ?'
+    info_actualizar = (elemento, id)
+    cursor_obj.execute(actualizar, info_actualizar)
+    con.commit()
+    print(f"!Su {info} se ha actualizado exitosamente¡")

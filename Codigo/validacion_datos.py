@@ -46,7 +46,7 @@ def validacion_numero(dato: str, longitud: int) -> str:
     return dato
 
 def validacion_tc(dato: str, longitud: int) -> str:
-    while not dato.isnumeric() or not _validar_len(dato, longitud) or len(dato) != longitud:
+    while not dato.isnumeric() or not _validar_len(dato, longitud):
         dato = input('¡ERROR! Verifique e ingrese de nuevo la información: ')
     return dato
 

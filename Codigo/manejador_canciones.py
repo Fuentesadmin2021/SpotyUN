@@ -50,59 +50,6 @@ def actualizar_cancion(con):
     print("!El nombre de la cancion se ha modificado exitosamente¡")
 
 
-# Función que permite modificar el 'nombre' de una canción que este almacenada en la base de datos
-"""def actualizar_nombre_cancion(con):
-    cursor_obj = con.cursor()
-    id = int(input('Ingrese el id de la canción a la que quiere modificarle el nombre: '))
-    nombre = input('Ingrese el nombre de la canción: ')
-    actualizar = 'UPDATE canciones SET nombre_cancion = "'+nombre+'" WHERE id_cancion = '
-    id_actualizar = actualizar + str(id)
-    cursor_obj.execute(id_actualizar)
-    con.commit()
-    print("!El nombre de la cancion se ha modificado exitosamente¡")"""
-
-
-# Función para actualizar o modificar el 'genero' de una canción que este almacenada en la base de datos
-"""def actualizar_genero_cancion(con):
-    cursor_obj = con.cursor()
-    id = int(input('Ingrese el id de la cancion a la que quiere modificarle el genero: '))
-    genero = input('Ingrese el genero de la cancion: ')
-    actualizar = 'UPDATE canciones SET genero = "'+genero+'" WHERE id_cancion = '
-    id_actualizar = actualizar + str(id)
-    cursor_obj.execute(id_actualizar)
-    con.commit()
-    print("!El genero de la cancion se ha modificado exitosamente¡")"""
-
-    
-# Función para actualizar o modificar el 'album' de una canción que este almacenada en la base de datos
-"""def actualizar_album_cancion(con):
-    cursor_obj = con.cursor()
-    id = int(input('Ingrese el id de la canción a la que quiere modificarle el nombre de su album: '))
-    album = input('Ingrese el nombre del album de la canción: ')
-    actualizar = 'UPDATE canciones SET album = "'+album+'" WHERE id_cancion = '
-    id_actualizar = actualizar + str(id)
-    cursor_obj.execute(id_actualizar)
-    con.commit()
-    print("!El nombre del album de la cancion se ha modificado exitosamente¡")"""
-
-    
-# Función para actualizar o modificar el 'interprete(s)' de una canción que este almacenada en la base de datos
-"""def actualizar_interprete_cancion(con):
-    cursor_obj = con.cursor()
-    id = int(input('Ingrese el id de la canción a la que quiere modificarle el interprete: '))
-    interprete = input('Ingrese el nombre del interprete(s) de la canción: ')
-    actualizar = 'UPDATE canciones SET interprete = "'+interprete+'" WHERE id_cancion = '
-    id_actualizar = actualizar + str(id)
-    cursor_obj.execute(id_actualizar)
-    con.commit()
-    print("!El nombre del interprete de la canción se ha modificado exitosamente¡")"""
-    
-
-
-# Función para realizar una consulta de todas las canciones registradas en la base de datos
-
-
-
 # Función que ordena la consulta de la canciones segun el usuario lo desee
 def orden_consulta(lista: list) -> tuple:
     
