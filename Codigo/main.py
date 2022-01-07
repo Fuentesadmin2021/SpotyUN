@@ -87,7 +87,7 @@ def menu_clientes(con):
             print("""Cambiar el estado de suscripción del cliente, las palabras permitidas son:
                     1. Activo
                     2. Inactivo\n""")
-            actualizar_info_cliente(con, 'el estado de suscripción', nombre_columna='estado_pago', nombre_tabla='clientes', primary_key='id_cliente', longitud=15)
+            actualizar_info_tablas(con, 'el estado de suscripción', nombre_columna='estado_pago', nombre_tabla='clientes', primary_key='id_cliente', longitud=15)
             print('\t\n¡Estado de suscripción actualizado!')
 
         elif (opc == '6'):
