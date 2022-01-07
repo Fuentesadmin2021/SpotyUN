@@ -18,6 +18,26 @@ def _validacion_caracteres(dato: str) -> bool:
 
 
 
+# Nueva función para validar la existencia de un usuario en la  base de datos
+def validacion_existencia(con, id: str) -> bool or str:
+    cursor_obj = con.cursor()
+    cursor_obj.execute(f'SELECT id_cliente FROM clientes WHERE id_cliente = {id}')
+    id_bd = cursor_obj.fetchone()
+    if type(id_bd) == tuple:
+        return True
+    else:
+        return int(id)
+
+def validacion_existencia_todas(con, nombre_tabla: str, nombre_columna: str, primary_key:str, id: str) -> bool or str:
+
+    cursor_obj = con.cursor()
+    cursor_obj.execute(f'SELECT {nombre_columna} FROM {nombre_tabla} WHERE {primary_key} = {id}')
+    id_bd = cursor_obj.fetchone()
+    if type(id_bd) == tuple:
+        return True
+    else:
+        return int(id)
+
 # Función para validar una entrada numerica str y retornarla como str
 # es necesario convertir el número a int siempre y cuadno se requiera
 def validacion_numero(dato: str, longitud: int) -> str:
@@ -25,7 +45,10 @@ def validacion_numero(dato: str, longitud: int) -> str:
         dato = input('¡ERROR! Verifique e ingrese de nuevo la información: ')
     return dato
 
-
+def validacion_tc(dato: str, longitud: int) -> str:
+    while not dato.isnumeric() or not _validar_len(dato, longitud) or len(dato) != longitud:
+        dato = input('¡ERROR! Verifique e ingrese de nuevo la información: ')
+    return dato
 
 # Función para validar que una entrada sea unicamente alfabetica
 def validacion_letra(dato: str, longitud: int) -> str:
@@ -36,7 +59,7 @@ def validacion_letra(dato: str, longitud: int) -> str:
 
 # Función para validar que un número sea acorde a la longitud
 def validacion_telefono(dato: str, longitud: int) -> str or int:
-    while not (d := dato.isdigit()) or not _validar_len(dato, longitud):
+    while not (d := dato.isdigit()) or not _validar_len(dato, longitud) or dato[0] != '3':
         dato = input('''¡ERROR! Verifique e ingrese de nuevo la información: ''')
     return int(dato)
 
@@ -45,9 +68,7 @@ def validacion_correo(dato: str, longitud: int) -> str:
     state = True
     while state:
         try:
-            if (dato == 'N' or dato == 'n'):
-                raise ValueError
-            if _validacion_caracteres(dato):
+            if _validacion_caracteres(dato) or len(dato) < 10 or len(dato.split('@')) > 2:
                 raise ValueError
             else:
                 a = _validar_len(dato, longitud)

@@ -1,22 +1,29 @@
 #--- el modulo 'datetime' importado a continuación lo utilizamos como herramienta para obtener la fecha en la cual un cliente se registra 
 from datetime import datetime
-from manejadorbd import sql_conexion
+from manejadorbd import *
 from validacion_datos import *
+from decorador import *
+from manejador_planes import *
 
 # funcion que obtiene los datos de un cliente antes de registrarlo
 def cliente(con) -> tuple:
-    id_cliente = int(validacion_numero(input('Numero de identificacion: '), 12))
+    id = validacion_numero(input('Número de identificación: '), 12)
+    id_cliente = validacion_existencia_todas(con, nombre_tabla='clientes', nombre_columna='id_cliente', primary_key='id_cliente', id=id)
+    while id_cliente == True:
+        print('\n¡El número de identificación ya existe, por favor ingrese otro número de identificación!')
+        id_cliente = validacion_existencia(con, validacion_numero(input('Número de identificación: '), 12))
     nombre = validacion_letra(input('Nombre: '), 30)
     apellido = validacion_letra(input('Apellido: '), 30)
     pais = validacion_letra(input('Pais: '), 30)
     ciudad = validacion_letra(input('Ciudad: '), 30)
-    celular = validacion_numero(input('Celular: '), 15)
+    celular = validacion_telefono(input('Celular: '), 15)
     correo = validacion_correo(input('Correo electrónico: '), 35)
     fecha_pago = datetime.strftime(datetime.now(), '%Y-%m-%d')
-    numero_tc = validacion_numero(input('Ingrese el numero de su tarjeta de credito\n' +
+    numero_tc = validacion_tc(input('Ingrese el numero de su tarjeta de credito\n' +
                                                               'sin espacios ni caracteres especiales: '), 19)
     estado_pago = 'Activo'
     planes_disponibles(con)
+    print("")
     plan = int(input('Ingresa el ID del plan que desea contratar: '))
     datos_cliente = (
         id_cliente,
@@ -34,6 +41,7 @@ def cliente(con) -> tuple:
 
 
 # funcion que registra un cliente en la base de datos
+@decorador_funcion
 def registrar_cliente(con, tupla: tuple):
     cursor = con.cursor()
     datos_cliente = tupla
@@ -43,20 +51,13 @@ def registrar_cliente(con, tupla: tuple):
 
 
 # funcion que realiza una consulta rapida de los planes el la base de datos
-def planes_disponibles(con):
-    cursor_obj = con.cursor()
-    cursor_obj.execute('SELECT * FROM  planes')
-    cantidad_planes = cursor_obj.fetchall()
-    print("\n{:<5} {:<20} {:<20} {:<20} ".format('ID', 'NOMBRE_PLAN', 'VALOR', 'CANTIDAD CANCIONES'))
-    for row in cantidad_planes:
-        id, nombre, valor, cantidad_canciones = row
-        print("{:<5} {:<20} {:<20} {:<20} ".format(id, nombre, valor, cantidad_canciones))
+
 
 
 '''funcion que realiza una consulta de todos los
 clientes registradas en la base de datos'''
 
-
+@decorador_funcion
 def consulta_tabla_clientes(con):
     cursor_obj = con.cursor()
     cursor_obj.execute('SELECT id_cliente, nombre_cliente, apellido FROM  clientes')
@@ -93,10 +94,10 @@ def orden_consulta(lista: list) -> tuple:
 '''funcion que hace una consulta individual de un cliente 
 por medio del id_cliente registrado en la base de datos'''
 
-
+@decorador_funcion
 def consulta_individual_cliente(con):
     cursor_obj = con.cursor()
-    id = int(input('Ingrese su identificación: '))
+    id = int(input('Ingrese su identificación: ').strip())
     busqueda = 'SELECT * FROM clientes WHERE id_cliente = '
     id_busqueda = busqueda + str(id)
     cursor_obj.execute(id_busqueda)
@@ -123,8 +124,11 @@ def consulta_correo_cliente(con, id: int) -> str:
     return correo
 
 
+
+
+
 # funcion para modificar el nombre de un cliente
-def actualizar_nombre_cliente(con):
+"""def actualizar_nombre_cliente(con):
     cursor_obj = con.cursor()
     id = input('Ingrese su identificación para modificar el nombre: ')
     nombre = input('Ingrese el nuevo nombre: ')
@@ -132,11 +136,11 @@ def actualizar_nombre_cliente(con):
     id_actualizar = actualizar + id
     cursor_obj.execute(id_actualizar)
     con.commit()
-    print("!Su nombre se ha actualizado exitosamente¡")
+    print("!Su nombre se ha actualizado exitosamente¡")"""
 
 
 # funcion para modificar el apellido de un cliente
-def actualizar_apellido_cliente(con):
+"""def actualizar_apellido_cliente(con):
     cursor_obj = con.cursor()
     id = input('Ingrese su identificación para modificar el apellido: ')
     apellido = input('Ingrese el nuevo apellido: ')
@@ -144,11 +148,11 @@ def actualizar_apellido_cliente(con):
     id_actualizar = actualizar + id
     cursor_obj.execute(id_actualizar)
     con.commit()
-    print("!Su apellido se ha actualizado exitosamente¡")
+    print("!Su apellido se ha actualizado exitosamente¡")"""
 
 
 # funcion para modificar el numero de celular de un cliente
-def actualizar_celular_cliente(con):
+"""def actualizar_celular_cliente(con):
     cursor_obj = con.cursor()
     id = input('Ingrese su identificación para modificar su numero celular: ')
     celular = input('Ingrese su nuevo numero de celular: ')
@@ -156,11 +160,11 @@ def actualizar_celular_cliente(con):
     id_actualizar = actualizar + id
     cursor_obj.execute(id_actualizar)
     con.commit()
-    print("!Su numero de celular se ha actualizado exitosamente¡")
+    print("!Su numero de celular se ha actualizado exitosamente¡")"""
 
 
 # funcion para modificar el correo de un cliente
-def actualizar_correo_cliente(con):
+"""def actualizar_correo_cliente(con):
     cursor_obj = con.cursor()
     id = input('Ingrese su identificación para modificar su correo: ')
     correo = input('Ingrese su nuevo correo: ')
@@ -168,11 +172,11 @@ def actualizar_correo_cliente(con):
     id_actualizar = actualizar + id
     cursor_obj.execute(id_actualizar)
     con.commit()
-    print("!Su dirección de correo se ha actualizado exitosamente¡")
+    print("!Su dirección de correo se ha actualizado exitosamente¡")"""
 
 
 # funcion para modificar el numero de tarjeta de credito de un cliente registrada inicialmente
-def actualizar_tarjeta_credito_cliente(con):
+"""def actualizar_tarjeta_credito_cliente(con):
     cursor_obj = con.cursor()
     id = input('Ingrese su identificación para modificar su TC: ')
     tc = input('Ingrese su nuevo numero de Tarjeta Credito: ')
@@ -180,11 +184,11 @@ def actualizar_tarjeta_credito_cliente(con):
     id_actualizar = actualizar + id
     cursor_obj.execute(id_actualizar)
     con.commit()
-    print("!Su numero de Tarjeta de Credito se ha actualizado exitosamente¡")
+    print("!Su numero de Tarjeta de Credito se ha actualizado exitosamente¡")"""
 
 
 # funcion para modificar el pais que registro el cliente inicialmente
-def actualizar_pais_cliente(con):
+"""def actualizar_pais_cliente(con):
     cursor_obj = con.cursor()
     id = input('Ingrese su identificación para modificar el pais: ')
     pais = input('Ingrese su pais: ')
@@ -192,11 +196,11 @@ def actualizar_pais_cliente(con):
     id_actualizar = actualizar + id
     cursor_obj.execute(id_actualizar)
     con.commit()
-    print("!Su pais registrado se ha actualizado exitosamente¡")
+    print("!Su pais registrado se ha actualizado exitosamente¡")"""
 
 
 # funcion para modificar la ciudad que registro el cliente inicialmente
-def actualizar_ciudad_cliente(con):
+"""def actualizar_ciudad_cliente(con):
     cursor_obj = con.cursor()
     id = input('Ingrese su identificación para modificar la ciudad: ')
     ciudad = input('Ingrese su nueva ciudad: ')
@@ -204,11 +208,11 @@ def actualizar_ciudad_cliente(con):
     id_actualizar = actualizar + id
     cursor_obj.execute(id_actualizar)
     con.commit()
-    print("!La cuidad registrada se ha actualizado exitosamente¡")
+    print("!La cuidad registrada se ha actualizado exitosamente¡")"""
 
 
 # Función para verificar si un cliente esta registrado o no
-def verificacion_cliente(con) -> False or int:
+def verificacion_cliente(con) -> bool or int:
     id_cliente = input('Ingrese su identificacion: ')
     cursor_obj = con.cursor()
     cursor_obj.execute(f'SELECT id_cliente FROM clientes WHERE id_cliente = {id_cliente}')
@@ -239,35 +243,39 @@ def actualizar_datos_cliente(con):
                             1. Nombre
                             2. Apellido
                             3. Celular
-                            4. Tarjeta de credito
-                            5. Pais
+                            4. Tarjeta de crédito
+                            5. País
                             6. Ciudad
                             7. Correo
-                            8. Ir al menu anterior\n''')
+                            8. Estado de subcripción
+                            9. Ir al menu anterior\n''')
 
-        opc = input("\tDigite una opcion: ")
+        opc = input("\tDigite una opcion: ").strip()
         if (opc == '1'):
-            actualizar_nombre_cliente(con)
-            
+            actualizar_info_tablas(con, 'el nombre', nombre_columna='nombre_cliente', nombre_tabla='clientes', primary_key='id_cliente', longitud=30)
+
         elif (opc == '2'):
-            actualizar_apellido_cliente(con)
+            actualizar_info_tablas(con, 'el apellido', nombre_columna='apellido', nombre_tabla='clientes', primary_key='id_cliente', longitud=30)
 
         elif (opc == '3'):
-            actualizar_celular_cliente(con)
+            actualizar_info_tablas(con, 'el celular', nombre_columna='celular', nombre_tabla='clientes', primary_key='id_cliente', longitud=15)
         
         elif (opc == '4'):
-            actualizar_tarjeta_credito_cliente(con)
+            actualizar_info_tablas(con, 'la tarjeto de crédito', nombre_columna='numero_tc', nombre_tabla='clientes', primary_key='id_cliente', longitud=19)
             
         elif (opc == '5'):
-            actualizar_pais_cliente(con)
+            actualizar_info_tablas(con, 'el país', nombre_columna='pais', nombre_tabla='clientes', primary_key='id_cliente', longitud=30)
             
         elif (opc == '6'):
-            actualizar_ciudad_cliente(con)
+            actualizar_info_tablas(con, 'la ciudad', nombre_columna='ciudad', nombre_tabla='clientes', primary_key='id_cliente', longitud=30)
 
         elif (opc == '7'):
-            actualizar_correo_cliente(con)
+            actualizar_info_tablas(con, 'el correo', nombre_columna='correo', nombre_tabla='clientes', primary_key='id_cliente', longitud=35)
 
         elif (opc == '8'):
+            actualizar_info_tablas(con, 'el estado de suscripción', nombre_columna='estado_pago', nombre_tabla='clientes', primary_key='id_cliente', longitud=15)
+
+        elif (opc == '9'):
             salir_actualizar_datos = True
         
         else:

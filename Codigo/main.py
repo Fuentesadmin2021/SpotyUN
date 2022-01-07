@@ -8,9 +8,11 @@ from manejador_clientes import *
 from manejador_planes import *
 from manejador_planes_cliente import *
 from manejador_listas import *
+from decorador import *
 
 
 # Función que genera un menu con todas las posibles opciones de la seccion de canciones
+@decorador_menu
 def menu_canciones(con):
     salir_canciones = False
     while not salir_canciones:
@@ -44,6 +46,7 @@ def menu_canciones(con):
 
 
 # Función que genera un menu con todas las posibles opciones de la seccion de clientes
+@decorador_menu
 def menu_clientes(con):
     salir = False
     while not salir:
@@ -54,7 +57,7 @@ def menu_clientes(con):
                     2. Consulta individual cliente
                     3. Consulta general de clientes
                     4. Actualizar información de cliente
-                    5. Eliminar cliente
+                    5. Actualizar estado de suscripción del cliente
                     6. Ir al menu anterir\n''')
 
         opc = input("\tDigite una opcion: ")
@@ -81,7 +84,11 @@ def menu_clientes(con):
             actualizar_datos_cliente(con)
 
         elif (opc == '5'):
-            borrar_cliente(con)
+            print("""Cambiar el estado de suscripción del cliente, las palabras permitidas son:
+                    1. Activo
+                    2. Inactivo\n""")
+            actualizar_info_cliente(con, 'el estado de suscripción', nombre_columna='estado_pago', nombre_tabla='clientes', primary_key='id_cliente', longitud=15)
+            print('\t\n¡Estado de suscripción actualizado!')
 
         elif (opc == '6'):
             salir = True
@@ -89,6 +96,7 @@ def menu_clientes(con):
 
 
 # Función que genera un menu con todas las posibles opciones de la seccion de canciones
+@decorador_menu
 def menu_planes(con):
     salir_planes = False
     while not salir_planes:
@@ -101,7 +109,7 @@ def menu_planes(con):
                     4. Actualizar la información de un plan
                     5. Ir al menu anterior\n''')
 
-        opc = input("\tDigite una opcion: ")
+        opc = input("\tDigite una opcion: ").strip()
         if (opc == '1'):
             registrar_plan(con)
 
@@ -122,6 +130,7 @@ def menu_planes(con):
 
 
 # Función que genera un menú pricipal que permite gestionar todo el programa
+@decorador_menu
 def menu_principal(con):
     terminar_programa = False
     while not terminar_programa:
@@ -157,8 +166,10 @@ def menu_principal(con):
                 menu_clientes(con)
             else:
                 menu_lista(con, id)
+
         elif (opc == '6'):
             terminar_programa = True
+
         else:
             print("\t\n¡Opcion no valida. Digite una opción nuevamente!")
 

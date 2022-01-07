@@ -1,5 +1,6 @@
 import sqlite3
 from sqlite3 import Error
+from validacion_datos import *
 
 # Función para crear la bases de datos y la conexion con la base
 def sql_conexion():
@@ -47,7 +48,7 @@ def crear_tabla_clientes(con):
                         correo TEXT(35) NOT NULL,
                         fecha_pago TEXT(10) NOT NULL,
                         numero_tc TEXT(20) NOT NULL,
-                        estado_pago TEXT(10))""")
+                        estado_pago TEXT(15))""")
 
     con.commit()
 
@@ -72,11 +73,30 @@ def crear_tabla_planes_por_cliente(con):
 
     con.commit()
 
+
+def actualizar_info_tablas(con, info: str, nombre_columna: str, nombre_tabla: str, primary_key: str, longitud: int):
+    cursor_obj = con.cursor()
+    state = True
+    while state:
+        id = input('Ingrese su identificación: ').strip()
+        if id_v := validacion_existencia_todas(con, nombre_tabla, nombre_columna, primary_key, id) == True:
+            id = int(id)
+            state = False
+        else:
+            print('\nEl id ingresado no existe en la base de datos')
+    elemento = validacion_longitud(input(f'Ingrese el nuevo {info}: '), longitud)
+    actualizar = f'UPDATE {nombre_tabla} SET {nombre_columna} = ? WHERE {primary_key} = ?'
+    info_actualizar = (elemento, id)
+    cursor_obj.execute(actualizar, info_actualizar)
+    con.commit()
+    print(f"!Su {info} se ha actualizado exitosamente¡")
+
 # Función que elimina la información de la tabla canciones
 def eliminar_info_tablas(con, nombre_tabla: str):
     cursor_obj = con.cursor()
     cursor_obj.execute(f'DELETE from {nombre_tabla}')
     con.commit()
+
 
 # Función para borrar tablas
 def borrar(con, nombre_tabla):

@@ -1,6 +1,17 @@
 from manejadorbd import sql_conexion
 from validacion_datos import validacion_numero
 
+
+def planes_disponibles(con):
+    cursor_obj = con.cursor()
+    cursor_obj.execute('SELECT * FROM  planes')
+    cantidad_planes = cursor_obj.fetchall()
+    print("\n{:<5} {:<20} {:<20} {:<20} ".format('ID', 'NOMBRE_PLAN', 'VALOR', 'CANTIDAD CANCIONES'))
+    for row in cantidad_planes:
+        id, nombre, valor, cantidad_canciones = row
+        print("{:<5} {:<20} {:<20} {:<20} ".format(id, nombre, valor, cantidad_canciones))
+
+
 # Función que pide los datos de un plan antes de registrarlo
 def plan() -> tuple:
     id_plan = int(validacion_numero(input("Id plan: "),1))
