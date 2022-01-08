@@ -19,14 +19,7 @@ def _validacion_caracteres(dato: str) -> bool:
 
 
 # Nueva función para validar la existencia de un usuario en la  base de datos
-def validacion_existencia(con, id: str) -> bool or str:
-    cursor_obj = con.cursor()
-    cursor_obj.execute(f'SELECT id_cliente FROM clientes WHERE id_cliente = {id}')
-    id_bd = cursor_obj.fetchone()
-    if type(id_bd) == tuple:
-        return True
-    else:
-        return int(id)
+
 
 def validacion_existencia_todas(con, nombre_tabla: str, nombre_columna: str, primary_key:str, id: str) -> bool or str:
 
@@ -59,7 +52,7 @@ def validacion_letra(dato: str, longitud: int) -> str:
 
 # Función para validar que un número sea acorde a la longitud
 def validacion_telefono(dato: str, longitud: int) -> str or int:
-    while not (d := dato.isdigit()) or not _validar_len(dato, longitud) or dato[0] != '3':
+    while not (d := dato.isdigit()) or not _validar_len(dato, longitud) or dato[0] != '3' or len(dato) != 10:
         dato = input('''¡ERROR! Verifique e ingrese de nuevo la información: ''')
     return int(dato)
 
@@ -68,7 +61,7 @@ def validacion_correo(dato: str, longitud: int) -> str:
     state = True
     while state:
         try:
-            if _validacion_caracteres(dato) or len(dato) < 10 or len(dato.split('@')) > 2:
+            if _validacion_caracteres(dato) or len(dato.split('@')[0]) < 6 or len(dato.split('@')) > 2:
                 raise ValueError
             else:
                 a = _validar_len(dato, longitud)

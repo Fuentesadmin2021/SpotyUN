@@ -5,10 +5,10 @@ from validacion_datos import *
 
 # Esta funcion se encarga de solicitar la informacion de una cancion para su registro
 def cancion() -> tuple:
-    nombre = validacion_letra(input('Nombre: '), 100)
-    genero = validacion_letra(input('Genero: '), 30)
-    album = validacion_letra(input('Album: '), 100)
-    interprete = validacion_letra(input('Interprete(s): '), 100)
+    nombre = validacion_longitud(input('Nombre: '), 100)
+    genero = validacion_longitud(input('Genero: '), 30)
+    album = validacion_longitud(input('Album: '), 100)
+    interprete = validacion_longitud(input('Interprete(s): '), 100)
     # imagen = None
     state = False
     while not state:

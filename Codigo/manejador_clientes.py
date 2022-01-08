@@ -13,7 +13,8 @@ def cliente(con) -> tuple:
         print('\n¡El número de identificación ya existe, por favor ingrese otro número de identificación!')
         id = validacion_numero(input('Número de identificación: '), 12)
         id_cliente = validacion_existencia_todas(con, nombre_tabla='clientes', nombre_columna='id_cliente', primary_key='id_cliente', id=id)
-
+    else:
+        id_cliente = id
     nombre = validacion_letra(input('Nombre: '), 30)
     apellido = validacion_letra(input('Apellido: '), 30)
     pais = validacion_letra(input('Pais: '), 30)

@@ -60,6 +60,7 @@ def crear_tabla_listas(con):
                         nombre_cancion TEXT(100) NOT NULL,
                         interprete TEXT(100) NOT NULL,
                         album TEXT(100) NOT NULL,
+                        genero TEXT(30) NOT NULL,
                         id_cliente INTEGER(12))""")
 
     con.commit()
