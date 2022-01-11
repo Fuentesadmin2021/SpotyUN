@@ -134,14 +134,12 @@ def enviar_mensaje(con, id_c: int):
                 </tr>            
                 {info_tabla} 
               </table>
-              <br>Información de tuplan:<br>
-              <br><br>
+              <br>Información de tu plan:<br>
+              
               <br>  Canciones totales del plan: {canciones_plan}<br>
               <br>  Canciones totales en tu lista: {canciones_lista}<br>
-              <br><br>  
-              <br> Canciones disponibles: {canciones_disponibles}<br>
                 
-                
+              <br> Canciones disponibles de tu plan: {canciones_disponibles}<br>
               
             </p>
           </body>

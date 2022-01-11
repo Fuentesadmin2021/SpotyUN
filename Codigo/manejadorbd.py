@@ -45,7 +45,7 @@ def crear_tabla_clientes(con):
                         pais TEXT(30) NOT NULL,
                         ciudad TEXT(30) NOT NULL,
                         celular TEXT(15) NOT NULL,
-                        correo TEXT(35) NOT NULL,
+                        correo TEXT(40) NOT NULL,
                         fecha_pago TEXT(10) NOT NULL,
                         numero_tc TEXT(20) NOT NULL,
                         estado_pago TEXT(15))""")
@@ -79,18 +79,21 @@ def actualizar_info_tablas(con, info: str, nombre_columna: str, nombre_tabla: st
     cursor_obj = con.cursor()
     state = True
     while state:
-        id = input('Ingrese su identificación: ').strip()
-        if id_v := validacion_existencia_todas(con, nombre_tabla, nombre_columna, primary_key, id) == True:
-            id = int(id)
-            state = False
-        else:
-            print('\nEl id ingresado no existe en la base de datos')
+        try:
+            id = input('Ingrese el id: ').strip()
+            if id_v := validacion_existencia_todas(con, nombre_tabla, nombre_columna, primary_key, id) == False:
+                id = int(id)
+                state = False
+            else:
+                print('\nEl id ingresado no existe en la base de datos')
+        except:
+            print('El Id ingresado no es el correcto')
     elemento = validacion_longitud(input(f'Ingrese el nuevo {info}: '), longitud)
     actualizar = f'UPDATE {nombre_tabla} SET {nombre_columna} = ? WHERE {primary_key} = ?'
     info_actualizar = (elemento, id)
     cursor_obj.execute(actualizar, info_actualizar)
     con.commit()
-    print(f"!Su {info} se ha actualizado exitosamente¡")
+    print(f"!{info.title()} se ha actualizado exitosamente¡")
 
 # Función que elimina la información de la tabla
 def eliminar_info_tablas(con, nombre_tabla: str):

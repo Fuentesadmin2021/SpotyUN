@@ -18,12 +18,11 @@ def planes_disponibles(con):
 def plan(con) -> tuple:
     id = validacion_numero(input('Número de identificación del plan: '), 1)
     id_plan = validacion_existencia_todas(con, nombre_tabla='planes', nombre_columna='id_plan', primary_key='id_plan', id=id)
-    while id_plan == True:
+    while id_plan == False:
         print('\t\n¡ERROR! Ya existe un plan con el \'Id plan\' ingresado. Si desea realizar el registro ingrese nuevamente la información.')
         id = validacion_numero(input('Número de identificación del plan: '), 1)
         id_plan = validacion_existencia_todas(con, nombre_tabla='planes', nombre_columna='id_plan', primary_key='id_plan', id=id)
-    else:
-        id_plan = id
+
     nombre_plan = input("Nombre del plan: ")
     valor = int(validacion_numero(input("Valor plan: "),5))
     cant_canciones = int(validacion_numero(input("Cantidad de canciones del plan: "),4))
