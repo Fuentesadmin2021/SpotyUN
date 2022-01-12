@@ -84,7 +84,7 @@ def validacion_decimal(dato: str, longitud: int) -> float:
 
 # Función publica para validar solo la longitud de entrada
 def validacion_longitud(dato: str, longitud: int) -> str:
-    while not _validar_len(dato, longitud):
+    while not _validar_len(dato, longitud) or len(dato) == 0:
         dato = input('''¡ERROR! Verifique e ingrese de nuevo la información: ''')
     return dato
 

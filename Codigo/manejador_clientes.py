@@ -20,7 +20,7 @@ def cliente(con) -> tuple:
     pais = validacion_letra(input('Pais: '), 30)
     ciudad = validacion_letra(input('Ciudad: '), 30)
     celular = validacion_telefono(input('Celular: '), 15)
-    correo = validacion_correo(input('Correo electrónico: '), 35)
+    correo = validacion_correo(input('Correo electrónico: '), 45)
     fecha_pago = datetime.strftime(datetime.now(), '%Y-%m-%d')
     numero_tc = validacion_tc(input('Ingrese el numero de su tarjeta de credito\n' +
                                                               'sin espacios ni caracteres especiales: '), 19)

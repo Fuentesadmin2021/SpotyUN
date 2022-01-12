@@ -45,7 +45,7 @@ def crear_tabla_clientes(con):
                         pais TEXT(30) NOT NULL,
                         ciudad TEXT(30) NOT NULL,
                         celular TEXT(15) NOT NULL,
-                        correo TEXT(35) NOT NULL,
+                        correo TEXT(45) NOT NULL,
                         fecha_pago TEXT(10) NOT NULL,
                         numero_tc TEXT(20) NOT NULL,
                         estado_pago TEXT(15))""")

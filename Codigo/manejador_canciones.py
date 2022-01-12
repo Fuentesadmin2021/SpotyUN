@@ -2,6 +2,7 @@
 from pygame import mixer
 from manejadorbd import *
 from validacion_datos import *
+from decorador import *
 
 # Esta funcion se encarga de solicitar la informacion de una cancion para su registro
 def cancion() -> tuple:
@@ -29,6 +30,7 @@ def registrar_cancion(con):
     tupla = cancion()
     cursor_obj.execute('''INSERT INTO canciones VALUES(NULL, ?, ?, ?, ?, NULL, ?)''', tupla)
     con.commit()
+
 
 def actualizar_cancion(con):
     cursor_obj = con.cursor()

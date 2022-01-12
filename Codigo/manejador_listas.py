@@ -155,7 +155,7 @@ def enviar_mensaje(con, id_c: int):
     servidor.login('ovillalbaunal@gmail.com', 'la cambio despues del parcial')
     servidor.sendmail('ovillalbaunal@gmail.com', correo, texto)
     servidor.quit()
-    print("Envio exitoso")
+    print_line_success("Envio exitoso")
 
 
 
