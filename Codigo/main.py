@@ -12,12 +12,12 @@ from decorador import *
 
 
 # Función que genera un menu con todas las posibles opciones de la seccion de canciones
-@decorador_menu
+
 def menu_canciones(con):
     salir_canciones = False
     while not salir_canciones:
 
-        print('''
+        print_line_success('''
                         MENU SECCIÓN CANCIONES
                     1. Registrar una canción
                     2. Consultar canciones disponibles
@@ -46,12 +46,12 @@ def menu_canciones(con):
 
 
 # Función que genera un menu con todas las posibles opciones de la seccion de clientes
-@decorador_menu
+
 def menu_clientes(con):
     salir = False
     while not salir:
 
-        print('''
+        print_line_menu('''
                         MENU SECCIÓN CLIENTES
                     1. Registrarse
                     2. Consulta individual cliente
@@ -96,15 +96,15 @@ def menu_clientes(con):
 
 
 # Función que genera un menu con todas las posibles opciones de la seccion de canciones
-@decorador_menu
+
 def menu_planes(con):
     salir_planes = False
     while not salir_planes:
 
-        print('''
+        print_line_menu('''
                         MENU SECCIÓN PLANES
                     1. Registrar un plan
-                    2. Consulta imformación planes
+                    2. Consulta información planes
                     3. Consulta individual de la información de un plan
                     4. Actualizar la información de un plan
                     5. Borrar un plan
@@ -134,11 +134,11 @@ def menu_planes(con):
 
 
 # Función que genera un menú pricipal que permite gestionar todo el programa
-@decorador_menu
+
 def menu_principal(con):
     terminar_programa = False
     while not terminar_programa:
-        print('''
+        print_line_menu('''
                         MENU PRINCIPAL
                     1. Sección planes
                     2. Sección canciones

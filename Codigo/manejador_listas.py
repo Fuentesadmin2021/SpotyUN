@@ -3,7 +3,7 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 #----------------------------------------------------------------------------------------------------------------------------------------
-from manejador_clientes import consulta_correo_cliente, verificacion_cliente
+from manejador_clientes import consulta_correo_cliente
 from manejador_canciones import reproducir_cancion
 from manejadorbd import *
 from decorador import *
@@ -134,14 +134,12 @@ def enviar_mensaje(con, id_c: int):
                 </tr>            
                 {info_tabla} 
               </table>
-              <br>Información de tuplan:<br>
-              <br><br>
+              <br>Información de tu plan:<br>
+              
               <br>  Canciones totales del plan: {canciones_plan}<br>
               <br>  Canciones totales en tu lista: {canciones_lista}<br>
-              <br><br>  
-              <br> Canciones disponibles: {canciones_disponibles}<br>
                 
-                
+              <br> Canciones disponibles de tu plan: {canciones_disponibles}<br>
               
             </p>
           </body>
@@ -200,7 +198,6 @@ def menu_lista(con, id: int):
                     else:
                         consulta_tabla_canciones_lista(con)
                         lista_info = info_lista(con, id)
-                        print(lista_info)
                         registrar_lista_cliente(con, lista_info)
                         """for id_cancion in consulta_tabla_listas_id(con, id):
                             if lista_info[0] == id_cancion[0]:
@@ -255,8 +252,13 @@ def menu_lista(con, id: int):
                 print_line_error('¡No tienes canciones en tu lista de reproducción!\nCrea una lista para poder reproducir canciones')
             else:
                 consulta_tabla_listas(con, id)
+                id_cancion = int(input('Digite el id de la canción que desea reproducir: '))
+                id_validacion = validacion_existencia_todas(con, 'listas', 'id_cancion', 'id_cancion', id_cancion)
+                while id_validacion != False:
+                    id_cancion = int(input('Digite el id de la canción que desea reproducir: '))
+                    id_validacion = validacion_existencia_todas(con, 'listas', 'id_cancion', 'id_cancion', id_cancion)
                 print('\n')
-                reproducir_cancion(con)
+                reproducir_cancion(con, id_cancion)
         elif opc == "7":
             state = False
 

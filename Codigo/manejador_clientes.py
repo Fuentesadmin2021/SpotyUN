@@ -9,12 +9,11 @@ from manejador_planes import *
 def cliente(con) -> tuple:
     id = validacion_numero(input('Número de identificación: '), 12)
     id_cliente = validacion_existencia_todas(con, nombre_tabla='clientes', nombre_columna='id_cliente', primary_key='id_cliente', id=id)
-    while id_cliente == True:
+    while id_cliente == False:
         print('\n¡El número de identificación ya existe, por favor ingrese otro número de identificación!')
         id = validacion_numero(input('Número de identificación: '), 12)
         id_cliente = validacion_existencia_todas(con, nombre_tabla='clientes', nombre_columna='id_cliente', primary_key='id_cliente', id=id)
-    else:
-        id_cliente = id
+
     nombre = validacion_letra(input('Nombre: '), 30)
     apellido = validacion_letra(input('Apellido: '), 30)
     pais = validacion_letra(input('Pais: '), 30)
@@ -174,7 +173,7 @@ def actualizar_datos_cliente(con):
             actualizar_info_tablas(con, 'la tarjeto de crédito', nombre_columna='numero_tc', nombre_tabla='clientes', primary_key='id_cliente', longitud=19)
             
         elif (opc == '5'):
-            actualizar_info_tablas(con, 'el país', nombre_columna='pais', nombre_tabla='clientes', primary_key='id_cliente', longitud=30)
+            actualizar_info_tablas(con, 'el país', nombre_columna='pais', nombre_tabla='clientes', primary_key='id_cliente', longitud=30, )
             
         elif (opc == '6'):
             actualizar_info_tablas(con, 'la ciudad', nombre_columna='ciudad', nombre_tabla='clientes', primary_key='id_cliente', longitud=30)
@@ -199,7 +198,7 @@ def actualizar_info_tablas(con, info: str, nombre_columna: str, nombre_tabla: st
     state = True
     while state:
         id = input('Ingrese el id: ').strip()
-        if id_v := validacion_existencia_todas(con, nombre_tabla, nombre_columna, primary_key, id) == True:
+        if id_v := validacion_existencia_todas(con, nombre_tabla, nombre_columna, primary_key, id) == False:
             id = int(id)
             state = False
         else:
@@ -210,3 +209,6 @@ def actualizar_info_tablas(con, info: str, nombre_columna: str, nombre_tabla: st
     cursor_obj.execute(actualizar, info_actualizar)
     con.commit()
     print(f"!Su {info} se ha actualizado exitosamente¡")
+
+
+#print(len('davidfernandosalinascuadros@gmail.com'))

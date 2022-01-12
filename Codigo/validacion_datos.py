@@ -1,5 +1,6 @@
 import random
 
+
 "Clases privadas"
 
 # Función para validar la longitud de un cadena retorna un booleano
@@ -27,7 +28,7 @@ def validacion_existencia_todas(con, nombre_tabla: str, nombre_columna: str, pri
     cursor_obj.execute(f'SELECT {nombre_columna} FROM {nombre_tabla} WHERE {primary_key} = {id}')
     id_bd = cursor_obj.fetchone()
     if type(id_bd) == tuple:
-        return True
+        return False
     else:
         return int(id)
 

@@ -2,7 +2,6 @@
 from pygame import mixer
 from manejadorbd import *
 from validacion_datos import *
-from decorador import *
 
 # Esta funcion se encarga de solicitar la informacion de una cancion para su registro
 def cancion() -> tuple:
@@ -127,11 +126,10 @@ def guardar_cancion(data: bin, filename: str):
 
 
 # Función que obtiene la canción de la base de datos
-def obtener_cancion_db(con) -> str:
+def obtener_cancion_db(con, id_cancion) -> str:
     cursor_obj = con.cursor()
     sql_blob_query = "SELECT nombre_cancion, cancion from canciones where id_cancion = ?"
-    id = input('Ingrese el id de la canción que desea reproducir: ')
-    cursor_obj.execute(sql_blob_query, (id,))
+    cursor_obj.execute(sql_blob_query, (id_cancion,))
     filas = cursor_obj.fetchall()
     for row in filas:
         name = row[0]
@@ -143,16 +141,16 @@ def obtener_cancion_db(con) -> str:
 
 
 # Función que permite reproducir la canción
-def reproducir_cancion_function(con):
+def reproducir_cancion_function(con, id_cancion):
     mixer.init()
-    cancion = obtener_cancion_db(con)
+    cancion = obtener_cancion_db(con, id_cancion)
     mixer.music.load(cancion)
     mixer.music.set_volume(0.7)
     mixer.music.play()
 
 
-def reproducir_cancion(con):
-    reproducir_cancion_function(con)
+def reproducir_cancion(con, id_cancion):
+    reproducir_cancion_function(con, id_cancion)
     reproducir = True
     while reproducir:
         try:
