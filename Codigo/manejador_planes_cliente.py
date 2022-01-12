@@ -1,9 +1,9 @@
+# Funciones importadas para lo modulos o procesos dentro del modulo manejador_planes_cliente.py
 from manejador_clientes import planes_disponibles
 from decorador import *
 
-info_cliente = (1016048190, 'oscar', 'vil', 'colom', 'bogota', 321546, 'o@.c', '2012-12-12', '321654987', 'Activo', 1)
 # Función que obtiene los datos para registrar un plan
-# información capturada cuando el cliente hace el registro por primera vez
+# Esta Información es capturada cuando el cliente hace el registro por primera vez
 def plan_desde_cliente(info_cliente: tuple) -> tuple:
     id_cliente = info_cliente[0]
     id_plan = info_cliente[-1]
@@ -73,7 +73,6 @@ def menu_planes_cliente(con, id_cliente: int):
         
         if opc == "1":
             consulta_individual_plan_cliente(con, id_cliente)
-
 
         elif opc == "2":
             consulta_planes_cliente(con, id_cliente)

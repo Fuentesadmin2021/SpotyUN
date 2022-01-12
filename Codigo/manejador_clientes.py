@@ -1,4 +1,9 @@
-#--- el modulo 'datetime' importado a continuación lo utilizamos como herramienta para obtener la fecha en la cual un cliente se registra 
+"""De la librería datetime se importa la clase datetime, la cuál nos permite registrar
+de manera automática la fecha y hora del registro del cliente en el metodo cliente"""
+"""Se importa los diferentes modulos para el manejo de modulos dentro de cliente"""
+"""Importamos el modulo validacion_datos para realizar las diferentes validaciones de los datos
+para la base de datos"""
+"""Se importa el modulo decorador para relizar lo diferentes decoradores de los metodos"""
 from datetime import datetime
 from manejador_planes import *
 from manejadorbd import *
@@ -6,7 +11,12 @@ from validacion_datos import *
 from decorador import *
 
 
-# funcion que obtiene los datos de un cliente antes de registrarlo
+# Función que obtiene los datos de un cliente antes de registrarlo retornando una tupla
+# De acuerdo al origen y necesidad de los datos vamos a realizar las diferentes validaciones
+# para el registro de los datos, se usan metodos del modulo validacion_datos como
+# validar_nombre, validar_apellido, validar_dni, validar_telefono, validar_email, validar_fecha
+# También se verfica la existencia en la tabla clientes y planes del id suministrado para evitar duplicados
+# o posibles errores de registro
 def cliente(con) -> tuple:
     id = validacion_numero(input('\nNúmero de identificación del cliente: '), 12)
     id_cliente = validacion_existencia_todas(con, nombre_tabla='clientes', nombre_columna='id_cliente', primary_key='id_cliente', id=id)
@@ -50,8 +60,7 @@ def cliente(con) -> tuple:
     return datos_cliente
 
 
-# funcion que registra un cliente en la base de datos
-
+# Función que registra un cliente en la tabla clientes
 def registrar_cliente(con, tupla: tuple):
     cursor = con.cursor()
     datos_cliente = tupla
@@ -60,14 +69,7 @@ def registrar_cliente(con, tupla: tuple):
     print_line_success("¡El registro se ha realizado exitosamente!")
 
 
-# funcion que realiza una consulta rapida de los planes el la base de datos
-
-
-
-'''funcion que realiza una consulta de todos los
-clientes registradas en la base de datos'''
-
-
+# Función que permite relizar la consulta de los clientes registrados en la tabla clientes
 def consulta_tabla_clientes(con):
     cursor_obj = con.cursor()
     cursor_obj.execute('SELECT id_cliente, nombre_cliente, apellido FROM  clientes')
@@ -79,7 +81,7 @@ def consulta_tabla_clientes(con):
         print("{:<20} {:<20} {:<20}".format(id, nombre, apellido))
 
 
-# función que ordena la consulta de distintas maneras
+# Función que ordena la consulta a demanda del usuario
 def orden_consulta(lista: list) -> tuple:
     print_line_menu('''
                         ¿EN QUE ORDEN DESEA OBTENER LA CONSULTA?
@@ -101,10 +103,7 @@ def orden_consulta(lista: list) -> tuple:
         return orden
 
 
-'''funcion que hace una consulta individual de un cliente 
-por medio del id_cliente registrado en la base de datos'''
-
-
+# Función que permite realizar la consulta individual de un cliente por medio de su id
 def consulta_individual_cliente(con):
     cursor_obj = con.cursor()
     id = int(input('\nIngrese su identificación: ').strip())
@@ -112,21 +111,20 @@ def consulta_individual_cliente(con):
     id_busqueda = busqueda + str(id)
     cursor_obj.execute(id_busqueda)
     datos_cliente = cursor_obj.fetchall()
-    print("\n{:<30} {:<30} {:<30} {:<30} {:<30} ".format('IDENTIFICACION',
-                                                         'NOMBRE', 'APELLIDO', 'PAIS', 'CIUDAD'))
+    print("\n{:<30} {:<30} {:<30} {:<30} {:<30} ".format('IDENTIFICACION', 'NOMBRE', 'APELLIDO', 'PAIS', 'CIUDAD'))
     for row in datos_cliente:
         id, nombre, apellido, pais, ciudad, celular, correo, fecha_pago, numero_tc, estado = row
         print("{:<30} {:<30} {:<30} {:<30} {:<30} ".format(id, nombre,
                                                            apellido, pais, ciudad))
 
-    print("\n{:<30} {:<30} {:<30} {:<30} {:<30} ".format('CELULAR', 'CORREO',
-                                                         'FECHA DE PAGO', 'NUMERO TC', 'ESTADO PAGO'))
+    print("\n{:<30} {:<30} {:<30} {:<30} {:<30} ".format('CELULAR', 'CORREO', 'FECHA DE PAGO', 'NUMERO TC', 'ESTADO PAGO'))
     for row in datos_cliente:
         id, nombre, apellido, pais, ciudad, celular, correo, fecha_pago, numero_tc, estado = row
         print("{:30} {:<30} {:<30} {:<30} {:<30} ".format(celular, correo,
                                                           fecha_pago, numero_tc, estado))
 
 
+# FUnción que permite relizar la consulta del correo del cliente de acuerdo a su id
 def consulta_correo_cliente(con, id_cliente: int) -> str:
     cursor_obj = con.cursor()
     cursor_obj.execute(f'SELECT correo FROM clientes WHERE id_cliente = {id_cliente}')
@@ -135,7 +133,7 @@ def consulta_correo_cliente(con, id_cliente: int) -> str:
 
 
 # Función para verificar si un cliente esta registrado o no
-
+# La cuál nos permite dar a paso a sección de la aplicación de acuerdo a la existencia del cliente
 def verificacion_cliente(con) -> bool or int:
     id_cliente = input('\nIngrese su identificación: ')
     cursor_obj = con.cursor()
@@ -148,11 +146,9 @@ def verificacion_cliente(con) -> bool or int:
         print_line_success('¡Validación de usuario exitosa!')
         return int(id[0])
 
-# funcion que elimina el registro de un cliente en la base de datos
 
-
-
-# funcion que crea un menu para actualizar de manera individual los datos basicos de un cliente
+# Función que crea un menu para actualizar de manera individual los datos básicos de un cliente
+# a través de su id y la función actualizar_info_tablas
 def actualizar_datos_cliente(con):
     salir_actualizar_datos = False
     while not salir_actualizar_datos:

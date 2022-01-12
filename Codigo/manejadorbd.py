@@ -1,3 +1,6 @@
+# Se importa la librería sqlite3 para el manejo de una base de datos a través de Python
+# De este módulo sqlite3 se importa el método Error que generará una excepción en caso de error
+# de la conexión con la base de datos
 import sqlite3
 from sqlite3 import Error
 from validacion_datos import *
@@ -12,6 +15,7 @@ def sql_conexion():
     except Error:
         print(Error)
 
+
 # Función para crear la tabla 'canciones' en la base de datos
 def crear_tabla_canciones(con):
     cursor_obj = con.cursor()
@@ -25,6 +29,7 @@ def crear_tabla_canciones(con):
                         cancion BLOB)""")
     con.commit()
 
+
 # Función para crear la tabla 'planes' en la base de datos
 def crear_tabla_planes(con):
     cursor_obj = con.cursor()
@@ -35,6 +40,7 @@ def crear_tabla_planes(con):
                         cantidad_canciones SHORT(4))""")
 
     con.commit()
+
 
 # Función para crear la tabla 'clientes' en la base de datos
 def crear_tabla_clientes(con):
@@ -53,6 +59,7 @@ def crear_tabla_clientes(con):
 
     con.commit()
 
+
 # Función para crear la tabla 'listas' en la base de datos
 def crear_tabla_listas(con):
     cursor_obj = con.cursor()
@@ -66,6 +73,7 @@ def crear_tabla_listas(con):
 
     con.commit()
 
+
 # Función para crear la tabla 'planes_cliente' en la base de datos
 def crear_tabla_planes_por_cliente(con):
     cursor_obj = con.cursor()
@@ -76,6 +84,8 @@ def crear_tabla_planes_por_cliente(con):
     con.commit()
 
 
+# Función para actualizar información de una tabla en la base de datos
+# Funciona para cualquier tabla dentro de la base de datos
 def actualizar_info_tablas(con, info: str, nombre_columna: str, nombre_tabla: str, primary_key: str, longitud: int):
     cursor_obj = con.cursor()
     state = True
@@ -96,12 +106,15 @@ def actualizar_info_tablas(con, info: str, nombre_columna: str, nombre_tabla: st
     con.commit()
     print_line_success(f"!{info.title()} se ha actualizado exitosamente¡")
 
-# Función que elimina la información de la tabla
+
+# Función que elimina toda la información de una tabla
 def eliminar_info_tablas(con, nombre_tabla: str):
     cursor_obj = con.cursor()
     cursor_obj.execute(f'DELETE from {nombre_tabla}')
     con.commit()
 
+
+# Función que borrar la información de una tabla de acuerdo al primary_key sumistrado
 def borrar_info(con, nombre_tabla: str, primary_key: str):
     cursor = con.cursor()
     id = input("\nId de la información a eliminar: ")
@@ -110,11 +123,13 @@ def borrar_info(con, nombre_tabla: str, primary_key: str):
     con.commit()
     print_line_success(f"Su registro a sido eliminado de la tabla {nombre_tabla} ;)")
 
-# Función para borrar tablas
+
+# Función para borrar cualquier tabla
 def borrar(con, nombre_tabla):
     cursorObj = con.cursor()
     cursorObj.execute(f'DROP TABLE {nombre_tabla}')
     con.commit()
+
 
 # Función para cerrar la base de datos
 def close(con):
@@ -122,9 +137,5 @@ def close(con):
 
 
 """----------------------------- Pruebas -----------------------------"""
-
-
-"""mi_conexion = sql_conexion()
-borrar_info(mi_conexion, 'planes', 'id_plan')"""
 
 

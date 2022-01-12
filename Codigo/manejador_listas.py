@@ -1,16 +1,19 @@
-#----------------------------------------------------------------------------------------------------------------------------------------
+# Funciones importados desde modulos propios para manejar el módulo manejador_listas
 from manejador_canciones import reproducir_cancion
 from manejadorbd import *
 from decorador import *
 from manejador_clientes import consulta_correo_cliente
-#--------------- El conjunto de modulos importadados a continuación es utilizado como herramienta para el envio de correos---------------
+# Funciones importadas para realizar el manejo y envió de los correos
+# Función smtlib usada para porder enviar un correo por medio del programa
+# De  email.mime.text se importa el método MIMEText para el manejo de texto dentro del correo
+# De email.mime.multipart se importa el método MIMEMultipart para el manejo de multiples partes dentro del correo
+# como asunto del correo, copias ocultas y demás datos de importancia para el correo
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
 
 # Función para realizar la consulta de datos de la canción como id_canción, nombre_canción, interprete, album
-
 def id_cancion_lista(con) -> list:
     canciones = input('\nIngrese el id de cancion que desea agregar a su lista: ')
     while canciones == '0':
@@ -27,6 +30,7 @@ def id_cancion_lista(con) -> list:
     lista_info_cancion = [id_cancion, nombre_cancion, interprete, album, genero]
     return lista_info_cancion
 
+
 # Función para consultar la cantidad de canciones por plan de acuerdo al registro del cliente
 def plan_cliente(con, id_cliente: int) -> int:
     cursor_obj = con.cursor()
@@ -36,6 +40,8 @@ def plan_cliente(con, id_cliente: int) -> int:
     cant_canciones = cursor_obj.fetchone()
     return cant_canciones
 
+
+# Función que reliza un conteo de los registros en la tabla listas de acuerdo al id_cliente suministrado
 def contar_lista(con, id_cliente: int) -> str or int:
     cursor_obj = con.cursor()
     cursor_obj.execute(f'SELECT COUNT(*) FROM listas WHERE id_cliente = {id_cliente}')
@@ -44,7 +50,8 @@ def contar_lista(con, id_cliente: int) -> str or int:
         return 0
     return cantidad_listas
 
-# Función para consultar las canciones existentes y mostrarlas en pantalla
+
+# Función para consultar las canciones existentes en la tabla canciones y mostrarlas en pantalla
 def consulta_tabla_canciones_lista(con):
     cursor_obj = con.cursor()
     cursor_obj.execute('SELECT id_cancion, nombre_cancion, genero, album, interprete  FROM canciones')
@@ -54,13 +61,15 @@ def consulta_tabla_canciones_lista(con):
         id, nombre, genero, album, interprete = row
         print("{:<12} {:<20} {:<20} {:<20} {:<20}".format(id, nombre, genero, album, interprete))
 
-# Función para agregar en un tupla la información correspondiente para la tabla listas
-# necestamos el id_cliente y la lista info_canciones
+
+# Función para agregar en una tupla la información correspondiente para la tabla listas
+# necesitamos el id_cliente y la lista info_canciones
 def info_lista(con, id_cliente: int) -> tuple:
     id_c = id_cliente
     info_canciones = id_cancion_lista(con)
     info_canciones.append(id_c)
     return info_canciones
+
 
 # Función para registrar la información en la tabla listas
 def registrar_lista_cliente(con, tupla: tuple):
@@ -70,8 +79,8 @@ def registrar_lista_cliente(con, tupla: tuple):
     print_line_success("¡¡El registro se ha realizado exitosamente!!")
 
 
-# Función para consultar la lista de canciones registradas por el cliente
-
+# Función para consultar la lista de canciones registradas en la tabla listas
+# de acuerdo al id suministrado por el cliente
 def consulta_tabla_listas(con, id_cliente: int):
     cursor_obj = con.cursor()
     cursor_obj.execute(f'SELECT id_cancion, nombre_cancion, interprete, album, genero FROM listas WHERE id_cliente = {id_cliente}')
@@ -82,15 +91,17 @@ def consulta_tabla_listas(con, id_cliente: int):
         print("{:<12} {:<30} {:<20} {:20} {:<20}".format(id, nombre, interprete, album, genero))
 
 
-
-# Función que borra una lista de la base de datos
+# Función que borra una lista de reproducción de la tabla listas de acuerdo al id_cliente suministrado
 def borrar_lista(con, id_cliente: int) -> str:
     cursor_obj = con.cursor()
     cursor_obj.execute(f'DELETE FROM listas WHERE id_cliente = {id_cliente}')
     con.commit()
     return 'Tu lista ha sido eliminada'
 
-def consulta_tabla_listas_id(con, id_cliente: int) -> bool:
+
+# Función que consulta la información ingresa por el cliente en la tabla listas, retorna una tupla
+# una tupla de listas con la información completa de la lista de reproducción
+def consulta_tabla_listas_id(con, id_cliente: int) -> bool or tuple:
     cursor_obj = con.cursor()
     cursor_obj.execute(f'SELECT id_cancion, nombre_cancion, interprete, album, genero FROM listas WHERE id_cliente = {id_cliente}')
     cantidad_canciones = cursor_obj.fetchall()
@@ -99,10 +110,9 @@ def consulta_tabla_listas_id(con, id_cliente: int) -> bool:
     else:
         return cantidad_canciones
 
-######
-
 
 # Función para realizar la consulta de la tabla listas para poder enviarla en el correo electrónico
+# Retorna un string con formato html para poderlo ingresar en la función enviar_correo
 def consulta_tabla_para_html(con, id_cliente: int) -> list:
     cursor_obj = con.cursor()
     cursor_obj.execute(f'SELECT id_cancion, nombre_cancion, interprete, album, genero FROM listas WHERE id_cliente = {id_cliente}')
@@ -159,8 +169,7 @@ def enviar_mensaje(con, id_cliente: int):
 
 
 
-# Función para realizar la gestión de la sección listas de reproducción
-
+# Función para realizar la actualizacíón de un registro completo de la tabla listas
 def actualizar_info_tabla_listas(con, tupla: tuple, id_cancion: int, id_cliente: int):
     cursor_obj = con.cursor()
     act_listas = (f"""UPDATE listas 
@@ -173,6 +182,8 @@ def actualizar_info_tabla_listas(con, tupla: tuple, id_cancion: int, id_cliente:
     cursor_obj.execute(act_listas, tupla)
     con.commit()
 
+
+# Función que despliega el menu de sección de listas de reproducción
 def menu_lista(con, id_cliente: int):
     state = True
     while state:
@@ -192,6 +203,9 @@ def menu_lista(con, id_cliente: int):
             state_lista = True
             while state_lista:
                 try:
+                    # Se realiza el conteo de las canciones totales contratadas por el cliente de acuerdo al plan
+                    # y se realizar el conteo de las canciones que ya estan en la lista de reproducción.
+                    # asi tener el total de canciones faltantes para completar el plan
                     total_canciones = plan_cliente(con, id_cliente)[0] - contar_lista(con, id_cliente)[0]
                     print('Falta {} canciones para completar el plan'.format(total_canciones))
                     if total_canciones == 0:

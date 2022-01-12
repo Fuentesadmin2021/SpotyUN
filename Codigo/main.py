@@ -1,8 +1,9 @@
-'''Acontinuación se importan todos los modulos con las funciones necesarias para que el programa funcione correctamente.
- El modulo "main.py" funcionara como panel principal del programa.
- Las librerias para cumplir con algunas funciones del programa estan importadas al inicio de cada modulo. Si es necesaria alguna'''
+"""A continuación se importan todos los modulos con las funciones necesarias
+para que el programa funcione correctamente. El modulo "main.py" funcionara como
+panel principal del programa. Las librerias para cumplir con algunas funciones
+del programa estan importadas al inicio de cada modulo. Si es necesaria alguna"""
 
-
+"""Funciones internas creadas para los diferentes manejos de procesos de diferentes modulos"""
 from manejador_canciones import *
 from manejador_clientes import *
 from manejador_planes import *
@@ -11,8 +12,7 @@ from manejador_listas import *
 from decorador import *
 
 
-# Función que genera un menu con todas las posibles opciones de la seccion de canciones
-
+# Función que genera un menu con todas las posibles opciones de la sección de canciones
 def menu_canciones(con):
     salir_canciones = False
     while not salir_canciones:
@@ -45,8 +45,7 @@ def menu_canciones(con):
              print_line_error("\t\n¡Opcion no valida. Digite una opción nuevamente!")
 
 
-# Función que genera un menu con todas las posibles opciones de la seccion de clientes
-
+# Función que genera un menu con todas las posibles opciones de la sección de clientes
 def menu_clientes(con):
     salir = False
     while not salir:
@@ -95,8 +94,7 @@ def menu_clientes(con):
           
 
 
-# Función que genera un menu con todas las posibles opciones de la seccion de canciones
-
+# Función que genera un menu con todas las posibles opciones de la sección de planes
 def menu_planes(con):
     salir_planes = False
     while not salir_planes:
@@ -133,8 +131,7 @@ def menu_planes(con):
             print_line_error("\t\n¡Opcion no valida. Digite una opción nuevamente!")
 
 
-# Función que genera un menú pricipal que permite gestionar todo el programa
-
+# Función que genera el menú pricipal que permite gestionar todo el programa
 def menu_principal(con):
     terminar_programa = False
     while not terminar_programa:
@@ -176,6 +173,7 @@ def menu_principal(con):
 
         else:
             print_line_error("\t¡Opcion no valida. Digite una opción nuevamente!")
+
 
 # La funcion 'main()' a continuacion es la encargada de ejecutar todo el programa
 def main():

@@ -1,12 +1,13 @@
-import random
+"""Clases privadas las cuales solo se van a poder
+usar dentro del módulo validacion_datos.py"""
 
 
-"Clases privadas"
 
-# Función para validar la longitud de un cadena retorna un booleano
+# Función para validar la longitud de un cadena retorna un booleano usando la funcion len()
 def _validar_len(dato: str, longitud: int) -> bool:
     while (x := len(dato)) <= longitud:
         return True
+
 
 # Función para validar si existe o no algún caracter especial en la cadena retorna un boolean
 def _validacion_caracteres(dato: str) -> bool:
@@ -18,10 +19,7 @@ def _validacion_caracteres(dato: str) -> bool:
         return False
 
 
-
-# Nueva función para validar la existencia de un usuario en la  base de datos
-
-
+# Nueva función para validar la existencia de un primary_key ingresado en la tabla de elección
 def validacion_existencia_todas(con, nombre_tabla: str, nombre_columna: str, primary_key:str, id: str) -> bool or str:
 
     cursor_obj = con.cursor()
@@ -32,32 +30,43 @@ def validacion_existencia_todas(con, nombre_tabla: str, nombre_columna: str, pri
     else:
         return int(id)
 
+
 # Función para validar una entrada numerica str y retornarla como str
-# es necesario convertir el número a int siempre y cuadno se requiera
+# es necesario convertir el número a int siempre y cuando se requiera
+# Se usa la función .isnumeric() para verificar que la entrada sea numerica
+# y el metodo _valida_len() para verificar que la longitud sea la correcta
 def validacion_numero(dato: str, longitud: int) -> str:
     while not dato.isnumeric() or not _validar_len(dato, longitud):
         dato = input('¡ERROR! Verifique e ingrese de nuevo la información: ')
     return dato
 
+
+# Función para validar que una entrada sea unicamente alfanumerica y que la longitud sea correcta
 def validacion_tc(dato: str, longitud: int) -> str:
     while not dato.isnumeric() or not _validar_len(dato, longitud):
         dato = input('¡ERROR! Verifique e ingrese de nuevo la información: ')
     return dato
 
+
 # Función para validar que una entrada sea unicamente alfabetica
+# Se usa la función .replace para remplazar los espacios en blanco por una cadena vacía
+# y .isalpha() para verificar que la entrada sea alfabetica
 def validacion_letra(dato: str, longitud: int) -> str:
     while not (d := dato.replace(' ', '').isalpha()) or not _validar_len(dato, longitud):
         dato = input('¡ERROR! Verifique e ingrese de nuevo la información: ')
     return dato.strip()
 
 
-# Función para validar que un número sea acorde a la longitud
+# Función para validar que un número sea acorde a la longitud tanto mínimo como máxima
+# Se usa la función .isdigit() para verificar que la entrada sea numerica
 def validacion_telefono(dato: str, longitud: int) -> str or int:
     while not (d := dato.isdigit()) or not _validar_len(dato, longitud) or dato[0] != '3' or len(dato) != 10:
         dato = input('''¡ERROR! Verifique e ingrese de nuevo la información: ''')
     return int(dato)
 
+
 # Función para validar la longitud y escritura acepta para un correo electrónico
+# Función que usa el método _validación_caracteres() para verificar que no existan caracteres especiales
 def validacion_correo(dato: str, longitud: int) -> str:
     state = True
     while state:
@@ -84,6 +93,7 @@ def validacion_decimal(dato: str, longitud: int) -> float:
 
 
 # Función publica para validar solo la longitud de entrada
+# Función con un límite de longitud para la entrada de datos
 def validacion_longitud(dato: str, longitud: int) -> str:
     while not _validar_len(dato, longitud) or len(dato) == 0:
         dato = input('''¡ERROR! Verifique e ingrese de nuevo la información: ''')
@@ -94,6 +104,10 @@ def validacion_longitud(dato: str, longitud: int) -> str:
 
 
 "----------------FUNCIONES SIN USAR DENTRO DEL CÓDIGO POR AHORA----------------"
+
+
+"""import random
+
 
 # Función para crear una contraseña aleatoria y opcional
 def randompass() -> str:
@@ -137,4 +151,4 @@ def validacion_contrasena(dato: str, longitud: int) -> str:
             print('¡ERROR! Ingrese de nuevo la contraseña')
             dato = input('Ingrese contraseña: ')
             dato2 = input('Ingrese nuevamente la contraseña: ')
-
+"""

@@ -1,10 +1,16 @@
-# El paquete mixer del modulo pygame importado a continuación es utilizado como herramienta para la reproducción de las canciones.
+"""El paquete mixer del modulo pygame importado a continuación es utilizado como
+herramienta para la reproducción de las canciones a traves del método mixer"""
+"""Importamos el paquete manejadorbd para relizar agunas operaciones en la base de datos"""
+"""Importamos el modulo validacion_datos para realizar las diferentes validaciones de los datos
+para la base de datos"""
 from pygame import mixer
 from manejadorbd import *
 from validacion_datos import *
 
 
-# Esta funcion se encarga de solicitar la informacion de una cancion para su registro
+# Esta función se encarga de solicitar la informacion de una canción para su registro
+# el método validacion_longitud nos sirve para verificar solo la longitud del dato ingresado
+# retorna uan tupla con todos los datos necesarios y validados
 def cancion() -> tuple:
     nombre = validacion_longitud(input('\nNombre: '), 100)
     genero = validacion_longitud(input('Genero: '), 30)
@@ -18,13 +24,13 @@ def cancion() -> tuple:
             cancion = registrar_cancion_bd(nombre_cancion)
             state = True
         except:
-            print('\n¡Error en los datos de la canción en el equipo\n por favor verifique e ingrese de nuevo la información!\n ')
+            print_line_error('\n¡Error en los datos de la canción en el equipo\n por favor verifique e ingrese de nuevo la información!\n ')
 
     datos_cancion = (nombre, genero, album, interprete, cancion)
     return datos_cancion
 
 
-# Funcion que se encarga de registrar la informacion y audio de una canción en la base de datos
+# Función que se encarga de registrar la información y audio de una canción en la tabla canciones
 def registrar_cancion(con):
     cursor_obj = con.cursor()
     tupla = cancion()
@@ -32,7 +38,7 @@ def registrar_cancion(con):
     con.commit()
     print_line_success("¡¡El registro se ha realizado exitosamente!!")
 
-
+# Función para relizar la actualización del archivo .mp3 binario dentro de la tabla canciones
 def actualizar_cancion(con):
     cursor_obj = con.cursor()
     id = input('\nIngrese el id de la canción a la que quiere modificar: ')
@@ -85,7 +91,7 @@ def orden_consulta(lista: list) -> tuple:
         return orden
 
 
-# Función para realizar la consulta individual de una canción por medio del id_canción registrado en al base de datos
+# Función para realizar la consulta individual de una canción por medio del id_canción registrado en la tabla canciones
 def consulta_individual_cancion(con):
     cursor_obj = con.cursor()
     id = int(input('\nIngrese el id de la canción: '))
@@ -100,7 +106,7 @@ def consulta_individual_cancion(con):
 
 
 # Función para obtener la dirección de la canción que esta en la base de datos
-def obtener_dir_cancion(con):
+def obtener_dir_cancion(con) -> str:
     cursor_obj = con.cursor()
     id = input('\nIngrese el id de la canción que desea escuchar: ')
     busqueda = f'SELECT cancion FROM canciones WHERE id_cancion = {id}'
@@ -148,6 +154,8 @@ def reproducir_cancion_function(con, id_cancion):
     mixer.music.set_volume(0.7)
     mixer.music.play()
 
+# Función que permite consultar la tabla de datos lista y verificar lñas entradas de la
+# misma de acuerdo a la id suministrado
 def consulta_tabla_listas(con, id_cliente: int):
     cursor_obj = con.cursor()
     cursor_obj.execute(f'SELECT id_cancion, nombre_cancion, interprete, album, genero FROM listas WHERE id_cliente = {id_cliente}')
@@ -157,6 +165,11 @@ def consulta_tabla_listas(con, id_cliente: int):
         id, nombre, interprete, album, genero = row
         print("{:<12} {:<30} {:<20} {:20} {:<20}".format(id, nombre, interprete, album, genero))
 
+# Función que permite manejar el estado de reproducción de una canción con sus diferentes estados
+# La canción se reroducirá a penas se realice el llama de la función reproducir_cancion_function
+# Uso de mixer.music.pause para pausar la canción
+# Uso de mixer.music.unpause para reanudar la canción
+# Uso de mixer.music.stop para detener la canción
 
 def reproducir_cancion(con, id_cancion: int, id_cliente: int):
     reproducir_cancion_function(con, id_cancion)
@@ -188,7 +201,8 @@ def reproducir_cancion(con, id_cancion: int, id_cliente: int):
         except:
             pass
 
-
+# Función que permite realizar una consulta de la tabla de datos canciones
+# para imprimirlas en pantalla
 def consulta_tabla_canciones(con):
     cursor_obj = con.cursor()
     cursor_obj.execute('SELECT id_cancion, nombre_cancion, genero, album, interprete  FROM canciones')
@@ -200,6 +214,7 @@ def consulta_tabla_canciones(con):
         print ("{:<12} {:<30} {:<30} {:<30} {:<30}".format(id, nombre, genero, album, interprete))
 
 # Función que crea un menú para actualizar de manera individual los datos básicos de una canción
+# a través de la función actualizar_info_tablas importada desde el modulo manejadorbd
 def actualizar_datos_cancion(con):
     salir_actualizar = False
     while not salir_actualizar:

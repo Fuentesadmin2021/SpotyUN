@@ -1,8 +1,9 @@
+# Importación de librerías para el manejo de procesos y datos
 from manejadorbd import *
 from validacion_datos import *
 from decorador import *
 
-
+# Función que realiza la consulta de los planes disponibles en la tabla planes
 def planes_disponibles(con):
     cursor_obj = con.cursor()
     cursor_obj.execute('SELECT * FROM  planes')
@@ -11,10 +12,9 @@ def planes_disponibles(con):
     for row in cantidad_planes:
         id, nombre, valor, cantidad_canciones = row
         print("{:<5} {:<20} {:<20} {:<20} ".format(id, nombre, valor, cantidad_canciones))
-# Función que pide los datos de un plan antes de registrarlo
 
 
-
+# Función que retorna una tupla con los datos validados para insertar en la tabla planes
 def plan(con) -> tuple:
     id = validacion_numero(input('\nNúmero de identificación del plan: '), 1)
     id_plan = validacion_existencia_todas(con, nombre_tabla='planes', nombre_columna='id_plan', primary_key='id_plan', id=id)
@@ -28,16 +28,15 @@ def plan(con) -> tuple:
     datos_plan = (id_plan, nombre_plan, valor, cant_canciones)
     return datos_plan
 
-#
 
 # Función para registrar los planes en la tabla planes
-
 def registrar_plan(con):
     tupla = plan(con)
     cursor_obj = con.cursor()
     cursor_obj.execute('''INSERT INTO planes VALUES(?,?,?,?)''', tupla)
-    print_line_success('¡El plan se ha registrado exitosamente!')
     con.commit()
+    print_line_success('¡El plan se ha registrado exitosamente!')
+
 
    
 # Función que realiza la consulta de todos los planes en la tabla planes y los muestra al usuario
@@ -52,7 +51,7 @@ def consulta_tabla_planes(con):
         print ("{:<5} {:<15} {:<10} {:<10} ".format(id, nombre, valor, cantidad_canciones))
 
 
-# Función que ordena la consulta de distintas maneras
+# Función que ordena la consulta a demanda del usuario
 def orden_consulta(lista: list) -> tuple:
     print_line_menu('''
                         ¿EN QUE ORDEN DESEA OBTENER LA CONSULTA?
@@ -79,7 +78,7 @@ def orden_consulta(lista: list) -> tuple:
         return orden  
 
 
-# Función que permite hacer una consulta individual de un cliente por medio de su identificacion registrada
+# Función que permite hacer una consulta individual de un cliente por medio de la identificacion registrada
 def consulta_individual_plan(con):
     cursor_obj = con.cursor()
     id = int(input('\nIngrese un id del plan a consultar: '))
@@ -92,7 +91,8 @@ def consulta_individual_plan(con):
         id, nombre, valor, cantidad_canciones = row
         print("{:<5} {:<15} {:<10} {:<10} ".format(id, nombre, valor, cantidad_canciones))
 
-# Función que realiza la gestión del la sección planes por medio de menú
+
+# Función que despliegue el menú de actualización de valores dentro de la sección planes
 def actualizar_datos_plan(con):
     salir_actualizar = False
     while not salir_actualizar:
