@@ -2,7 +2,7 @@
  El modulo "main.py" funcionara como panel principal del programa.
  Las librerias para cumplir con algunas funciones del programa estan importadas al inicio de cada modulo. Si es necesaria alguna'''
 
-from manejadorbd import *
+
 from manejador_canciones import *
 from manejador_clientes import *
 from manejador_planes import *
@@ -17,7 +17,7 @@ def menu_canciones(con):
     salir_canciones = False
     while not salir_canciones:
 
-        print_line_success('''
+        print_line_menu('''
                         MENU SECCIÓN CANCIONES
                     1. Registrar una canción
                     2. Consultar canciones disponibles
@@ -25,7 +25,7 @@ def menu_canciones(con):
                     4. Actualizar datos de una canción
                     5. Ir al menu anterior\n''')
 
-        opc = input("\tDigite una opcion: ").strip()
+        opc = input("\n\tDigite una opcion: ").strip()
         if (opc == '1'):
             registrar_cancion(con)
 
@@ -42,7 +42,7 @@ def menu_canciones(con):
             salir_canciones = True
 
         else:
-             print("\t\n¡Opcion no valida. Digite una opción nuevamente!")
+             print_line_error("\t\n¡Opcion no valida. Digite una opción nuevamente!")
 
 
 # Función que genera un menu con todas las posibles opciones de la seccion de clientes
@@ -58,9 +58,9 @@ def menu_clientes(con):
                     3. Consulta general de clientes
                     4. Actualizar información de cliente
                     5. Actualizar estado de suscripción del cliente
-                    6. Ir al menu anterir\n''')
+                    6. Ir al menu anterior\n''')
 
-        opc = input("\tDigite una opcion: ")
+        opc = input("\n\tDigite una opcion: ")
         if (opc == '1'):
             salir = True
             while salir:
@@ -71,7 +71,7 @@ def menu_clientes(con):
                     registrar_plan_cliente(con, info_plan_cliente)
                     salir = False
                 except:
-                    print('¡ERROR! El número de identificación no puede estar repetido')
+                    print_line_error('¡ERROR! El número de identificación no puede estar repetido')
                     print('')
 
         elif (opc == '2'):
@@ -84,11 +84,11 @@ def menu_clientes(con):
             actualizar_datos_cliente(con)
 
         elif (opc == '5'):
-            print("""Cambiar el estado de suscripción del cliente, las palabras permitidas son:
+            print_line_menu("""Cambiar el estado de suscripción del cliente\n\tLas palabras permitidas son:
                     1. Activo
-                    2. Inactivo\n""")
+                    2. Inactivo""")
             actualizar_info_tablas(con, 'el estado de suscripción', nombre_columna='estado_pago', nombre_tabla='clientes', primary_key='id_cliente', longitud=15)
-            print('\t\n¡Estado de suscripción actualizado!')
+
 
         elif (opc == '6'):
             salir = True
@@ -110,7 +110,7 @@ def menu_planes(con):
                     5. Borrar un plan
                     6. Ir al menu anterior\n''')
 
-        opc = input("\tDigite una opcion: ").strip()
+        opc = input("\n\tDigite una opcion: ").strip()
         if (opc == '1'):
             registrar_plan(con)
 
@@ -124,13 +124,13 @@ def menu_planes(con):
             actualizar_datos_plan(con)
 
         elif (opc == '5'):
-            pass
+            borrar_info(con, 'planes', 'id_plan')
 
         elif (opc == '6'):
             salir_planes = True
 
         else:
-            print("\t\n¡Opcion no valida. Digite una opción nuevamente!")
+            print_line_error("\t\n¡Opcion no valida. Digite una opción nuevamente!")
 
 
 # Función que genera un menú pricipal que permite gestionar todo el programa
@@ -147,7 +147,7 @@ def menu_principal(con):
                     5. Sección de lista cliente
                     6. Salir\n''')
 
-        opc = input("\tDigite una opcion: ")
+        opc = input("\n\tDigite una opcion: ")
         if (opc == '1'):
             menu_planes(con)
 
@@ -175,7 +175,7 @@ def menu_principal(con):
             terminar_programa = True
 
         else:
-            print("\t\n¡Opcion no valida. Digite una opción nuevamente!")
+            print_line_error("\t¡Opcion no valida. Digite una opción nuevamente!")
 
 # La funcion 'main()' a continuacion es la encargada de ejecutar todo el programa
 def main():

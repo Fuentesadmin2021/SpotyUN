@@ -90,6 +90,27 @@ def validacion_longitud(dato: str, longitud: int) -> str:
     return dato
 
 
+
+
+
+"----------------FUNCIONES SIN USAR DENTRO DEL CÓDIGO POR AHORA----------------"
+
+# Función para crear una contraseña aleatoria y opcional
+def randompass() -> str:
+    caracteres = '0123456789/*-+.-_,;{}[]@+?¡¿!#$%&()abcdefghijklmnñopqrstuvwxyz ABCDEFGHIJKLMNÑOPQRSTUVWXYZ'
+    eleccion = random.choices(caracteres, k=15)
+    password = ''.join([str(i) for i in eleccion])
+    return password
+
+
+# Función para crear un código de verificación para iniciar sesión
+def codigoVerificacion() -> str:
+    caracteres = ('ABCDEFHIJKLMNOPQRSTUVWXYZ', '0123456789')
+    codigo = ''
+    for i in [random.choices(i, k=3) for i in caracteres]:
+        codigo = codigo + ''.join(str(x) for x in i)
+    return codigo
+
 # Función para la autenticación de un usuario dentro de la plataforma
 def validacion_usuario(dato: str, longitud: int) -> str:
     state = False
@@ -116,24 +137,4 @@ def validacion_contrasena(dato: str, longitud: int) -> str:
             print('¡ERROR! Ingrese de nuevo la contraseña')
             dato = input('Ingrese contraseña: ')
             dato2 = input('Ingrese nuevamente la contraseña: ')
-
-
-"-----------------------------------------------------"
-
-# Función para crear una contraseña aleatoria y opcional
-def randompass() -> str:
-    caracteres = '0123456789/*-+.-_,;{}[]@+?¡¿!#$%&()abcdefghijklmnñopqrstuvwxyz ABCDEFGHIJKLMNÑOPQRSTUVWXYZ'
-    eleccion = random.choices(caracteres, k=15)
-    password = ''.join([str(i) for i in eleccion])
-    return password
-
-
-# Función para crear un código de verificación para iniciar sesión
-def codigoVerificacion() -> str:
-    caracteres = ('ABCDEFHIJKLMNOPQRSTUVWXYZ', '0123456789')
-    codigo = ''
-    for i in [random.choices(i, k=3) for i in caracteres]:
-        codigo = codigo + ''.join(str(x) for x in i)
-    return codigo
-
 

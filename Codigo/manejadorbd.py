@@ -1,6 +1,7 @@
 import sqlite3
 from sqlite3 import Error
 from validacion_datos import *
+from decorador import *
 
 # Función para crear la bases de datos y la conexion con la base
 def sql_conexion():
@@ -80,7 +81,7 @@ def actualizar_info_tablas(con, info: str, nombre_columna: str, nombre_tabla: st
     state = True
     while state:
         try:
-            id = input('Ingrese el id: ').strip()
+            id = input('\nIngrese el id: ').strip()
             if id_v := validacion_existencia_todas(con, nombre_tabla, nombre_columna, primary_key, id) == False:
                 id = int(id)
                 state = False
@@ -93,7 +94,7 @@ def actualizar_info_tablas(con, info: str, nombre_columna: str, nombre_tabla: st
     info_actualizar = (elemento, id)
     cursor_obj.execute(actualizar, info_actualizar)
     con.commit()
-    print(f"!{info.title()} se ha actualizado exitosamente¡")
+    print_line_success(f"!{info.title()} se ha actualizado exitosamente¡")
 
 # Función que elimina la información de la tabla
 def eliminar_info_tablas(con, nombre_tabla: str):
@@ -101,13 +102,13 @@ def eliminar_info_tablas(con, nombre_tabla: str):
     cursor_obj.execute(f'DELETE from {nombre_tabla}')
     con.commit()
 
-def borrar_info(con, nombre_tabla: str):
+def borrar_info(con, nombre_tabla: str, primary_key: str):
     cursor = con.cursor()
-    id = input("Id de la información a eliminar: ")
-    borrar = f'DELETE FROM {nombre_tabla} WHERE id_cliente = %s' % id
+    id = input("\nId de la información a eliminar: ")
+    borrar = f'DELETE FROM {nombre_tabla} WHERE {primary_key} = {id}'
     cursor.execute(borrar)
     con.commit()
-    print("\nSu registro a sido eliminado :)")
+    print_line_success(f"Su registro a sido eliminado de la tabla {nombre_tabla} ;)")
 
 # Función para borrar tablas
 def borrar(con, nombre_tabla):
@@ -123,6 +124,7 @@ def close(con):
 """----------------------------- Pruebas -----------------------------"""
 
 
-# mi_conexion = sql_conexion()
-# borrar(mi_conexion, 'canciones')
+"""mi_conexion = sql_conexion()
+borrar_info(mi_conexion, 'planes', 'id_plan')"""
+
 

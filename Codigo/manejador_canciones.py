@@ -3,9 +3,10 @@ from pygame import mixer
 from manejadorbd import *
 from validacion_datos import *
 
+
 # Esta funcion se encarga de solicitar la informacion de una cancion para su registro
 def cancion() -> tuple:
-    nombre = validacion_longitud(input('Nombre: '), 100)
+    nombre = validacion_longitud(input('\nNombre: '), 100)
     genero = validacion_longitud(input('Genero: '), 30)
     album = validacion_longitud(input('Album: '), 100)
     interprete = validacion_longitud(input('Interprete(s): '), 100)
@@ -29,11 +30,12 @@ def registrar_cancion(con):
     tupla = cancion()
     cursor_obj.execute('''INSERT INTO canciones VALUES(NULL, ?, ?, ?, ?, NULL, ?)''', tupla)
     con.commit()
+    print_line_success("¡¡El registro se ha realizado exitosamente!!")
 
 
 def actualizar_cancion(con):
     cursor_obj = con.cursor()
-    id = input('Ingrese el id de la canción a la que quiere modificar: ')
+    id = input('\nIngrese el id de la canción a la que quiere modificar: ')
     state = False
     while not state:
         try:
@@ -41,20 +43,19 @@ def actualizar_cancion(con):
             cancion = registrar_cancion_bd(nombre_cancion)
             state = True
         except:
-            print(
-                '\n¡Error en los datos de la canción en el equipo\n por favor verifique e ingrese de nuevo la información!\n ')
+            print_line_error('\n¡Error en los datos de la canción en el equipo\n por favor verifique e ingrese de nuevo la información!\n ')
 
     actualizar = f'UPDATE canciones SET cancion = ? WHERE id_cancion = ?'
     info_cancion = (cancion, id)
     cursor_obj.execute(actualizar, info_cancion)
     con.commit()
-    print("!El nombre de la cancion se ha modificado exitosamente¡")
+    print_line_success("!El nombre de la cancion se ha modificado exitosamente¡")
 
 
 # Función que ordena la consulta de la canciones segun el usuario lo desee
 def orden_consulta(lista: list) -> tuple:
     
-    print('''
+    print_line_menu('''
                         ¿COMO DESEA ORDENAR LA CONSULTA?
                     1. Por id
                     2. Por nombre
@@ -62,7 +63,7 @@ def orden_consulta(lista: list) -> tuple:
                     4. por album
                     5. Por interprete(s)\n''')
 
-    opc = input("\tDigite una opcion: ")
+    opc = input("\n\tDigite una opcion: ")
     if (opc == '1'):
         orden = sorted(lista, key = lambda id : id[0])
         return orden
@@ -87,7 +88,7 @@ def orden_consulta(lista: list) -> tuple:
 # Función para realizar la consulta individual de una canción por medio del id_canción registrado en al base de datos
 def consulta_individual_cancion(con):
     cursor_obj = con.cursor()
-    id = int(input('Ingrese el id de la canción: '))
+    id = int(input('\nIngrese el id de la canción: '))
     busqueda = 'SELECT id_cancion, nombre_cancion, genero, album, interprete FROM canciones WHERE id_cancion = '
     id_busqueda = busqueda + str(id)
     cursor_obj.execute(id_busqueda)
@@ -101,16 +102,15 @@ def consulta_individual_cancion(con):
 # Función para obtener la dirección de la canción que esta en la base de datos
 def obtener_dir_cancion(con):
     cursor_obj = con.cursor()
-    id = int(input('Ingrese el id de la canción que desea escuchar: '))
-    busqueda = 'SELECT cancion FROM canciones WHERE id_cancion = '
-    id_busqueda = busqueda + str(id)
-    dir_cancion = cursor_obj.execute(id_busqueda)
+    id = input('\nIngrese el id de la canción que desea escuchar: ')
+    busqueda = f'SELECT cancion FROM canciones WHERE id_cancion = {id}'
+    dir_cancion = cursor_obj.execute(busqueda)
     for dir in dir_cancion:
         return dir[0]
 
 
 # Función que convierte a binario una cancion -> 'blob-bin'
-def registrar_cancion_bd(audio):
+def registrar_cancion_bd(audio: str) -> bytes:
     cancion = f'../Canciones/{audio}.mp3'
     with open(cancion, 'rb') as file:
         blob = file.read()
@@ -148,13 +148,22 @@ def reproducir_cancion_function(con, id_cancion):
     mixer.music.set_volume(0.7)
     mixer.music.play()
 
+def consulta_tabla_listas(con, id_cliente: int):
+    cursor_obj = con.cursor()
+    cursor_obj.execute(f'SELECT id_cancion, nombre_cancion, interprete, album, genero FROM listas WHERE id_cliente = {id_cliente}')
+    cantidad_canciones = cursor_obj.fetchall()
+    print("\n{:<12} {:<30} {:<20} {:<20} {:<20}".format('ID_CANCIÓN', 'NOMBRE', 'INTERPRETE', 'ALBUM', 'GENERO'))
+    for row in cantidad_canciones:
+        id, nombre, interprete, album, genero = row
+        print("{:<12} {:<30} {:<20} {:20} {:<20}".format(id, nombre, interprete, album, genero))
 
-def reproducir_cancion(con, id_cancion):
+
+def reproducir_cancion(con, id_cancion: int, id_cliente: int):
     reproducir_cancion_function(con, id_cancion)
     reproducir = True
     while reproducir:
         try:
-            print("\tpulse p para detener canción")
+            print("\n\tpulse p para detener canción")
             print("\tpulse r para reanudar canción")
             print("\tpulse e para elegir otra canción")
             print("\tPulse s para salir")
@@ -166,7 +175,13 @@ def reproducir_cancion(con, id_cancion):
             elif opcion =="r":
                 mixer.music.unpause()
             elif opcion == "e":
-                reproducir_cancion_function(con)
+                consulta_tabla_listas(con, id_cliente)
+                id_cancion = int(input('\nDigite el id de la canción que desea reproducir: '))
+                id_validacion = validacion_existencia_todas(con, 'listas', 'id_cancion', 'id_cancion', id_cancion)
+                while id_validacion != False:
+                    id_cancion = int(input('\nDigite el id de la canción que desea reproducir: '))
+                    id_validacion = validacion_existencia_todas(con, 'listas', 'id_cancion', 'id_cancion', id_cancion)
+                reproducir_cancion_function(con, id_cancion)
             elif opcion =="s":
                 mixer.music.stop()
                 reproducir = False
@@ -189,7 +204,7 @@ def actualizar_datos_cancion(con):
     salir_actualizar = False
     while not salir_actualizar:
 
-        print('''
+        print_line_menu('''
                             ACTUALIZAR INFORMACIÓN CANCIÓN
                         1. Nombre
                         2. Album
@@ -198,7 +213,7 @@ def actualizar_datos_cancion(con):
                         5. Canción
                         6. Ir al menu anterior\n''')
 
-        opc = input("\tDigite una opcion: ").strip()
+        opc = input("\n\tDigite una opcion: ").strip()
         if (opc == '1'):
             actualizar_info_tablas(con, nombre_tabla='canciones', nombre_columna='nombre_cancion', primary_key='id_cancion', info='el nombre de la canción', longitud=100)
         
@@ -218,5 +233,5 @@ def actualizar_datos_cancion(con):
             salir_actualizar = True
         
         else:
-            print("\t\n¡Opcion no valida. Digite una opción nuevamente!")
+            print_line_error("\t¡Opcion no valida. Digite una opción nuevamente!")
 

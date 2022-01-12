@@ -16,13 +16,12 @@ def planes_disponibles(con):
 
 
 def plan(con) -> tuple:
-    id = validacion_numero(input('Número de identificación del plan: '), 1)
+    id = validacion_numero(input('\nNúmero de identificación del plan: '), 1)
     id_plan = validacion_existencia_todas(con, nombre_tabla='planes', nombre_columna='id_plan', primary_key='id_plan', id=id)
     while id_plan == False:
         print('\t\n¡ERROR! Ya existe un plan con el \'Id plan\' ingresado. Si desea realizar el registro ingrese nuevamente la información.')
-        id = validacion_numero(input('Número de identificación del plan: '), 1)
+        id = validacion_numero(input('\nNúmero de identificación del plan: '), 1)
         id_plan = validacion_existencia_todas(con, nombre_tabla='planes', nombre_columna='id_plan', primary_key='id_plan', id=id)
-
     nombre_plan = input("Nombre del plan: ")
     valor = int(validacion_numero(input("Valor plan: "),5))
     cant_canciones = int(validacion_numero(input("Cantidad de canciones del plan: "),4))
@@ -55,14 +54,14 @@ def consulta_tabla_planes(con):
 
 # Función que ordena la consulta de distintas maneras
 def orden_consulta(lista: list) -> tuple:
-    print('''
+    print_line_menu('''
                         ¿EN QUE ORDEN DESEA OBTENER LA CONSULTA?
                     1. Por id
                     2. Por nombre
                     3. por valor
                     4. por cantidad de canciones a las que puede acceder\n''')
 
-    opc = input("\tDigite una opcion: ")
+    opc = input("\n\tDigite una opcion: ")
     if (opc == '1'):
         orden = sorted(lista, key = lambda id : id[0])
         return orden
@@ -83,28 +82,28 @@ def orden_consulta(lista: list) -> tuple:
 # Función que permite hacer una consulta individual de un cliente por medio de su identificacion registrada
 def consulta_individual_plan(con):
     cursor_obj = con.cursor()
-    id = int(input('Ingrese un id: '))
+    id = int(input('\nIngrese un id del plan a consultar: '))
     busqueda = 'SELECT * FROM planes WHERE id_plan = '
     id_busqueda = busqueda + str(id)
     cursor_obj.execute(id_busqueda)
     datos_plan = cursor_obj.fetchall()
-    print ("\n{:<5} {:<15} {:<10} {:<10} ".format('ID', 'NOMBRE_PLAN', 'VALOR', 'CANTIDAD CANCIONES'))
+    print("\n{:<5} {:<15} {:<10} {:<10} ".format('ID', 'NOMBRE_PLAN', 'VALOR', 'CANTIDAD CANCIONES'))
     for row in datos_plan:
         id, nombre, valor, cantidad_canciones = row
-        print ("{:<5} {:<15} {:<10} {:<10} ".format(id, nombre, valor, cantidad_canciones))
+        print("{:<5} {:<15} {:<10} {:<10} ".format(id, nombre, valor, cantidad_canciones))
 
 # Función que realiza la gestión del la sección planes por medio de menú
 def actualizar_datos_plan(con):
     salir_actualizar = False
     while not salir_actualizar:
-        print('''
+        print_line_menu('''
                             ACTUALIZAR INFORMACIÓN PLAN
                         1. Nombre
                         2. Valor
                         3. Cantidad de canciones
                         4. Ir al menu anterior\n''')
 
-        opc = input("\tDigite una opcion: ")
+        opc = input("\n\tDigite una opcion: ")
         if (opc == '1'):
             actualizar_info_tablas(con, 'el nombre', nombre_columna='nombre_plan', nombre_tabla='planes', primary_key='id_plan', longitud=15)
             
@@ -118,7 +117,7 @@ def actualizar_datos_plan(con):
             salir_actualizar = True
         
         else:
-            print("\t\n¡Opcion no valida. Digite una opción nuevamente!")
+            print_line_error("\t\n¡Opcion no valida. Digite una opción nuevamente!")
         
 
 
