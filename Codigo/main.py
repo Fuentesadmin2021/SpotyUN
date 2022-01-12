@@ -136,6 +136,9 @@ def menu_principal(con):
     terminar_programa = False
     while not terminar_programa:
         print_line_menu('''
+
+                    🆂 🅿 🅾  🆃 🆈 🆄 🅽
+                    
                         MENU PRINCIPAL
                     1. Sección planes
                     2. Sección canciones

@@ -96,7 +96,7 @@ def borrar_lista(con, id_cliente: int) -> str:
     cursor_obj = con.cursor()
     cursor_obj.execute(f'DELETE FROM listas WHERE id_cliente = {id_cliente}')
     con.commit()
-    return 'Tu lista ha sido eliminada'
+    return print('Tu lista ha sido eliminada')
 
 
 # Función que consulta la información ingresa por el cliente en la tabla listas, retorna una tupla
@@ -162,8 +162,8 @@ def enviar_mensaje(con, id_cliente: int):
     servidor = smtplib.SMTP('smtp.gmail.com', 587)
     servidor.starttls()
     correo = consulta_correo_cliente(con, id_cliente)
-    servidor.login('ovillalbaunal@gmail.com', 'la cambio despues del parcial')
-    servidor.sendmail('ovillalbaunal@gmail.com', correo, texto)
+    servidor.login('conectandotropadelta@gmail.com', 'conectandodelta')
+    servidor.sendmail('conectandotropadelta@gmail.com', correo, texto)
     servidor.quit()
     print_line_success("Envio exitoso")
 
@@ -213,7 +213,8 @@ def menu_lista(con, id_cliente: int):
                         state_lista = False
                     else:
                         consulta_tabla_canciones_lista(con)
-                        info_lista(con, id_cliente)
+                        info = info_lista(con, id_cliente)
+                        registrar_lista_cliente(con, info)
                         next = False
                         while not next:
                             opc_next = input("""\n¿Desea agregar otra canción? s/n: """).lower()

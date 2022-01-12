@@ -36,7 +36,7 @@ def registrar_cancion(con):
     tupla = cancion()
     cursor_obj.execute('''INSERT INTO canciones VALUES(NULL, ?, ?, ?, ?, NULL, ?)''', tupla)
     con.commit()
-    print_line_success("¡¡El registro se ha realizado exitosamente!!")
+    print_line_success("♪ El registro de la canción se ha realizado exitosamente ♪")
 
 # Función para relizar la actualización del archivo .mp3 binario dentro de la tabla canciones
 def actualizar_cancion(con):
