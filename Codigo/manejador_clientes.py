@@ -37,11 +37,11 @@ def cliente(con) -> tuple:
 
     planes_disponibles(con)
 
-    plan = validacion_numero(input('\nNúmero de identificación del plan: '), 1)
+    plan = validacion_numero(input('\nNúmero identificador del plan: '), 1)
     id_plan = validacion_existencia_todas(con, nombre_tabla='planes', nombre_columna='id_plan', primary_key='id_plan', id=plan)
     while id_plan != False :
-            print_line_error('¡El número de identificación no existe, por favor ingrese otro número de identificación!')
-            plan = validacion_numero(input('\nNúmero de identificación del plan: '), 1)
+            print_line_error('¡El número identificador del plan no existe, por favor ingrese otro identificasor que sea valido!')
+            plan = validacion_numero(input('\nNúmero identificador  del plan: '), 1)
             id_plan = validacion_existencia_todas(con, nombre_tabla='planes', nombre_columna='id_plan', primary_key='id_plan', id=plan)
 
 

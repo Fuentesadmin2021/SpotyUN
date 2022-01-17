@@ -21,7 +21,7 @@ def cancion() -> tuple:
     while not state:
         try:
             nombre_cancion = input('Nombre de la canción tal cual esta almacenada en su equipo: ')
-            cancion = registrar_cancion_bd(nombre_cancion)
+            cancion = escribir_cancion_binario(nombre_cancion)
             state = True
         except:
             print_line_error('\n¡Error en los datos de la canción en el equipo\n por favor verifique e ingrese de nuevo la información!\n ')
@@ -46,7 +46,7 @@ def actualizar_cancion(con):
     while not state:
         try:
             nombre_cancion = input('Nombre de la canción tal cual esta almacenada en su equipo: ')
-            cancion = registrar_cancion_bd(nombre_cancion)
+            cancion = escribir_cancion_binario(nombre_cancion)
             state = True
         except:
             print_line_error('\n¡Error en los datos de la canción en el equipo\n por favor verifique e ingrese de nuevo la información!\n ')
@@ -55,7 +55,7 @@ def actualizar_cancion(con):
     info_cancion = (cancion, id)
     cursor_obj.execute(actualizar, info_cancion)
     con.commit()
-    print_line_success("!El nombre de la cancion se ha modificado exitosamente¡")
+    print_line_success("!La cancion se ha actualizado exitosamente¡")
 
 
 # Función que ordena la consulta de la canciones segun el usuario lo desee
@@ -116,7 +116,7 @@ def obtener_dir_cancion(con) -> str:
 
 
 # Función que convierte a binario una cancion -> 'blob-bin'
-def registrar_cancion_bd(audio: str) -> bytes:
+def escribir_cancion_binario(audio: str) -> bytes:
     cancion = f'../Canciones/{audio}.mp3'
     with open(cancion, 'rb') as file:
         blob = file.read()

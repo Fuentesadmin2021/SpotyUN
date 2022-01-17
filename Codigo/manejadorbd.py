@@ -99,7 +99,7 @@ def actualizar_info_tablas(con, info: str, nombre_columna: str, nombre_tabla: st
                 print('\nEl id ingresado no existe en la base de datos')
         except:
             print('El Id ingresado no es el correcto')
-    elemento = validacion_longitud(input(f'Ingrese el nuevo {info}: '), longitud)
+    elemento = validacion_longitud(input(f'Ingrese {info} actualizado: '), longitud)
     actualizar = f'UPDATE {nombre_tabla} SET {nombre_columna} = ? WHERE {primary_key} = ?'
     info_actualizar = (elemento, id)
     cursor_obj.execute(actualizar, info_actualizar)

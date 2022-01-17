@@ -187,6 +187,7 @@ def main():
     crear_tabla_listas(conexion_bd)
     crear_tabla_planes_por_cliente(conexion_bd)
     menu_principal(conexion_bd)
+    close()
 
 if __name__ == '__main__':
     main()
