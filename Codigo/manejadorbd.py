@@ -3,17 +3,48 @@
 # de la conexión con la base de datos
 import sqlite3
 from sqlite3 import Error
+from xml.dom import minicompat
 from validacion_datos import *
 from decorador import *
 
+class  ManejadorBD():
+        
 # Función para crear la bases de datos y la conexion con la base
-def sql_conexion():
-    try:
-        con = sqlite3.connect('SpotyUN.db')
-        return con
-    
-    except Error:
-        print(Error)
+    def sql_conexion(self):
+        try:
+            con = sqlite3.connect('SpotyUN.db')
+            return con
+        
+        except Error:
+            print(Error)
+
+    # Función que elimina toda la información de una tabla
+    def eliminar_info_tablas(self, con, nombre_tabla: str):
+        cursor_obj = con.cursor()
+        cursor_obj.execute(f'DELETE from {self.nombre_tabla}')
+        con.commit()
+
+
+# Función que borrar la información de una tabla de acuerdo al primary_key sumistrado
+    def borrar_info(self, con, nombre_tabla: str, primary_key: str, id):
+        cursor = con.cursor()
+        self.id = id
+        borrar = f'DELETE FROM {self.nombre_tabla} WHERE {self.primary_key} = {id}'
+        cursor.execute(borrar)
+        con.commit()
+        print_line_success(f"Su registro a sido eliminado de la tabla {self.nombre_tabla} ;)")
+
+
+# Función para borrar cualquier tabla
+    def borrar(self, con, nombre_tabla):
+        cursorObj = con.cursor()
+        cursorObj.execute(f'DROP TABLE {self.nombre_tabla}')
+        con.commit()
+
+
+# Función para cerrar la base de datos
+    def close(con):
+        con.close()
 
 
 # Función para crear la tabla 'canciones' en la base de datos
@@ -107,35 +138,9 @@ def actualizar_info_tablas(con, info: str, nombre_columna: str, nombre_tabla: st
     print_line_success(f"!{info.title()} se ha actualizado exitosamente¡")
 
 
-# Función que elimina toda la información de una tabla
-def eliminar_info_tablas(con, nombre_tabla: str):
-    cursor_obj = con.cursor()
-    cursor_obj.execute(f'DELETE from {nombre_tabla}')
-    con.commit()
-
-
-# Función que borrar la información de una tabla de acuerdo al primary_key sumistrado
-def borrar_info(con, nombre_tabla: str, primary_key: str):
-    cursor = con.cursor()
-    id = input("\nId de la información a eliminar: ")
-    borrar = f'DELETE FROM {nombre_tabla} WHERE {primary_key} = {id}'
-    cursor.execute(borrar)
-    con.commit()
-    print_line_success(f"Su registro a sido eliminado de la tabla {nombre_tabla} ;)")
-
-
-# Función para borrar cualquier tabla
-def borrar(con, nombre_tabla):
-    cursorObj = con.cursor()
-    cursorObj.execute(f'DROP TABLE {nombre_tabla}')
-    con.commit()
-
-
-# Función para cerrar la base de datos
-def close(con):
-    con.close()
 
 
 """----------------------------- Pruebas -----------------------------"""
 
-
+miConexion = ManejadorBD()
+print(miConexion.sql_conexion())
