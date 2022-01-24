@@ -3,7 +3,6 @@
 # de la conexión con la base de datos
 import sqlite3
 from sqlite3 import Error
-from xml.dom import minicompat
 from validacion_datos import *
 from decorador import *
 
