@@ -1,0 +1,2 @@
+class Insertar():
+    pass

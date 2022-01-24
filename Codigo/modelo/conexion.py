@@ -9,9 +9,3 @@ def sql_conexion():
     except Error:
         print(Error)
 
-#dejar aca funciones mientras tanto
-def close(con):
-    con.close() 
-
-def close(self):
-    self.conexionbd.close()
