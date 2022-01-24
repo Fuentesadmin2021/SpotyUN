@@ -19,10 +19,30 @@ class Update():
             except:
                 print('El Id ingresado no es el correcto')
         elemento = validacion_longitud(input(f'Ingrese {info} actualizado: '), longitud)
-        actualizar = f'UPDATE {nombre_tabla} SET {nombre_columna} = ? WHERE {primary_key} = ?'
-        info_actualizar = (elemento, id)
-        self.conexionbd.execute(actualizar, info_actualizar)
+        cursor_obj = self.conexionbd.cursor()
+        cursor_obj.execute(f'UPDATE {nombre_tabla} SET {nombre_columna} = {elemento} WHERE {primary_key} = {id}')
         self.conexionbd.commit()
         print_line_success(f"!{info.title()} se ha actualizado exitosamente¡")
 
-        
+class Update_canciones(Update):
+    def __init__(self, conexionbd):
+        super().__init__(conexionbd)
+
+    # Función para relizar la actualización del archivo .mp3 binario dentro de la tabla canciones
+    def actualizar_cancion(self):
+        cursor_obj = self.conexionbd.cursor()
+        id = input('\nIngrese el id de la canción a la que quiere modificar: ')
+        state = False
+        while not state:
+            try:
+                nombre_cancion = input('Nombre de la canción tal cual esta almacenada en su equipo: ')
+                cancion = escribir_cancion_binario(nombre_cancion)
+                state = True
+            except:
+                print_line_error('\n¡Error en los datos de la canción en el equipo\n por favor verifique e ingrese de nuevo la información!\n ')
+
+        cursor_obj.execute(f'UPDATE canciones SET cancion = {cancion} WHERE id_cancion = {id}')
+        self.conexionbd.commit()
+        print_line_success("!La cancion se ha actualizado exitosamente¡")
+
+  
