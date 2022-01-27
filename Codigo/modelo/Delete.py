@@ -2,7 +2,7 @@ from decorador import *
 
 class  Borrar():
     def __init__(self, conexionbd):
-        self.conexionbd = conexionbd.cursor()
+        self.conexionbd = conexionbd
     
 
     # Función que elimina toda la información de una tabla
