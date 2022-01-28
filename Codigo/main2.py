@@ -1,12 +1,12 @@
-from modelo.conexion import sql_conexion
-from modelo.create import Create
+from multiprocesos.conexion import sql_conexion
+from multiprocesos.create  import Database
 
 def close(con):
     con.close()
 
 def main():
     conexion_bd = sql_conexion()
-    objeto_creacion = Create(conexion_bd)
+    objeto_creacion = Database(conexion_bd)
     objeto_creacion.tabla_canciones()	
     objeto_creacion.tabla_planes()
     objeto_creacion.tabla_clientes()

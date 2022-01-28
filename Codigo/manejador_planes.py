@@ -1,7 +1,7 @@
 # Importación de librerías para el manejo de procesos y datos
 from manejadorbd import *
 from validacion_datos import *
-from decorador import *
+from paquetes_ad.decorador import *
 
 # Función que realiza la consulta de los planes disponibles en la tabla planes
 def planes_disponibles(con):

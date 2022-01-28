@@ -1,5 +1,6 @@
 setup.py
 paquetes_ad/__init__.py
+paquetes_ad/decorador.py
 paquetes_ad/validaciond.py
 paquetevalidaciond.egg-info/PKG-INFO
 paquetevalidaciond.egg-info/SOURCES.txt

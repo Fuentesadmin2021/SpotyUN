@@ -1,7 +1,7 @@
 # Funciones importados desde modulos propios para manejar el módulo manejador_listas
 from manejador_canciones import reproducir_cancion
 from manejadorbd import *
-from decorador import *
+from paquetes_ad.decorador import *
 from manejador_clientes import consulta_correo_cliente
 # Funciones importadas para realizar el manejo y envió de los correos
 # Función smtlib usada para porder enviar un correo por medio del programa

@@ -4,9 +4,9 @@
 # 3. pip3 uninstall (nombre del paquete Ejp: paquetes_ad)
 
 from setuptools import setup
-setup(
 
-    name = "paquetevalidaciond",
+setup(
+    name = "paquetevalidacion",
     version = "1.0",
     description = "Paquete para validación de información",
     author = "Admin SpotyUN",
@@ -14,4 +14,3 @@ setup(
     url = "sin url",
     packages = ["paquetes_ad", "paquetes_ad"] 
 )
-
