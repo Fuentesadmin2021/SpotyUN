@@ -120,10 +120,10 @@ class Canciones(Actualizar):
             print(cabecero, datos)
 
         except ValueError:
-            print("\n El id ingresado no es valido")
+            print("\nEl id ingresado no es valido")
 
         except TypeError:
-            print("\n No se encontro información relaccionada")
+            print("\nNo se encontro información relaccionada con el id ingresado")
     
     # Función que obtiene la información de todas las canciones y la retorna en una lista
     def get_canciones(self):
@@ -451,7 +451,15 @@ class Planes(Actualizar):
             else:
                 print_line_error("\t\n¡Opcion no valida. Digite una opción nuevamente!")
 
-
+    # La función acontinuación se encarga de eliminar un plan de la base de datos con el id
+    def eliminar_plan(self):
+        self.__id = validacion_numero(input('\nId del plan: '), 1)
+        cursor_obj = self.con.cursor()
+        cursor_obj.execute(f'DELETE FROM planes WHERE id_plan = {self.__id}')
+        self.con.commit()
+        print_line_success('¡ El plan se ha eliminado exitosamente')        
+        
+        
 #----------------------------------------------------------------------------------------
 
 # plan = Planes()
@@ -513,7 +521,7 @@ class Cliente(Actualizar):
         self.__estado_pago = 'Activo'
 
     def get_id(self):
-        return self.__id
+        return [self.__id]
         
 
     # Funcion que se encarga de obtener toda la información de un cliente por medio del id
@@ -677,18 +685,18 @@ class Cliente(Actualizar):
 
 #----------------------------------------------------------------------------------------
 
-
-class PP_clientes(Planes):
+# PP_cliente = (planes por cliente)
+class PP_cliente(Planes):
     def __init__(self):
+        Planes.__init__(self)
         self.__id_cliente = None
         self.__id_plan_c = None
-        Planes.__init__(self)
-
+        
     def set_id_cliente(self):
         self.__id_cliente = input('\nIngrese su identificación: ')
 
     def set_id_plan_c(self):
-        PP_clientes.consulta_planes(self, PP_clientes.get_planes(self))
+        PP_cliente.consulta_planes(self, PP_cliente.get_planes(self))
         self.__id_plan_c = validacion_numero(input('\nIngrese el id del plan que desea contratar: '), 1)
         validacion = validacion_existencia_todas(self.con, nombre_tabla = 'planes', nombre_columna = 'id_plan', primary_key='id_plan', id = self.__id_plan_c )
         while validacion != False :
@@ -696,7 +704,7 @@ class PP_clientes(Planes):
                 self.__id_plan_c = validacion_numero(input('\nIngrese el id del plan que desea contratar: '), 1)
                 validacion = validacion_existencia_todas(self.con, nombre_tabla = 'planes', nombre_columna = 'id_plan', primary_key = 'id_plan', id = self.__id_plan_c)
 
-    #  La función acontinuación se encarga de obtener la cantidad de canciones que ofrece el plan que contrato
+    # La función acontinuación se encarga de obtener la cantidad de canciones que ofrece el plan que contrato
     def get_cant_canciones(self):
         cursor_obj = self.con.cursor()
         busqueda = 'SELECT cantidad_canciones FROM planes WHERE id_plan = '
@@ -706,10 +714,26 @@ class PP_clientes(Planes):
         for row in cant_canciones:
             self.cant_canciones = row[0]
 
+    # Función que obtiene el id del plan y la cantidad de canciones, de los planes contratados por el cliente
+    def get_pp_cliente(self):
+        cursor_obj = self.con.cursor()
+        cursor_obj.execute(f'SELECT * FROM planes cliente WHERE id_cliente = {self.__id_cliente}')
+        lista_pp_cliente = cursor_obj.fetchall()
+        return lista_pp_cliente
+
+    # La función acontinuación se encarga de mostrar al usuario los datos basicos del los planes que ha contratado
+    def consulta_pp_clientes(self, tupla):
+        print ("\n{:<15} {:<20} {:<15} ".format('ID CLIENTE', 'ID PLAN', 'CANTIDAD CANCIONES'))
+        for row in tupla:
+            self.__id_cliente = row[0]
+            self.__id_plan_c = row [1]
+            self.can_canciones = row[2]
+        print ("{:<15} {:<20} {:<15} ".format(self.__id_cliente, self.__id_plan_c, self.cant_canciones))
+        
 
     # La función acontinuación se encarga de verificar si un cliente esta registrado o no
     # con el fin de dar paso a la seccion de 'Planes cliente' unicamente si ya ha realizado su registro
-    def verificacion_cliente(self) -> bool or int:
+    def verificacion_existencia(self) -> bool or int:
         cursor_obj = self.con.cursor()
         cursor_obj.execute(f'SELECT id_cliente FROM planes_cliente WHERE id_cliente = {self.__id_cliente}')
         self.__id_cliente = cursor_obj.fetchone()
@@ -719,12 +743,12 @@ class PP_clientes(Planes):
         else:
             print_line_success('¡Validación de usuario exitosa!')
             return self.__id_cliente
-
+           
 
     #  Función que se encarga de armar una tupla con el el id del plan contratado por el cliente
     def armar_arreglo(self):
-        PP_clientes.set_id_plan_c(self)
-        PP_clientes.get_cant_canciones(self)
+        PP_cliente.set_id_plan_c(self)
+        PP_cliente.get_cant_canciones(self)
         plan_c = [self.__id_plan_c, self.cant_canciones]
         return plan_c
        
@@ -737,39 +761,37 @@ class PP_clientes(Planes):
         print_line_success('¡Su registro se ha realizado exitosamente!')
 
     
-
-
 # ----------------------------------------------------------------------------
 
 # Registro Cliente
-d_cliente = Cliente()
-p_cliente = PP_clientes()
-dd_cliente = d_cliente.armar_tupla()
-print(dd_cliente)
-id_cliente = d_cliente.get_id()
-print(id_cliente)
-pp_cliente = p_cliente.armar_arreglo()
-pp_cliente = pp_cliente.append(id_cliente)
-pp_cliente = tuple(pp_cliente)
-
-# print (pp_cliente)
-# pp_cliente = (d_cliente.get_id(), p_cliente.armar_arreglo())
-# d_cliente.registrar_db(dd_cliente)
-# p_cliente.registrar_db(pp_cliente)
-
-
-# agregar otor plan
-# ag = PP_clientes()
-# # ag.set_id_cliente()
-# # ag.verificacion_cliente()
-# ag.consulta_plan()
-
-
-'''para agregar
-x = PP_clientes()
-x.set_cant_canciones()
-print(x.get_cant_canciones())
 '''
+d_cliente = Cliente()
+p_cliente = PP_cliente()
+dd_cliente = d_cliente.armar_tupla()
+id_cliente = d_cliente.get_id()
+pp_cliente = p_cliente.armar_arreglo()
+registro = tuple(id_cliente + pp_cliente)
+d_cliente.registrar_db(dd_cliente)
+p_cliente.registrar_db(registro)
+'''
+
+# consultar plan
+'''
+ag = PP_cliente()
+ag.set_id_cliente()
+x = (ag.verificacion_existencia())
+print(x[0])
+ag.consulta_plan()
+'''
+
+# agregar plan
+'''
+p = PP_cliente()
+p.consulta_planes(p.get_planes)
+p.armar_arreglo()
+'''
+
+
 
 
 
