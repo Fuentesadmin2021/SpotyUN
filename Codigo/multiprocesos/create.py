@@ -78,7 +78,8 @@ class Database():
         cursor_obj = self.__conexionbd.cursor()
         self.__data_listas = cursor_obj.execute("""CREATE TABLE IF NOT EXISTS planes_cliente(
                                                 id_cliente INTEGER(12) NOT NULL,
-                                                id_plan INT(1) NOT NULL)""")
+                                                id_plan INT(1) NOT NULL,
+                                                cantidad_canciones SHORT(4))""")
         self.__conexionbd.commit()
 
     
