@@ -8,7 +8,7 @@ from datetime import datetime
 from manejador_planes import *
 from manejadorbd import *
 from validacion_datos import *
-from paquetes_ad.decorador import *
+from controlador.decorador import *
 
 
 # Función que obtiene los datos de un cliente antes de registrarlo retornando una tupla

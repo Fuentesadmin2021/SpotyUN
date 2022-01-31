@@ -1,6 +1,6 @@
 # Funciones importadas para lo modulos o procesos dentro del modulo manejador_planes_cliente.py
 from manejador_clientes import planes_disponibles
-from paquetes_ad.decorador import *
+from controlador.decorador import *
 
 # Función que obtiene los datos para registrar un plan
 # Esta Información es capturada cuando el cliente hace el registro por primera vez

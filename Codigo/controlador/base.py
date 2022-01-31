@@ -6,13 +6,12 @@ herramienta para la reproducción de las canciones a traves del método mixer"""
 """Importamos el modulo validacion_datos para realizar las diferentes validaciones de los datos
 para la base de datos"""
 from pygame import mixer
-from paquetes_ad.decorador import *
-from paquetes_ad.validaciond import *
+from decorador import *
+from validatos.validatos import Validatos as val
 from datetime import datetime
 import sqlite3
 from sqlite3 import Error
 from subprocess import HIGH_PRIORITY_CLASS
-
 
 class Actualizar():
     def __init__(self):
@@ -33,7 +32,7 @@ class Actualizar():
         while state:
             try:
                 id = input('Ingrese el id: ').strip()
-                if id_v := validacion_existencia_todas(self.con, nombre_tabla, nombre_columna, primary_key, id) == False:
+                if id_v := val.existencia_tablas(self.con, nombre_tabla, nombre_columna, primary_key, id) == False:
                     id = int(id)
                     state = False
                     
@@ -48,7 +47,6 @@ class Actualizar():
         self.con.commit()
         print_line_success(f"!\"{info.title()}\" se ha actualizado exitosamente¡")
         
-
 #----------------------------------------------------------------------------------------
 
 
@@ -66,16 +64,16 @@ class Canciones(Actualizar):
 
     # Acontinuacion estan los setters y getters necesarios, seguido de funciones adicionales para su manipulación
     def set_nombre(self):
-        self.__nombre = validacion_longitud(input('Nombre: '), 100)
+        self.__nombre = val.longitud(input('Nombre: '), 100)
   
     def set_genero(self):
-        self.__genero = validacion_longitud(input('Genero: '), 30)
+        self.__genero = val.longitud(input('Genero: '), 30)
 
     def set_album(self):
-        self.__album = validacion_longitud(input('Album: '), 100)
+        self.__album = val.longitud(input('Album: '), 100)
         
     def set_interprete(self):
-        self.__interprete = validacion_longitud(input('Interprete(s): '), 100)
+        self.__interprete = val.longitud(input('Interprete(s): '), 100)
     
     def set_imagen(self):
         return self._imagen
@@ -131,7 +129,7 @@ class Canciones(Actualizar):
         cursor_obj.execute('SELECT id_cancion, nombre_cancion, genero, album, interprete  FROM canciones')
         lista_canciones = cursor_obj.fetchall()
         return lista_canciones
-    
+
     # Función que ordena la información obtenida de las canciones
     def orden_consulta(self, lista: list) -> tuple:
         print_line_menu('''
@@ -279,10 +277,10 @@ class Canciones(Actualizar):
                     mixer.music.unpause()
                 elif opcion == "e":
                     Canciones.get_cancion(self)
-                    id_validacion = validacion_existencia_todas(self.con, 'listas', 'id_cancion', 'id_cancion', self.__id)
+                    id_validacion = val.existencia_tablas(self.con, 'listas', 'id_cancion', 'id_cancion', self.__id)
                     while id_validacion != False:
                         Canciones.get_cancion(self)
-                        id_validacion = validacion_existencia_todas(self.con, 'listas', 'id_cancion', 'id_cancion', self.__id)
+                        id_validacion = val.existencia_tablas(self.con, 'listas', 'id_cancion', 'id_cancion', self.__id)
                     Canciones.reproducir_cancion(self, Canciones.guardar_cancion()[1])
                 elif opcion =="s":
                     mixer.music.stop()
@@ -312,22 +310,22 @@ class Planes(Actualizar):
         self.cant_canciones = None
 
     def set_id(self):
-        self.__id = validacion_numero(input('\nId del plan: '), 1)
-        validacion = validacion_existencia_todas(self.con, nombre_tabla = 'planes', nombre_columna = 'id_plan', primary_key = 'id_plan', id = self.__id)
+        self.__id = val.numero(input('\nId del plan: '), 1)
+        validacion = val.existencia_tablas(self.con, nombre_tabla = 'planes', nombre_columna = 'id_plan', primary_key = 'id_plan', id = self.__id)
 
         while validacion == False:
             print('\t\n¡ERROR! Ya existe un plan con el \'Id plan\' ingresado. Si desea realizar el registro ingrese nuevamente la información.')
-            self.__id = validacion_numero(input('\nId del plan: '), 1)
-            validacion = validacion_existencia_todas(self.con, nombre_tabla = 'planes', nombre_columna = 'id_plan', primary_key = 'id_plan', id = self.__id)
+            self.__id = val.numero(input('\nId del plan: '), 1)
+            validacion = val.existencia_tablas(self.con, nombre_tabla = 'planes', nombre_columna = 'id_plan', primary_key = 'id_plan', id = self.__id)
     
     def set_nombre(self):
         self.__nombre = input("Nombre del plan: ")
 
     def set_valor(self):
-        self.__valor = int(validacion_numero(input("Valor plan: "),5))
+        self.__valor = int(val.numero(input("Valor plan: "),5))
 
     def set_cant_canciones(self):
-        self.cant_canciones = int(validacion_numero(input("Cantidad de canciones del plan: "),4))
+        self.cant_canciones = int(val.numero(input("Cantidad de canciones del plan: "),4))
 
 
     # Función que se encarga obtener toda la información de un plan por medio del id
@@ -453,7 +451,7 @@ class Planes(Actualizar):
 
     # La función acontinuación se encarga de eliminar un plan de la base de datos con el id
     def eliminar_plan(self):
-        self.__id = validacion_numero(input('\nId del plan: '), 1)
+        self.__id = val.numero(input('\nId del plan: '), 1)
         cursor_obj = self.con.cursor()
         cursor_obj.execute(f'DELETE FROM planes WHERE id_plan = {self.__id}')
         self.con.commit()
@@ -486,36 +484,36 @@ class Cliente(Actualizar):
         self.__estado_pago = None
 
     def set_id(self):
-        self.__id = validacion_numero(input('\nNúmero de identificación: '), 12)
-        validacion = validacion_existencia_todas(self.con, nombre_tabla = 'clientes', nombre_columna = 'id_cliente', primary_key = 'id_cliente', id = self.__id)
+        self.__id = val.numero(input('\nNúmero de identificación: '), 12)
+        validacion = val.existencia_tablas(self.con, nombre_tabla = 'clientes', nombre_columna = 'id_cliente', primary_key = 'id_cliente', id = self.__id)
         while validacion == False:
             print('\n¡El número de identificación ya existe, por favor ingrese otro número de identificación!')
-            self.__id = validacion_numero(input('Número de identificación: '), 12)
-            validacion = validacion_existencia_todas(self.con, nombre_tabla = 'clientes', nombre_columna = 'id_cliente', primary_key = 'id_cliente', id = self.__id)
+            self.__id = val.numero(input('Número de identificación: '), 12)
+            validacion = val.existencia_tablas(self.con, nombre_tabla = 'clientes', nombre_columna = 'id_cliente', primary_key = 'id_cliente', id = self.__id)
     
     def set_nombre(self):
-        self.__nombre = validacion_letra(input('Nombre: '), 30)
+        self.__nombre = val.letra(input('Nombre: '), 30)
 
     def set_apellido(self):
-        self.__apellido = validacion_letra(input('Apellido: '), 30)
+        self.__apellido = val.letra(input('Apellido: '), 30)
 
     def set_pais(self):   
-        self.__pais = validacion_letra(input('Pais: '), 30)
+        self.__pais = val.letra(input('Pais: '), 30)
 
     def set_ciudad(self):
-        self.__ciudad = validacion_letra(input('Ciudad: '), 30)
+        self.__ciudad = val.letra(input('Ciudad: '), 30)
 
     def set_celular(self):
-        self.__celular = validacion_telefono(input('Celular: '), 15)
+        self.__celular = val.telefono(input('Celular: '), 15)
 
     def set_correo(self):
-        self.__correo = validacion_correo(input('Correo electrónico: '), 45)
+        self.__correo = val.correo(input('Correo electrónico: '), 45)
 
     def set_fecha_pago(self):
         self.__fecha_pago = datetime.strftime(datetime.now(), '%Y-%m-%d')
 
     def set_numero_tc(self):
-        self.__numero_tc = validacion_tc(input('Tarjeta de credito (sin espacios ni caracteres especiales): '), 19)
+        self.__numero_tc = val.numero(input('Tarjeta de credito (sin espacios ni caracteres especiales): '), 19)
 
     def set_estado_pago(self):
         self.__estado_pago = 'Activo'
@@ -674,8 +672,28 @@ class Cliente(Actualizar):
             else:
                 print_line_error("¡Opcion no valida. Digite una opción nuevamente!")
 
+    def actualizar_estado_suscripcion(self):
+        salir = False
+        while not salir:
+            
+            print_line_menu('''
+                        Para cambiar su estado de suscripción elija una opción
+                        1. Activo
+                        2. Inactivo''')
 
-
+            opc = input("\n\tDigite una opcion: ").strip()
+            if (opc == '1'):
+                self.__estado_pago = 'Activo'
+                Cliente.actualizar_info_tablas(self, info = self.__estado_pago,  nombre_tabla = 'clientes', nombre_columna = 'estado_pago', primary_key = 'id_cliente')
+                salir = True
+            elif (opc == '2'):
+                self.__estado_pago = 'Inactivo'
+                Cliente.actualizar_info_tablas(self, info = self.__estado_pago,  nombre_tabla = 'clientes', nombre_columna = 'estado_pago', primary_key = 'id_cliente')
+                salir = True
+            else:
+                print_line_error("¡Opcion no valida. Digite una opción nuevamente!")
+                
+     
 # l = Cliente(con)
 # l.consulta_cliente()
 # d = Cliente(con)
@@ -691,18 +709,18 @@ class PP_cliente(Planes):
         Planes.__init__(self)
         self.__id_cliente = None
         self.__id_plan_c = None
-        
-    def set_id_cliente(self):
-        self.__id_cliente = input('\nIngrese su identificación: ')
 
+    def set_id_cliente(self):
+        self.__id_cliente = val.numero(input('Ingrese su identificación: '), 12)
+        
     def set_id_plan_c(self):
         PP_cliente.consulta_planes(self, PP_cliente.get_planes(self))
-        self.__id_plan_c = validacion_numero(input('\nIngrese el id del plan que desea contratar: '), 1)
-        validacion = validacion_existencia_todas(self.con, nombre_tabla = 'planes', nombre_columna = 'id_plan', primary_key='id_plan', id = self.__id_plan_c )
+        self.__id_plan_c = val.numero(input('\nIngrese el id del plan que desea contratar: '), 1)
+        validacion = val.existencia_tablas(self.con, nombre_tabla = 'planes', nombre_columna = 'id_plan', primary_key='id_plan', id = self.__id_plan_c )
         while validacion != False :
-                print_line_error('¡No existe un plan con ese id, por favor ingrese uno que sea valido!')
-                self.__id_plan_c = validacion_numero(input('\nIngrese el id del plan que desea contratar: '), 1)
-                validacion = validacion_existencia_todas(self.con, nombre_tabla = 'planes', nombre_columna = 'id_plan', primary_key = 'id_plan', id = self.__id_plan_c)
+            print_line_error('¡No existe un plan con ese id, por favor ingrese uno que sea valido!')
+            self.__id_plan_c = val.numero(input('\nIngrese el id del plan que desea contratar: '), 1)
+            validacion = val.existencia_tablas(self.con, nombre_tabla = 'planes', nombre_columna = 'id_plan', primary_key = 'id_plan', id = self.__id_plan_c)
 
     # La función acontinuación se encarga de obtener la cantidad de canciones que ofrece el plan que contrato
     def get_cant_canciones(self):
@@ -715,19 +733,20 @@ class PP_cliente(Planes):
             self.cant_canciones = row[0]
 
     # Función que obtiene el id del plan y la cantidad de canciones, de los planes contratados por el cliente
-    def get_pp_cliente(self):
+    def get_pp_cliente(self, id_cliente):
         cursor_obj = self.con.cursor()
-        cursor_obj.execute(f'SELECT * FROM planes cliente WHERE id_cliente = {self.__id_cliente}')
+        cursor_obj.execute(f'SELECT * FROM planes_cliente WHERE id_cliente = {id_cliente}')
         lista_pp_cliente = cursor_obj.fetchall()
         return lista_pp_cliente
 
     # La función acontinuación se encarga de mostrar al usuario los datos basicos del los planes que ha contratado
-    def consulta_pp_clientes(self, tupla):
+    def consulta_pp_cliente(self, tupla):
         print ("\n{:<15} {:<20} {:<15} ".format('ID CLIENTE', 'ID PLAN', 'CANTIDAD CANCIONES'))
         for row in tupla:
             self.__id_cliente = row[0]
-            self.__id_plan_c = row [1]
-            self.can_canciones = row[2]
+            self.__id_plan_c = row[1]
+            self.cant_canciones = row[2]
+            
         print ("{:<15} {:<20} {:<15} ".format(self.__id_cliente, self.__id_plan_c, self.cant_canciones))
         
 
@@ -735,6 +754,7 @@ class PP_cliente(Planes):
     # con el fin de dar paso a la seccion de 'Planes cliente' unicamente si ya ha realizado su registro
     def verificacion_existencia(self) -> bool or int:
         cursor_obj = self.con.cursor()
+        PP_cliente.set_id_cliente(self)
         cursor_obj.execute(f'SELECT id_cliente FROM planes_cliente WHERE id_cliente = {self.__id_cliente}')
         self.__id_cliente = cursor_obj.fetchone()
         if self.__id_cliente == None:
@@ -752,11 +772,10 @@ class PP_cliente(Planes):
         plan_c = [self.__id_plan_c, self.cant_canciones]
         return plan_c
        
-
     #  función que se encarga de registrar el id('identificación') del cliente y el id del plan que contrato
-    def registrar_db(self, arreglo):
+    def registrar_db(self, tupla):
         cursor_obj = self.con.cursor()
-        cursor_obj.execute('''INSERT INTO planes_cliente VALUES(?,?,?)''', arreglo)
+        cursor_obj.execute('''INSERT INTO planes_cliente VALUES(?,?,?)''', tupla)
         self.con.commit()
         print_line_success('¡Su registro se ha realizado exitosamente!')
 
@@ -764,16 +783,15 @@ class PP_cliente(Planes):
 # ----------------------------------------------------------------------------
 
 # Registro Cliente
-'''
-d_cliente = Cliente()
-p_cliente = PP_cliente()
-dd_cliente = d_cliente.armar_tupla()
-id_cliente = d_cliente.get_id()
-pp_cliente = p_cliente.armar_arreglo()
-registro = tuple(id_cliente + pp_cliente)
-d_cliente.registrar_db(dd_cliente)
-p_cliente.registrar_db(registro)
-'''
+
+# d_cliente = Cliente()
+# p_cliente = PP_cliente()
+# dd_cliente = d_cliente.armar_tupla()
+# id_cliente = d_cliente.get_id()
+# pp_cliente = p_cliente.armar_arreglo()
+# registro = tuple(id_cliente + pp_cliente)
+# d_cliente.registrar_db(dd_cliente)
+# p_cliente.registrar_db(registro)
 
 # consultar plan
 '''
