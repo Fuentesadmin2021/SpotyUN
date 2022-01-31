@@ -250,46 +250,7 @@ class Canciones(Actualizar):
 
     # Esta función guarda la canción en el equipo en formato mp3 -> 'mp3'
     # para posteriormente reproducirla
-    def guardar_cancion(self):
-        ruta = f"../SpotyUN_Lista/{self.__nombre}.mp3"
-        try:
-             with open(ruta, 'wb') as file:
-                 return file.write(self.__audio), ruta
-        except:
-            pass
 
-    # La función acontinuación se encarga de reproducir la canción que el usuario elija ingresando el id
-    def reproducir_cancion(self, dir_cancion):
-        mixer.init()
-        mixer.music.load(dir_cancion)
-        mixer.music.set_volume(0.7)
-        mixer.music.play()
-        reproducir = True
-        while reproducir:
-            try:
-                print("\n\tpulse p para detener canción")
-                print("\tpulse r para reanudar canción")
-                print("\tpulse e para elegir otra canción")
-                print("\tPulse s para salir")
-
-                opcion = input(">>> ")
-
-                if opcion =="p":
-                    mixer.music.pause()
-                elif opcion =="r":
-                    mixer.music.unpause()
-                elif opcion == "e":
-                    Canciones.get_cancion(self)
-                    id_validacion = val.existencia_tablas(self.con, 'listas', 'id_cancion', 'id_cancion', self.__id)
-                    while id_validacion != False:
-                        Canciones.get_cancion(self)
-                        id_validacion = val.existencia_tablas(self.con, 'listas', 'id_cancion', 'id_cancion', self.__id)
-                    Canciones.reproducir_cancion(self, Canciones.guardar_cancion()[1])
-                elif opcion =="s":
-                    mixer.music.stop()
-                    reproducir = False
-            except:
-                pass
 
 #----------------------------------------------------------------------------------------
 
@@ -784,7 +745,11 @@ class PP_cliente(Planes):
 
     
     
-class Listas_cliente(Actualizar):
+class Listas_cliente(Canciones, Actualizar):
+    def __init__(self):
+        Canciones.__init__(self)
+        Actualizar.__init__(self)
+        
 # Función para realizar la consulta de datos de la canción como id_canción, nombre_canción, interprete, album
     def id_cancion_lista(self) -> list:
         canciones = input('\nIngrese el id de cancion que desea agregar a su lista: ')
@@ -802,13 +767,54 @@ class Listas_cliente(Actualizar):
         lista_info_cancion = [id_cancion, nombre_cancion, interprete, album, genero]
         return lista_info_cancion
 
+    def guardar_cancion(self):
+        ruta = f"../SpotyUN_Lista/{self.__nombre}.mp3"
+        try:
+            with open(ruta, 'wb') as file:
+                return file.write(self.__audio), ruta
+        except:
+            pass
+
+    # La función acontinuación se encarga de reproducir la canción que el usuario elija ingresando el id
+    def reproducir_cancion(self, dir_cancion, id_cliente):
+        mixer.init()
+        mixer.music.load(dir_cancion)
+        mixer.music.set_volume(0.7)
+        mixer.music.play()
+        reproducir = True
+        while reproducir:
+            try:
+                print("\n\tpulse p para detener canción")
+                print("\tpulse r para reanudar canción")
+                print("\tpulse e para elegir otra canción")
+                print("\tPulse s para salir")
+
+                opcion = input(">>> ")
+
+                if opcion =="p":
+                    mixer.music.pause()
+                elif opcion =="r":
+                    mixer.music.unpause()
+                elif opcion == "e":
+                    Listas_cliente.consulta_tabla_listas(id_cliente)
+                    Listas_cliente.get_cancion(self)
+                    id_validacion = val.existencia_tablas(self.con, 'listas', 'id_cancion', 'id_cancion', self.__id)
+                    while id_validacion != False:
+                        Listas_cliente.get_cancion(self)
+                        id_validacion = val.existencia_tablas(self.con, 'listas', 'id_cancion', 'id_cancion', self.__id)
+                    Canciones.reproducir_cancion(self, Canciones.guardar_cancion()[1])
+                elif opcion =="s":
+                    mixer.music.stop()
+                    reproducir = False
+            except:
+                pass
 
 # Función para consultar la cantidad de canciones por plan de acuerdo al registro del cliente
     def plan_cliente(self, id_cliente: int) -> int:
         cursor_obj = self.con.cursor()
         cursor_obj.execute(f'SELECT id_plan FROM planes_cliente WHERE id_cliente = {id_cliente}')
         id_plan_cliente = cursor_obj.fetchone()
-        cursor_obj.execute(f'SELECT cantidad_canciones FROM planes WHERE id_plan = {id_plan_cliente[0]}')
+        cursor_obj.execute(f'SELECT cantidad_canciones FROM planes WHERE id_plan = {id_plan_cliente}')
         cant_canciones = cursor_obj.fetchone()
         return cant_canciones
 
@@ -869,7 +875,18 @@ class Listas_cliente(Actualizar):
         cursor_obj.execute(f'DELETE FROM listas WHERE id_cliente = {id_cliente}')
         self.con.commit()
         return print('Tu lista ha sido eliminada')
-
+    
+    def verificacion_existencia(self) -> bool or int:
+        cursor_obj = self.con.cursor()
+        PP_cliente.set_id_cliente(self)
+        cursor_obj.execute(f'SELECT id_cliente FROM planes_cliente WHERE id_cliente = {self.__id_cliente}')
+        self.__id_cliente = cursor_obj.fetchone()
+        if self.__id_cliente == None:
+            print('¡Antes de poder registrar otro plan o lista de reproducción debes ser un cliente registrado!')
+            return False
+        else:
+            print_line_success('¡Validación de usuario exitosa!')
+            return self.__id_cliente
 
 # Función que consulta la información ingresa por el cliente en la tabla listas, retorna una tupla
 # una tupla de listas con la información completa de la lista de reproducción
@@ -955,89 +972,10 @@ class Listas_cliente(Actualizar):
 
 
 # Función que despliega el menu de sección de listas de reproducción
-    def menu_lista(self, id_cliente: int):
-        state = True
-        while state:
-            print_line_menu("""
-                MENU SECCIÓN LISTAS DE REPRODUCCIÓN
-            1. Crear una lista
-            2. Consultar lista
-            3. Actualizar lista
-            4. Eliminar lista
-            5. Envia correo con lista de reproducción
-            6. Reproducir canciones
-            7. Ir al menu anterior""")
-        
-            opc = input('\nDigite una opción: ')
-            if opc == "1":
-                print("\nSesión de creación de lista de reproducción\n")
-                state_lista = True
-                while state_lista:
-                    try:
-                        # Se realiza el conteo de las canciones totales contratadas por el cliente de acuerdo al plan
-                        # y se realizar el conteo de las canciones que ya estan en la lista de reproducción.
-                        # asi tener el total de canciones faltantes para completar el plan
-                        total_canciones = self.plan_cliente(self, id_cliente)[0] - self.contar_lista(self, id_cliente)[0]
-                        print('Falta {} canciones para completar el plan'.format(total_canciones))
-                        if total_canciones == 0:
-                            print_line_error('¡Has completado tu plan, no puedes agregar más canciones!')
-                            state_lista = False
-                        else:
-                            self.consulta_tabla_canciones_lista(self)
-                            info = self.info_lista(self, id_cliente)
-                            self.registrar_lista_cliente(self, info)
-                            next = False
-                            while not next:
-                                opc_next = input("""\n¿Desea agregar otra canción? s/n: """).lower()
-                                if opc_next == 's':
-                                    next = True
-                                elif opc_next == 'n':
-                                    next = True
-                                    state_lista = False
-                                else:
-                                    print_line_error('¡Opción no valida. Digite una opción nuevamente!')
-                    except:
-                        print_line_error('¡Canción no encontrada en la base de datos!')
-            elif opc == "2":
-                self.consulta_tabla_listas(self, id_cliente)
-            elif opc == "3":
-                state_actualizar = True
-                while state_actualizar:
-                    try:
-                        self.consulta_tabla_listas(self, id_cliente)
-                        id_cancion = int(input('\nDigite el id de la canción que desea actualizar: '))
-                        self.consulta_tabla_canciones_lista(self)
-                        lista_info = self.info_lista(self, id_cliente)
-                        self.actualizar_info_tabla_listas(self, tuple(lista_info[0:5]), id_cancion, id_cliente)
-                        state_actualizar = False
-                    except:
-                        print_line_error('¡Canción no encontrada en las base de datos!')
-
-            elif opc == "4":
-                self.borrar_lista(self, id_cliente)
-            elif opc == "5":
-                self.enviar_mensaje(self, id_cliente)
-            elif opc == "6":
-                if self.contar_lista(self, id_cliente)[0] == 0:
-                    print_line_error('¡No tienes canciones en tu lista de reproducción!\nCrea una lista para poder reproducir canciones')
-                else:
-                    self.consulta_tabla_listas(self, id_cliente)
-                    id_cancion = int(input('\nDigite el id de la canción que desea reproducir: '))
-                    id_validacion = val.existencia_tablas(self, 'listas', 'id_cancion', 'id_cancion', id_cancion)
-                    while id_validacion != False:
-                        id_cancion = int(input('\nDigite el id de la canción que desea reproducir: '))
-                        id_validacion = val.existencia_tablas(self, 'listas', 'id_cancion', 'id_cancion', id_cancion)
-                    self.reproducir_cancion(self, id_cancion, id_cliente)
-            elif opc == "7":
-                state = False
-
-            else:
-                print("\t\n¡Opcion no valida. Digite una opción nuevamente!")
+    
 
 """----------------------------- Pruebas -----------------------------"""
 
-listas = Listas_cliente()
-listas.menu_lista(1)
     
 # ----------------------------------------------------------------------------
 

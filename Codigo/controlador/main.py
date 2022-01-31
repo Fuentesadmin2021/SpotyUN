@@ -192,17 +192,97 @@ def menu_principal():
                 menu_planes_cliente(id)
 
         elif (opc == '5'):
-            id = verificacion_cliente(con)
+            cliente_validado = PP_cliente()
+            id = cliente_validado.verificacion_existencia()[0]            
             if not id:
-                menu_clientes(con)
+                menu_clientes()
             else:
-                menu_lista(con, id)
+                menu_lista(id)
 
         elif (opc == '6'):
             terminar_programa = True
 
         else:
             print_line_error("\t¡Opcion no valida. Digite una opción nuevamente!")
+
+def menu_lista(id_cliente: int):
+        state = True
+        while state:
+            print_line_menu("""
+                MENU SECCIÓN LISTAS DE REPRODUCCIÓN
+            1. Crear una lista
+            2. Consultar lista
+            3. Actualizar lista
+            4. Eliminar lista
+            5. Envia correo con lista de reproducción
+            6. Reproducir canciones
+            7. Ir al menu anterior""")
+        
+            opc = input('\nDigite una opción: ')
+            if opc == "1":
+                print("\nSesión de creación de lista de reproducción\n")
+                state_lista = True
+                while state_lista:
+                    try:
+                        # Se realiza el conteo de las canciones totales contratadas por el cliente de acuerdo al plan
+                        # y se realizar el conteo de las canciones que ya estan en la lista de reproducción.
+                        # asi tener el total de canciones faltantes para completar el plan
+                        total_canciones = Listas_cliente.plan_cliente(id_cliente) - Listas_cliente.contar_lista(id_cliente)
+                        print('Falta {} canciones para completar el plan'.format(total_canciones))
+                        if total_canciones == 0:
+                            print_line_error('¡Has completado tu plan, no puedes agregar más canciones!')
+                            state_lista = False
+                        else:
+                            Listas_cliente.consulta_tabla_canciones_lista()
+                            info = Listas_cliente.info_lista(id_cliente)
+                            Listas_cliente.registrar_lista_cliente(info)
+                            next = False
+                            while not next:
+                                opc_next = input("""\n¿Desea agregar otra canción? s/n: """).lower()
+                                if opc_next == 's':
+                                    next = True
+                                elif opc_next == 'n':
+                                    next = True
+                                    state_lista = False
+                                else:
+                                    print_line_error('¡Opción no valida. Digite una opción nuevamente!')
+                    except:
+                        print_line_error('¡Canción no encontrada en la base de datos!')
+            elif opc == "2":
+                Listas_cliente.consulta_tabla_listas(id_cliente)
+            elif opc == "3":
+                state_actualizar = True
+                while state_actualizar:
+                    try:
+                        Listas_cliente.consulta_tabla_listas(id_cliente)
+                        id_cancion = int(input('\nDigite el id de la canción que desea actualizar: '))
+                        Listas_cliente.consulta_tabla_canciones_lista()
+                        lista_info = Listas_cliente.info_lista(id_cliente)
+                        Listas_cliente.actualizar_info_tabla_listas(tuple(lista_info[0:5]), id_cancion, id_cliente)
+                        state_actualizar = False
+                    except:
+                        print_line_error('¡Canción no encontrada en las base de datos!')
+
+            elif opc == "4":
+                Listas_cliente.borrar_lista(id_cliente)
+            elif opc == "5":
+                Listas_cliente.enviar_mensaje(id_cliente)
+            elif opc == "6":
+                if Listas_cliente.contar_lista(id_cliente)[0] == 0:
+                    print_line_error('¡No tienes canciones en tu lista de reproducción!\nCrea una lista para poder reproducir canciones')
+                else:
+                    Listas_cliente.consulta_tabla_listas(id_cliente)
+                    id_cancion = int(input('\nDigite el id de la canción que desea reproducir: '))
+                    id_validacion = val.existencia_tablas('listas', 'id_cancion', 'id_cancion', id_cancion)
+                    while id_validacion != False:
+                        id_cancion = int(input('\nDigite el id de la canción que desea reproducir: '))
+                        id_validacion = val.existencia_tablas('listas', 'id_cancion', 'id_cancion', id_cancion)
+                    Listas_cliente.reproducir_cancion(id_cancion, id_cliente)
+            elif opc == "7":
+                state = False
+
+            else:
+                print("\t\n¡Opcion no valida. Digite una opción nuevamente!")
 
 def main():
     menu_principal()
