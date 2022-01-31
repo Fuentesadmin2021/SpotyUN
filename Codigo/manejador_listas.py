@@ -13,22 +13,23 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
 
+class Listas_cliente:
 # Función para realizar la consulta de datos de la canción como id_canción, nombre_canción, interprete, album
-def id_cancion_lista(con) -> list:
-    canciones = input('\nIngrese el id de cancion que desea agregar a su lista: ')
-    while canciones == '0':
-        break
-    cursor_obj = con.cursor()
-    cursor_obj.execute(f"SELECT * FROM canciones WHERE id_cancion = {canciones}")
-    filas = cursor_obj.fetchall()
-    for row in filas:
-        id_cancion = row[0]
-        nombre_cancion = row[1]
-        interprete = row[4]
-        album = row[3]
-        genero = row[2]
-    lista_info_cancion = [id_cancion, nombre_cancion, interprete, album, genero]
-    return lista_info_cancion
+    def id_cancion_lista(con) -> list:
+        canciones = input('\nIngrese el id de cancion que desea agregar a su lista: ')
+        while canciones == '0':
+            break
+        cursor_obj = con.cursor()
+        cursor_obj.execute(f"SELECT * FROM canciones WHERE id_cancion = {canciones}")
+        filas = cursor_obj.fetchall()
+        for row in filas:
+            id_cancion = row[0]
+            nombre_cancion = row[1]
+            interprete = row[4]
+            album = row[3]
+            genero = row[2]
+        lista_info_cancion = [id_cancion, nombre_cancion, interprete, album, genero]
+        return lista_info_cancion
 
 
 # Función para consultar la cantidad de canciones por plan de acuerdo al registro del cliente
