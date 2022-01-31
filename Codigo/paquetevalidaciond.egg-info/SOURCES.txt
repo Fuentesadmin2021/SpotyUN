@@ -1,7 +1,0 @@
-setup.py
-paquetes_ad/__init__.py
-paquetes_ad/validaciond.py
-paquetevalidaciond.egg-info/PKG-INFO
-paquetevalidaciond.egg-info/SOURCES.txt
-paquetevalidaciond.egg-info/dependency_links.txt
-paquetevalidaciond.egg-info/top_level.txt

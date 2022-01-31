@@ -156,7 +156,7 @@ def reproducir_cancion_function(con, id_cancion):
 
 # Función que permite consultar la tabla de datos lista y verificar lñas entradas de la
 # misma de acuerdo a la id suministrado
-def consulta_tabla_listas(con, id_cliente: int):
+def consulta_tabla_listas_c(con, id_cliente: int):
     cursor_obj = con.cursor()
     cursor_obj.execute(f'SELECT id_cancion, nombre_cancion, interprete, album, genero FROM listas WHERE id_cliente = {id_cliente}')
     cantidad_canciones = cursor_obj.fetchall()
@@ -188,7 +188,7 @@ def reproducir_cancion(con, id_cancion: int, id_cliente: int):
             elif opcion =="r":
                 mixer.music.unpause()
             elif opcion == "e":
-                consulta_tabla_listas(con, id_cliente)
+                consulta_tabla_listas_c(con, id_cliente)
                 id_cancion = int(input('\nDigite el id de la canción que desea reproducir: '))
                 id_validacion = validacion_existencia_todas(con, 'listas', 'id_cancion', 'id_cancion', id_cancion)
                 while id_validacion != False:
