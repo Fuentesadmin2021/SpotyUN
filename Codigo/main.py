@@ -1,22 +1,11 @@
-"""A continuación se importan todos los modulos con las funciones necesarias
-para que el programa funcione correctamente. El modulo "main.py" funcionara como
-panel principal del programa. Las librerias para cumplir con algunas funciones
-del programa estan importadas al inicio de cada modulo. Si es necesaria alguna"""
+from base import *
+from Create import *
 
-"""Funciones internas creadas para los diferentes manejos de procesos de diferentes modulos"""
-from manejador_canciones import *
-from manejador_clientes import *
-from manejador_planes import *
-from manejador_planes_cliente import *
-from manejador_listas import *
-from controlador.decorador import *
-
-
-# Función que genera un menu con todas las posibles opciones de la sección de canciones
-def menu_canciones(con):
-    salir_canciones = False
-    while not salir_canciones:
-
+# Función que genera un menu con las multiples opciones 
+# que se desarrollaran en la sección canciones
+def menu_canciones():
+    salir_menu = False
+    while not salir_menu:
         print_line_menu('''
                         MENU SECCIÓN CANCIONES
                     1. Registrar una canción
@@ -27,29 +16,73 @@ def menu_canciones(con):
 
         opc = input("\n\tDigite una opcion: ").strip()
         if (opc == '1'):
-            registrar_cancion(con)
+            cancion = Canciones()
+            cancion.registrar_db(cancion.armar_tupla())
 
         elif (opc == '2'):
-            consulta_tabla_canciones(con)
+            consulta = Canciones()
+            consulta.consulta_canciones(consulta.orden_consulta(consulta.get_canciones()))
 
         elif (opc == '3'):
-            consulta_individual_cancion(con)
+            consulta = Canciones()
+            consulta.consulta_cancion()
 
         elif (opc == '4'):
-            actualizar_datos_cancion(con)
+            actualizar = Canciones()
+            actualizar.actualizar_info_cancion()
 
         elif (opc == '5'):
-            salir_canciones = True
+                salir_menu = True
 
         else:
              print_line_error("\t\n¡Opcion no valida. Digite una opción nuevamente!")
 
 
-# Función que genera un menu con todas las posibles opciones de la sección de clientes
-def menu_clientes(con):
-    salir = False
-    while not salir:
+# Función que genera un menu con las multiples opciones
+def menu_planes():
+    salir_menu = False
+    while not salir_menu:
+        print_line_menu('''
+                        MENU SECCIÓN PLANES
+                    1. Registrar un plan
+                    2. Consulta información planes
+                    3. Consulta individual de la información de un plan
+                    4. Actualizar la información de un plan
+                    5. Eliminar un plan
+                    6. Ir al menu anterior\n''')
 
+        opc = input("\n\tDigite una opcion: ").strip()
+        if (opc == '1'):
+            plan = Planes()
+            plan.registrar_db(plan.armar_tupla())
+          
+        elif (opc == '2'):
+            consulta = Planes()
+            consulta.consulta_planes(consulta.orden_consulta(consulta.get_planes()))
+        
+        elif (opc == '3'):
+            consulta = Planes()
+            consulta.consulta_plan()
+
+        elif (opc == '4'):
+            actualizar = Planes()
+            actualizar.actualizar_info_plan()
+
+        elif (opc == '5'):
+            eliminar = Planes()
+            eliminar.eliminar_plan()
+
+        elif (opc == '6'):
+            salir_menu = True
+
+        else:
+            print_line_error("\t\n¡Opcion no valida. Digite una opción nuevamente!")
+
+
+#  Función que genera un menu con todas las posibles opciones de la sección de clientes
+def menu_clientes():
+    salir_menu = False
+    while not salir_menu:
         print_line_menu('''
                         MENU SECCIÓN CLIENTES
                     1. Registrarse
@@ -64,75 +97,68 @@ def menu_clientes(con):
             salir = True
             while salir:
                 try:
-                    info = cliente(con)
-                    info_plan_cliente = plan_desde_cliente(info)
-                    registrar_cliente(con, info)
-                    registrar_plan_cliente(con, info_plan_cliente)
+                    cliente = Cliente()
+                    plan = PP_cliente()
+                    dd_cliente = cliente.armar_tupla()
+                    id_cliente = cliente.get_id()
+                    pp_cliente = plan.armar_arreglo()
+                    registro = tuple(id_cliente + pp_cliente)
+                    cliente.registrar_db(dd_cliente)
+                    plan.registrar_db(registro)              
                     salir = False
+    
                 except:
                     print_line_error('¡ERROR! El número de identificación no puede estar repetido')
                     print('')
 
         elif (opc == '2'):
-            consulta_individual_cliente(con)
+            consulta = Cliente()
+            consulta.consulta_cliente()
 
         elif (opc == '3'):
-            consulta_tabla_clientes(con)
+            consulta = Cliente()
+            consulta.consulta_clientes(consulta.orden_consulta(consulta.get_clientes()))
 
         elif (opc == '4'):
-            actualizar_datos_cliente(con)
-
+            actualizar = Cliente()
+            actualizar.actualizar_info_cliente()
+            
         elif (opc == '5'):
-            print_line_menu("""Cambiar el estado de suscripción del cliente\n\tLas palabras permitidas son:
-                    1. Activo
-                    2. Inactivo""")
-            actualizar_info_tablas(con, 'el estado de suscripción', nombre_columna='estado_pago', nombre_tabla='clientes', primary_key='id_cliente', longitud=15)
-
+            estado = Cliente()
+            estado.actualizar_estado_suscripcion()
 
         elif (opc == '6'):
-            salir = True
-          
+            salir_menu = True
 
 
-# Función que genera un menu con todas las posibles opciones de la sección de planes
-def menu_planes(con):
-    salir_planes = False
-    while not salir_planes:
+# Función que getiona la sección planes_cliente a través de un menú
+def menu_planes_cliente(id_cliente: int):
+    salir_menu = False
+    while not salir_menu:
 
         print_line_menu('''
-                        MENU SECCIÓN PLANES
-                    1. Registrar un plan
-                    2. Consulta información planes
-                    3. Consulta individual de la información de un plan
-                    4. Actualizar la información de un plan
-                    5. Borrar un plan
-                    6. Ir al menu anterior\n''')
-
-        opc = input("\n\tDigite una opcion: ").strip()
-        if (opc == '1'):
-            registrar_plan(con)
-
-        elif (opc == '2'):
-            consulta_tabla_planes(con)
-
-        elif (opc == '3'):
-            consulta_individual_plan(con)
-
-        elif (opc == '4'):
-            actualizar_datos_plan(con)
-
-        elif (opc == '5'):
-            borrar_info(con, 'planes', 'id_plan')
-
-        elif (opc == '6'):
-            salir_planes = True
-
+                    MENU SECCIÓN PLANES CLIENTE
+                1. Consultar planes de cliente
+                2. Registrar otro plan
+                3. Ir al menu anterior\n''')
+    
+        opc = input("\n\tDigite una opcion: ")
+        if (opc == "1"):
+            consulta = PP_cliente()
+            consulta.consulta_pp_cliente(consulta.get_pp_cliente(id_cliente))
+        
+        elif (opc == "2"):
+            plan = PP_cliente()
+            plan.registrar_db(tuple([id_cliente] + plan.armar_arreglo()))
+        
+        elif opc == "3":
+            salir_menu = True
+        
         else:
-            print_line_error("\t\n¡Opcion no valida. Digite una opción nuevamente!")
+            print_line_error("¡Opcion no valida. Digite una opción nuevamente!")
+            
 
-
-# Función que genera el menú pricipal que permite gestionar todo el programa
-def menu_principal(con):
+def menu_principal():
     terminar_programa = False
     while not terminar_programa:
         print_line_menu('''
@@ -149,27 +175,31 @@ def menu_principal(con):
 
         opc = input("\n\tDigite una opcion: ")
         if (opc == '1'):
-            menu_planes(con)
+            menu_planes()
 
         elif (opc == '2'):
-            menu_canciones(con)
+            menu_canciones()
 
         elif (opc == '3'):
-            menu_clientes(con)
+            menu_clientes()
 
         elif (opc == '4'):
-            id = verificacion_cliente(con)
+            cliente_validado = PP_cliente()
+            id = cliente_validado.verificacion_existencia()
+            id = id[0]
             if not id:
-                menu_clientes(con)
-            else:
-                menu_planes_cliente(con, id)
+                menu_clientes()
+            else:  
+                menu_planes_cliente(id)
 
         elif (opc == '5'):
-            id = verificacion_cliente(con)
+            cliente_validado = PP_cliente()
+            id = cliente_validado.verificacion_existencia()
+            id = id[0]            
             if not id:
-                menu_clientes(con)
+                menu_clientes()
             else:
-                menu_lista(con, id)
+                menu_lista(id)
 
         elif (opc == '6'):
             terminar_programa = True
@@ -177,17 +207,98 @@ def menu_principal(con):
         else:
             print_line_error("\t¡Opcion no valida. Digite una opción nuevamente!")
 
+def menu_lista(id_cliente: int):
+        prueba = Listas_cliente()
+        state = True
+        while state:
+            print_line_menu("""
+                MENU SECCIÓN LISTAS DE REPRODUCCIÓN
+            1. Crear una lista
+            2. Consultar lista
+            3. Actualizar lista
+            4. Eliminar lista
+            5. Envia correo con lista de reproducción
+            6. Reproducir canciones
+            7. Ir al menu anterior""")
+        
+            opc = input('\nDigite una opción: ')
+            if opc == "1":
+                print("\nSesión de creación de lista de reproducción\n")
+                state_lista = True
+                while state_lista:
+                    try:
+                        # Se realiza el conteo de las canciones totales contratadas por el cliente de acuerdo al plan
+                        # y se realizar el conteo de las canciones que ya estan en la lista de reproducción.
+                        # asi tener el total de canciones faltantes para completar el plan
+                 
+                        canciones = prueba.plan_cliente(id_cliente)[0]
+                        salida = prueba.contar_lista(id_cliente)[0]
+                        total_canciones = canciones - salida
+                        print('Falta {} canciones para completar el plan'.format(total_canciones))
+                        if total_canciones == 0:
+                            print_line_error('¡Has completado tu plan, no puedes agregar más canciones!')
+                            state_lista = False
+                        else:
+                            
+                            prueba.consulta_tabla_canciones_lista()
+                            info = prueba.info_lista(id_cliente)
+                            prueba.registrar_lista_cliente(info)
+                            next = False
+                            while not next:
+                                opc_next = input("""\n¿Desea agregar otra canción? s/n: """).lower()
+                                if opc_next == 's':
+                                    next = True
+                                elif opc_next == 'n':
+                                    next = True
+                                    state_lista = False
+                                else:
+                                    print_line_error('¡Opción no valida. Digite una opción nuevamente!')
+                    except:
+                        print_line_error('¡Canción no encontrada en la base de datos!')
+            elif opc == "2":
 
-# La funcion 'main()' a continuacion es la encargada de ejecutar todo el programa
+                prueba.consulta_tabla_listas(id_cliente)
+            elif opc == "3":
+                state_actualizar = True
+                while state_actualizar:
+                    try:
+                        prueba.consulta_tabla_listas(id_cliente)
+                        id_cancion = int(input('\nDigite el id de la canción que desea actualizar: '))
+                        prueba.consulta_tabla_canciones_lista()
+                        lista_info = prueba.info_lista(id_cliente)
+                        prueba.actualizar_info_tabla_listas(tuple(lista_info[0:5]), id_cancion, id_cliente)
+                        state_actualizar = False
+                    except:
+                        print_line_error('¡Canción no encontrada en las base de datos!')
+
+            elif opc == "4":
+                prueba.borrar_lista(id_cliente)
+            elif opc == "5":
+                prueba.enviar_mensaje(id_cliente)
+            elif opc == "6":
+                if prueba.contar_lista(id_cliente)[0] == 0:
+                    print_line_error('¡No tienes canciones en tu lista de reproducción!\nCrea una lista para poder reproducir canciones')
+                else:
+                    prueba.consulta_tabla_listas(id_cliente)
+                    prueba.get_cancion()
+                    id_validacion = val.existencia_tablas(prueba.con, 'listas', 'id_cancion', 'id_cancion', prueba._Canciones__id)
+                    while id_validacion != False:
+                        prueba.get_cancion()
+                        id_validacion = val.existencia_tablas(prueba.con, 'listas', 'id_cancion', 'id_cancion', prueba._Canciones__id)
+                    prueba.reproducir_cancion(prueba.guardar_cancion()[1], id_cliente)
+            elif opc == "7":
+                state = False
+
+            else:
+                print("\t\n¡Opcion no valida. Digite una opción nuevamente!")
+
 def main():
-    conexion_bd = sql_conexion()
-    crear_tabla_canciones(conexion_bd)
-    crear_tabla_planes(conexion_bd)
-    crear_tabla_clientes(conexion_bd)
-    crear_tabla_listas(conexion_bd)
-    crear_tabla_planes_por_cliente(conexion_bd)
-    menu_principal(conexion_bd)
-    close()
+    database =  Database()
+    database.create_database()
+    menu_principal()
+    actualizar = Actualizar()
+    actualizar.close()
 
 if __name__ == '__main__':
     main()
+
