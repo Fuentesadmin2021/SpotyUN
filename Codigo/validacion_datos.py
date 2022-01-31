@@ -107,16 +107,12 @@ def validacion_longitud(dato: str, longitud: int) -> str:
 
 
 """import random
-
-
 # Función para crear una contraseña aleatoria y opcional
 def randompass() -> str:
     caracteres = '0123456789/*-+.-_,;{}[]@+?¡¿!#$%&()abcdefghijklmnñopqrstuvwxyz ABCDEFGHIJKLMNÑOPQRSTUVWXYZ'
     eleccion = random.choices(caracteres, k=15)
     password = ''.join([str(i) for i in eleccion])
     return password
-
-
 # Función para crear un código de verificación para iniciar sesión
 def codigoVerificacion() -> str:
     caracteres = ('ABCDEFHIJKLMNOPQRSTUVWXYZ', '0123456789')
@@ -124,7 +120,6 @@ def codigoVerificacion() -> str:
     for i in [random.choices(i, k=3) for i in caracteres]:
         codigo = codigo + ''.join(str(x) for x in i)
     return codigo
-
 # Función para la autenticación de un usuario dentro de la plataforma
 def validacion_usuario(dato: str, longitud: int) -> str:
     state = False
@@ -137,7 +132,6 @@ def validacion_usuario(dato: str, longitud: int) -> str:
                 raise ValueError
         except:
             dato = input('''¡ERROR! Verifique e ingrese de nuevo la información: ''')
-
 # Función para el proceso de autenticación
 # Verifica que una contraseña sea correcta o no
 def validacion_contrasena(dato: str, longitud: int) -> str:
@@ -150,5 +144,4 @@ def validacion_contrasena(dato: str, longitud: int) -> str:
         else:
             print('¡ERROR! Ingrese de nuevo la contraseña')
             dato = input('Ingrese contraseña: ')
-            dato2 = input('Ingrese nuevamente la contraseña: ')
-"""
+            dato2 = input('Ingrese nuevamente la contraseña: ') """
