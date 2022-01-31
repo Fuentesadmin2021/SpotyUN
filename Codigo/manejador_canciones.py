@@ -4,6 +4,7 @@ herramienta para la reproducción de las canciones a traves del método mixer"""
 """Importamos el modulo validacion_datos para realizar las diferentes validaciones de los datos
 para la base de datos"""
 from pygame import mixer
+from manejadorbd import *
 from validacion_datos import *
 
 
@@ -23,7 +24,7 @@ def cancion() -> tuple:
             cancion = escribir_cancion_binario(nombre_cancion)
             state = True
         except:
-            print('\n¡Error en los datos de la canción en el equipo\n por favor verifique e ingrese de nuevo la información!\n ')
+            print_line_error('\n¡Error en los datos de la canción en el equipo\n por favor verifique e ingrese de nuevo la información!\n ')
 
     datos_cancion = (nombre, genero, album, interprete, cancion)
     return datos_cancion
@@ -248,6 +249,4 @@ def actualizar_datos_cancion(con):
         
         else:
             print_line_error("\t¡Opcion no valida. Digite una opción nuevamente!")
-
-
 

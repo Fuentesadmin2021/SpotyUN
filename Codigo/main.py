@@ -9,7 +9,7 @@ from manejador_clientes import *
 from manejador_planes import *
 from manejador_planes_cliente import *
 from manejador_listas import *
-from controlador.decorador import *
+from decorador import *
 
 
 # Función que genera un menu con todas las posibles opciones de la sección de canciones

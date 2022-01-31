@@ -8,7 +8,7 @@ from datetime import datetime
 from manejador_planes import *
 from manejadorbd import *
 from validacion_datos import *
-from controlador.decorador import *
+from decorador import *
 
 
 # Función que obtiene los datos de un cliente antes de registrarlo retornando una tupla
@@ -178,7 +178,7 @@ def actualizar_datos_cliente(con):
             actualizar_info_tablas(con, 'la tarjeto de crédito', nombre_columna='numero_tc', nombre_tabla='clientes', primary_key='id_cliente', longitud=19)
             
         elif (opc == '5'):
-            actualizar_info_tablas(con, 'el país', nombre_columna='pais', nombre_tabla='clientes', primary_key='id_cliente', longitud=30)
+            actualizar_info_tablas(con, 'el país', nombre_columna='pais', nombre_tabla='clientes', primary_key='id_cliente', longitud=30, )
             
         elif (opc == '6'):
             actualizar_info_tablas(con, 'la ciudad', nombre_columna='ciudad', nombre_tabla='clientes', primary_key='id_cliente', longitud=30)
