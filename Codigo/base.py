@@ -21,7 +21,7 @@ class Actualizar():
     # Conexion con la base de datos
     def __sql_conexion(self):
         try:
-            con = sqlite3.connect('SpotyUN.db')
+            con = sqlite3.connect('SpotyUN_2.db')
             return con
         
         except Error:
