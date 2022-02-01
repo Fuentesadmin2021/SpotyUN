@@ -1,5 +1,3 @@
-from pprint import pp
-from webbrowser import get
 """El paquete mixer del modulo pygame importado a continuación es utilizado como
 herramienta para la reproducción de las canciones a traves del método mixer"""
 """Importamos el paquete manejadorbd para relizar agunas operaciones en la base de datos"""
@@ -960,8 +958,8 @@ class Listas_cliente(Canciones, Actualizar):
         servidor = smtplib.SMTP('smtp.gmail.com', 587)
         servidor.starttls()
         correo = Listas_cliente.consulta_correo_cliente(self, id_cliente)
-        servidor.login('conectandotropadelta@gmail.com', 'conectandodelta')
-        servidor.sendmail('conectandotropadelta@gmail.com', correo, texto)
+        servidor.login('ovillalbaunal@gmail.com', 'programacion_segundo_semestre_2021')
+        servidor.sendmail('ovillalbaunal@gmail.com', correo, texto)
         servidor.quit()
         print_line_success("Envio exitoso")
 
