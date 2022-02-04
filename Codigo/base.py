@@ -14,9 +14,9 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
-class M():
+class Manejador_db():
     def __init__(self):
-        self.con = Actualizar.__sql_conexion(self)
+        self.con = Manejador_db.__sql_conexion(self)
 
     # Conexion con la base de datos
     def __sql_conexion(self):
@@ -30,7 +30,7 @@ class M():
     def close(self):
         self.con.close()
 
-     # Función para actualizar la información de uno de los campos de la tabla en la base de datos
+    # Función para actualizar la información de uno de los campos de la tabla en la base de datos
     def actualizar_info_tablas(self, nombre_columna: str, nombre_tabla: str, primary_key: str, info = "indefinido"):
         state = True
         while state:
@@ -55,9 +55,9 @@ class M():
 
 
 # La clase canciones maneja toda la información relaccionada a las canciones
-class Canciones(Actualizar):
+class Canciones(Manejador_db):
     def __init__(self):
-        Actualizar.__init__(self)
+        Manejador_db.__init__(self)
         self.__id = None
         self.__nombre = None
         self.__genero = None
@@ -267,9 +267,9 @@ class Canciones(Actualizar):
 # can2.registrar_db(con, can2.armar_tupla())
 
 
-class Planes(Actualizar):
+class Planes(Manejador_db):
     def __init__(self):
-        Actualizar.__init__(self)
+        Manejador_db.__init__(self)
         self.__id = None
         self.__nombre = None
         self.__valor = None
@@ -435,9 +435,9 @@ class Planes(Actualizar):
 # a = Planes(con)
 # a.actualizar_info_plan()
 
-class Cliente(Actualizar):
+class Cliente(Manejador_db):
     def __init__(self):
-        Actualizar.__init__(self)
+        Manejador_db.__init__(self)
         self.__id = None
         self.__nombre = None
         self.__apellido = None
@@ -747,10 +747,10 @@ class PP_cliente(Planes):
 
     
     
-class Listas_cliente(Canciones, Actualizar):
+class Listas_cliente(Canciones, Manejador_db):
     def __init__(self):
         Canciones.__init__(self)
-        Actualizar.__init__(self)
+        Manejador_db.__init__(self)
         
 # Función para realizar la consulta de datos de la canción como id_canción, nombre_canción, interprete, album
     def id_cancion_lista(self) -> list:

@@ -1,9 +1,9 @@
-from base import Actualizar
+from manejador_db import Manejador_db
 
-class Database(Actualizar):
+class Database(Manejador_db):
 
     def __init__(self):
-        Actualizar.__init__(self)
+        Manejador_db.__init__(self)
 
         self.__tabla_canciones = ("""CREATE TABLE IF NOT EXISTS canciones(
                                     id_cancion INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -62,4 +62,3 @@ class Database(Actualizar):
         Database.__create_tables(self, self.__tabla_clientes)
         Database.__create_tables(self, self.__tabla_pp_planes)
         Database.__create_tables(self, self.__tabla_listas)
-     
