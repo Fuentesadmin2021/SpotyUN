@@ -45,8 +45,7 @@ class Database(Manejador_db):
         
         self.__tabla_pp_planes = ("""CREATE TABLE IF NOT EXISTS planes_cliente(
                                 id_cliente INTEGER(12) NOT NULL,
-                                id_plan INT(1) NOT NULL,
-                                cantidad_canciones SHORT(4))""")
+                                id_plan INT(1) NOT NULL)""")
 
 
 

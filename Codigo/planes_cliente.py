@@ -13,7 +13,7 @@ class Planes_cliente(Planes):
         self.__id_cliente = val.numero(input('Ingrese su identificación: '), 12)
         
     def set_id_plan_c(self):
-        Planes_cliente.consulta_planes(self, Planes_cliente.get_planes(self))
+        Planes_cliente.consulta_planes_ordenados(self, Planes_cliente.get_planes(self))
         self.__id_plan_c = val.numero(input('\nIngrese el id del plan que desea contratar: '), 1)
         validacion = val.existencia_tablas(self.con, nombre_tabla = 'planes', nombre_columna = 'id_plan', primary_key='id_plan', id = self.__id_plan_c )
         while validacion != False :

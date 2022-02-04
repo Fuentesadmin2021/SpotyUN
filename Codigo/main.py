@@ -2,9 +2,11 @@ from subprocess import HIGH_PRIORITY_CLASS
 from validatos.validatos import Validatos as val
 from manejador_db import Manejador_db
 
-from canciones import Canciones
 from create import Database
 from decorador import Decorador as dec
+
+from canciones import Canciones
+from clientes import Cliente
 from listas_clientes import Listas_cliente
 from planes import Planes
 from planes_cliente import Planes_cliente
@@ -79,9 +81,11 @@ def menu_canciones():
 
 #  Función que genera un menu con todas las posibles opciones de la sección de clientes
 def menu_clientes():
+    cliente = Cliente()
+    planes_cliente = Planes_cliente()
     salir_menu = False
     while not salir_menu:
-        print_line_menu('''
+        dec.print_line_menu('''
                         MENU SECCIÓN CLIENTES
                     1. Registrarse
                     2. Consulta individual cliente
@@ -94,36 +98,29 @@ def menu_clientes():
         if (opc == '1'):
             salir = True
             while salir:
-                try:
-                    cliente = Cliente()
-                    plan = PP_cliente()
+                try:                    
                     dd_cliente = cliente.armar_tupla()
                     id_cliente = cliente.get_id()
-                    pp_cliente = plan.armar_arreglo()
+                    pp_cliente = planes_cliente.armar_arreglo()
                     registro = tuple(id_cliente + pp_cliente)
                     cliente.registrar_db(dd_cliente)
-                    plan.registrar_db(registro)              
+                    planes_cliente.registrar_db(registro)              
                     salir = False
-    
                 except:
-                    print_line_error('¡ERROR! El número de identificación no puede estar repetido')
+                    dec.print_line_error('¡ERROR! El número de identificación no puede estar repetido')
                     print('')
 
         elif (opc == '2'):
-            consulta = Cliente()
-            consulta.consulta_cliente()
+            cliente.consulta_cliente()
 
         elif (opc == '3'):
-            consulta = Cliente()
-            consulta.consulta_clientes(consulta.orden_consulta(consulta.get_clientes()))
+            cliente.consulta_clientes(cliente.orden_consulta(cliente.get_clientes()))
 
         elif (opc == '4'):
-            actualizar = Cliente()
-            actualizar.actualizar_info_cliente()
+            cliente.actualizar_info_cliente(cliente)
             
         elif (opc == '5'):
-            estado = Cliente()
-            estado.actualizar_estado_suscripcion()
+            cliente.actualizar_estado_suscripcion()
 
         elif (opc == '6'):
             salir_menu = True
@@ -131,6 +128,7 @@ def menu_clientes():
 
 # Función que getiona la sección planes_cliente a través de un menú
 def menu_planes_cliente(id_cliente: int):
+    planes_cliente = Planes_cliente()
     salir_menu = False
     while not salir_menu:
 
@@ -141,11 +139,11 @@ def menu_planes_cliente(id_cliente: int):
                 3. Ir al menu anterior\n''')
     
         opc = input("\n\tDigite una opcion: ")
-        if (opc == "1"):
-            consulta = PP_cliente()
-            consulta.consulta_pp_cliente(consulta.get_pp_cliente(id_cliente))
+
+        if opc == "1":
+            planes_cliente.consulta_pp_cliente(planes_cliente.get_pp_cliente(id_cliente))
         
-        elif (opc == "2"):
+        elif opc == "2":
             plan = PP_cliente()
             plan.registrar_db(tuple([id_cliente] + plan.armar_arreglo()))
         

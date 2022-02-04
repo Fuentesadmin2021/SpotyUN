@@ -20,8 +20,8 @@ class Planes(Manejador_db):
             self.__id = val.numero(input('\nId del plan: '), 1)
             validacion = val.existencia_tablas(self.con, nombre_tabla = 'planes', nombre_columna = 'id_plan', primary_key = 'id_plan', id = self.__id)
     
-    @classmethod
-    def set_nombre(cls):
+
+    def set_nombre(self):
         self.__nombre = input("Nombre del plan: ")
 
     def set_valor(self):

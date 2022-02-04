@@ -2,8 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5bf8c9a9-d1cd-43b9-9cf8-46ff9f9b5277" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Codigo/SpotyUN.db" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Codigo/Create.py" beforeDir="false" afterPath="$PROJECT_DIR$/Codigo/Create.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Codigo/SpotyUN_2.db" beforeDir="false" afterPath="$PROJECT_DIR$/Codigo/SpotyUN_2.db" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Codigo/base.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Codigo/clientes.py" beforeDir="false" afterPath="$PROJECT_DIR$/Codigo/clientes.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Codigo/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/Codigo/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Codigo/planes_cliente.py" beforeDir="false" afterPath="$PROJECT_DIR$/Codigo/planes_cliente.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -29,7 +33,7 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
   </component>
-  <component name="RunManager" selected="Python.main">
+  <component name="RunManager" selected="Python.main (1)">
     <configuration name="Create" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -96,6 +100,28 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="main (1)" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="C:\Users\AMD\AppData\Local\Programs\Python\Python39\python.exe" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Codigo" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Codigo/main.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="main" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -120,6 +146,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.main (1)" />
         <item itemvalue="Python.base" />
         <item itemvalue="Python.Create" />
         <item itemvalue="Python.main" />
@@ -138,22 +165,23 @@
       <workItem from="1643757251177" duration="38000" />
       <workItem from="1643757325983" duration="68000" />
       <workItem from="1643935317796" duration="73000" />
+      <workItem from="1643954028843" duration="64000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/main.py</url>
-          <line>8</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/SpotyUN$manejador_canciones.coverage" NAME="manejador_canciones Coverage Results" MODIFIED="1643717468426" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Codigo" />
@@ -161,6 +189,6 @@
     <SUITE FILE_PATH="coverage/SpotyUN$Create.coverage" NAME="Create Coverage Results" MODIFIED="1643718445727" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Codigo" />
     <SUITE FILE_PATH="coverage/SpotyUN$decorador.coverage" NAME="decorador Coverage Results" MODIFIED="1643718423005" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Codigo" />
     <SUITE FILE_PATH="coverage/SpotyUN$base.coverage" NAME="base Coverage Results" MODIFIED="1643718455995" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Codigo" />
-    <SUITE FILE_PATH="coverage/SpotyUN$main__1_.coverage" NAME="main (1) Coverage Results" MODIFIED="1643717458081" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Codigo" />
+    <SUITE FILE_PATH="coverage/SpotyUN$main__1_.coverage" NAME="main (1) Coverage Results" MODIFIED="1643954091600" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Codigo" />
   </component>
 </project>

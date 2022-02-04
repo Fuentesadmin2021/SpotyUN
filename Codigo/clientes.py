@@ -171,7 +171,7 @@ class Cliente(Manejador_db):
         
     # Función que crea un menu para actualizar de manera individual los datos básicos de un cliente
     # a través de su id y la función actualizar_info_tablas
-    def actualizar_info_cliente(self):
+    def actualizar_info_cliente(self, clase):
         salir_actualizar = False
         while not salir_actualizar:
 
@@ -188,32 +188,25 @@ class Cliente(Manejador_db):
 
             opc = input("\n\tDigite una opcion: ").strip()
             if (opc == '1'):
-                Cliente.set_nombre(self)
-                Cliente.actualizar_info_tablas(self,  info = self.__nombre, nombre_tabla = 'clientes', nombre_columna = 'nombre_cliente',  primary_key = 'id_cliente')
+                Cliente.actualizar_info_tablas(self, clase = clase, info = 'nombre', nombre_tabla = 'clientes', nombre_columna = 'nombre_cliente',  primary_key = 'id_cliente')
 
             elif (opc == '2'):
-                Cliente.set_apellido(self)
-                Cliente.actualizar_info_tablas(self,  info = self.__apellido, nombre_tabla = 'clientes', nombre_columna = 'apellido',  primary_key = 'id_cliente')
+                Cliente.actualizar_info_tablas(self, clase = clase, info = 'apellido', nombre_tabla = 'clientes', nombre_columna = 'apellido',  primary_key = 'id_cliente')
 
             elif (opc == '3'):
-                Cliente.set_celular(self)
-                Cliente.actualizar_info_tablas(self,  info = self.__celular, nombre_tabla = 'clientes', nombre_columna = 'celular',  primary_key = 'id_cliente')
+                Cliente.actualizar_info_tablas(self, clase = clase, info = 'celular', nombre_tabla = 'clientes', nombre_columna = 'celular',  primary_key = 'id_cliente')
             
             elif (opc == '4'):
-                Cliente.set_numero_tc(self)
-                Cliente.actualizar_info_tablas(self,  info = self.__numero_tc, nombre_tabla = 'clientes', nombre_columna = 'numero_tc',  primary_key = 'id_cliente')
+                Cliente.actualizar_info_tablas(self, clase = clase, info = 'Número de tarjeta de crédito', nombre_tabla = 'clientes', nombre_columna = 'numero_tc',  primary_key = 'id_cliente')
                 
             elif (opc == '5'):
-                Cliente.set_pais(self)
-                Cliente.actualizar_info_tablas(self,  info = self.__pais, nombre_tabla = 'clientes', nombre_columna = 'pais',  primary_key = 'id_cliente')
+                Cliente.actualizar_info_tablas(self, clase = clase, info = 'pais', nombre_tabla = 'clientes', nombre_columna = 'pais',  primary_key = 'id_cliente')
                 
             elif (opc == '6'):
-                Cliente.set_ciudad(self)
-                Cliente.actualizar_info_tablas(self,  info = self.__ciudad, nombre_tabla = 'clientes', nombre_columna = 'ciudad',  primary_key = 'id_cliente')
+                Cliente.actualizar_info_tablas(self, clase = clase, info = 'ciudad', nombre_tabla = 'clientes', nombre_columna = 'ciudad',  primary_key = 'id_cliente')
 
             elif (opc == '7'):
-                Cliente.set_correo(self)
-                Cliente.actualizar_info_tablas(self,  info = self.__correo, nombre_tabla = 'clientes', nombre_columna = 'correo',  primary_key = 'id_cliente')
+                Cliente.actualizar_info_tablas(self, clase = clase, info = 'correo', nombre_tabla = 'clientes', nombre_columna = 'correo',  primary_key = 'id_cliente')
 
             elif (opc == '8'):
                 salir_actualizar = True
