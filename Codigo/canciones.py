@@ -75,6 +75,14 @@ class Canciones(Manejador_db):
         except:
             pass
 
+    def consulta_tabla_listas(self, id_cliente: int):
+        cursor_obj = self.con.cursor()
+        cursor_obj.execute(f'SELECT id_cancion, nombre_cancion, interprete, album, genero FROM listas WHERE id_cliente = {id_cliente}')
+        cantidad_canciones = cursor_obj.fetchall()
+        print("\n{:<12} {:<30} {:<20} {:<20} {:<20}".format('ID_CANCIÓN', 'NOMBRE', 'INTERPRETE', 'ALBUM', 'GENERO'))
+        for row in cantidad_canciones:
+            id, nombre, interprete, album, genero = row
+            print("{:<12} {:<30} {:<20} {:20} {:<20}".format(id, nombre, interprete, album, genero))
 
     # Funcion que se encarga de obtener toda la información de una canción por medio del id
     def get_cancion(self):
@@ -93,13 +101,12 @@ class Canciones(Manejador_db):
             self.__imagen = row[5]
             self.__audio = row[6]
         return self.__id, self.__nombre, self.__genero, self.__album, self.__interprete, self.__imagen, self.__audio
-
     # La función acontinación se encarga de mostrar al usuario la informacion de una canción consultada
     def consulta_cancion(self):
         try:
-            Canciones.get_cancion(self)
+            tupla = Canciones.get_cancion(self)
             cabecero = ("\n{:<12} {:<30} {:<30} {:<30} {:<30}".format('ID', 'NOMBRE', 'GENERO', 'ALBUM', 'INTERPRETE(S)'))
-            datos = ("\n{:<12} {:<30} {:<30} {:30} {:30}".format(self.__id, self.__nombre, self.__genero, self.__album, self.__interprete))
+            datos = ("\n{:<12} {:<30} {:<30} {:30} {:30}".format(tupla[0], tupla[1], tupla[2], tupla[3], tupla[4]))
             print(cabecero, datos)
 
         except ValueError:
@@ -127,25 +134,24 @@ class Canciones(Manejador_db):
                 print("\tpulse r para reanudar canción")
                 print("\tpulse e para elegir otra canción")
                 print("\tPulse s para salir")
-
                 opcion = input(">>> ")
-                if opcion =="p":
+                if opcion == "p":
                     mixer.music.pause()
-                elif opcion =="r":
+                elif opcion == "r":
                     mixer.music.unpause()
                 elif opcion == "e":
-                    Canciones.consulta_cancion(self, id_cliente)
-                    Canciones.get_cancion(self)
-                    id_validacion = val.existencia_tablas(self.con, 'listas', 'id_cancion', 'id_cancion', self.__id)
-                    while id_validacion != False:
-                        Canciones.get_cancion(self)
-                        id_validacion = val.existencia_tablas(self.con, 'listas', 'id_cancion', 'id_cancion', self.__id)
+                    Canciones.consulta_tabla_listas(self, id_cliente)
+                    tupla = Canciones.get_cancion(self)
+                    id_validacion = val.existencia_tablas(self.con, 'listas', 'id_cancion', 'id_cancion', tupla[0])
+                    while id_validacion:
+                        tupla = Canciones.get_cancion(self)
+                        id_validacion = val.existencia_tablas(self.con, 'listas', 'id_cancion', 'id_cancion', tupla[0])
                     Canciones.reproducir_cancion(self, Canciones.guardar_cancion(self)[1], id_cliente)
-                elif opcion =="s":
+                elif opcion == "s":
                     mixer.music.stop()
                     reproducir = False
             except:
-                pass
+                print('eerror')
     
     # Función que ordena la información obtenida de las canciones
     def orden_consulta(self, lista: list) -> tuple:

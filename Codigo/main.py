@@ -187,7 +187,7 @@ def menu_lista(id_cliente: int):
 
                         prueba.consulta_tabla_canciones_lista()
                         info = prueba.info_lista(id_cliente)
-                        if prueba.consulta_tabla_listas_cancion(id_cliente):
+                        if prueba.consulta_tabla_listas_cancion(id_cliente, info[0]):
                             dec.print_line_error('¡Ya tienes esta canción en tu lista de reproducción!')
                             state_lista = False
                         else:
@@ -201,7 +201,6 @@ def menu_lista(id_cliente: int):
                                     opc_email = input("""\n¿Desea enviar correo electrónico con la lista de reproducción? s/n: """).lower()
                                     if opc_email == 's':
                                         prueba.enviar_mensaje(id_cliente)
-                                        print('\nCorreo enviado con éxito')
                                         next = True
                                         state_lista = False
                                     elif opc_email == 'n':
@@ -242,9 +241,8 @@ def menu_lista(id_cliente: int):
                 tupla = prueba.get_cancion()
                 id_validacion = val.existencia_tablas(prueba.con, 'listas', 'id_cancion', 'id_cancion', tupla[0])
                 while id_validacion:
-                    prueba.get_cancion()
-                    id_validacion = val.existencia_tablas(prueba.con, 'listas', 'id_cancion', 'id_cancion',
-                                                          prueba._Canciones__id)
+                    tupla = prueba.get_cancion()
+                    id_validacion = val.existencia_tablas(prueba.con, 'listas', 'id_cancion', 'id_cancion', tupla[0])
                 prueba.reproducir_cancion(prueba.guardar_cancion()[1], id_cliente)
         elif opc == "7":
             state = False

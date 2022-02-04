@@ -105,9 +105,9 @@ class Listas_cliente(Canciones, Cliente, Manejador_db):
         else:
             return cantidad_canciones
 
-    def consulta_tabla_listas_cancion(self, id_cliente: int) -> bool or tuple:
+    def consulta_tabla_listas_cancion(self, id_cliente: int, id_cancion: int) -> bool or tuple:
         cursor_obj = self.con.cursor()
-        cursor_obj.execute(f'SELECT id_cancion FROM listas WHERE id_cliente = {id_cliente}')
+        cursor_obj.execute(f'SELECT id_cancion = {id_cancion} FROM listas WHERE id_cliente = {id_cliente}')
         cantidad_canciones = cursor_obj.fetchone()
         if not cantidad_canciones:
             return False
