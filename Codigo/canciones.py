@@ -91,9 +91,9 @@ class Canciones(Manejador_db):
             self.__album = row[3]
             self.__interprete = row[4]
             self.__imagen = row[5]
-            self.__audio = row[6] 
-            
-            
+            self.__audio = row[6]
+        return self.__id, self.__nombre, self.__genero, self.__album, self.__interprete, self.__imagen, self.__audio
+
     # La función acontinación se encarga de mostrar al usuario la informacion de una canción consultada
     def consulta_cancion(self):
         try:

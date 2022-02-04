@@ -19,7 +19,6 @@ class Planes(Manejador_db):
             print('\t\n¡ERROR! Ya existe un plan con el \'Id plan\' ingresado. Si desea realizar el registro ingrese nuevamente la información.')
             self.__id = val.numero(input('\nId del plan: '), 1)
             validacion = val.existencia_tablas(self.con, nombre_tabla = 'planes', nombre_columna = 'id_plan', primary_key = 'id_plan', id = self.__id)
-    
 
     def set_nombre(self):
         self.__nombre = input("Nombre del plan: ")
@@ -29,7 +28,6 @@ class Planes(Manejador_db):
 
     def set_cant_canciones(self):
         self.cant_canciones = int(val.numero(input("Cantidad de canciones del plan: "),4))
-
 
     # Función que se encarga obtener toda la información de un plan por medio del id
     def get_plan(self):
@@ -64,7 +62,6 @@ class Planes(Manejador_db):
         cursor_obj.execute('SELECT * FROM planes')
         lista_planes = cursor_obj.fetchall()
         return lista_planes
-
     
     # Función que ordena la información obtenida de las canciones
     def orden_consulta(self, lista: list) -> tuple:
@@ -92,8 +89,9 @@ class Planes(Manejador_db):
             orden = sorted(lista, key = lambda cantidad_canciones : cantidad_canciones[3])
             return orden  
 
-
     # La función acontinación se encarga de mostrar al usuario el listado de todas los planes disponibles
+
+
     def consulta_planes_ordenados(self, tupla):
         print ("\n{:<5} {:<15} {:<10} {:<10} ".format('ID', 'NOMBRE PLAN', 'VALOR', 'CANTIDAD CANCIONES'))
         for row in tupla:

@@ -32,25 +32,58 @@ class Planes_cliente(Planes):
             self.cant_canciones = row[0]
 
     # Función que obtiene el id del plan y la cantidad de canciones, de los planes contratados por el cliente
-    def get_pp_cliente(self, id_cliente):
+    def get_plan_por_cliente(self):
         cursor_obj = self.con.cursor()
+        id_cliente = int(input('Ingrese identificación del cliente: '))
         cursor_obj.execute(f'SELECT * FROM planes_cliente WHERE id_cliente = {id_cliente}')
         lista_pp_cliente = cursor_obj.fetchall()
         return lista_pp_cliente
 
-    # La función acontinuación se encarga de mostrar al usuario los datos basicos del los planes que ha contratado
-    def consulta_pp_cliente(self, tupla):
-        print ("\n{:<15} {:<20} {:<15} ".format('ID CLIENTE', 'ID PLAN', 'CANTIDAD CANCIONES'))
+    def get_planes_ordenados(self):
+        cursor_obj = self.con.cursor()
+        cursor_obj.execute(f'SELECT * FROM planes_cliente')
+        lista_pp_cliente = cursor_obj.fetchall()
+        return lista_pp_cliente
+
+        # Función que ordena la información obtenida de los clientes
+
+    def orden_consulta(self, lista: list) -> tuple:
+        dec.print_line_menu('''
+                            ¿EN QUE ORDEN DESEA OBTENER LA CONSULTA?
+                        1. Por número de identificación del cliente   
+                        2. Por numero de identificación del plan
+                        3. por apellido\n''')
+
+        opc = input("\n\tDigite una opcion: ")
+        if opc == '1':
+            orden = sorted(lista, key=lambda id_cliente: id_cliente[0])
+            return orden
+
+        elif opc == '2':
+            orden = sorted(lista, key=lambda plan: plan[1])
+            return orden
+
+    def consulta_planes(self, tupla):
+        print("\n{:<15} {:<20}".format('ID CLIENTE', 'ID PLAN'))
         for row in tupla:
             self.__id_cliente = row[0]
             self.__id_plan_c = row[1]
-            self.cant_canciones = row[2]
-            
-        print ("{:<15} {:<20} {:<15} ".format(self.__id_cliente, self.__id_plan_c, self.cant_canciones))
-        
+        print("{:<15} {:<20}".format(self.__id_cliente, self.__id_plan_c))
 
-    # La función acontinuación se encarga de verificar si un cliente esta registrado o no
-    # con el fin de dar paso a la seccion de 'Planes cliente' unicamente si ya ha realizado su registro
+    #  Función que se encarga de armar una tupla con el el id del plan contratado por el cliente
+    def armar_arreglo(self):
+        Planes_cliente.set_id_plan_c(self)
+        plan_c = [self.__id_plan_c]
+        return plan_c
+    
+    #  función que se encarga de registrar el id('identificación') del cliente y el id del plan que contrato
+    def registrar_db(self, tupla):
+        cursor_obj = self.con.cursor()
+        cursor_obj.execute('''INSERT INTO planes_cliente VALUES(?,?)''', tupla)
+        self.con.commit()
+        dec.print_line_success('¡Su registro se ha realizado exitosamente!')
+
+    
     def verificacion_existencia(self) -> bool or int:
         cursor_obj = self.con.cursor()
         Planes_cliente.set_id_cliente(self)
@@ -62,20 +95,3 @@ class Planes_cliente(Planes):
         else:
             dec.print_line_success('¡Validación de usuario exitosa!')
             return self.__id_cliente
-
-    #  Función que se encarga de armar una tupla con el el id del plan contratado por el cliente
-    def armar_arreglo(self):
-        Planes_cliente.set_id_plan_c(self)
-        Planes_cliente.get_cant_canciones(self)
-        plan_c = [self.__id_plan_c, self.cant_canciones]
-        return plan_c
-    
-    #  función que se encarga de registrar el id('identificación') del cliente y el id del plan que contrato
-    def registrar_db(self, tupla):
-        cursor_obj = self.con.cursor()
-        cursor_obj.execute('''INSERT INTO planes_cliente VALUES(?,?,?)''', tupla)
-        self.con.commit()
-        dec.print_line_success('¡Su registro se ha realizado exitosamente!')
-
-    
-    

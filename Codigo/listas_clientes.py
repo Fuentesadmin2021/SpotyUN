@@ -1,4 +1,5 @@
 from clientes import Cliente
+from canciones import Canciones
 from manejador_db import Manejador_db
 import smtplib
 from email.mime.text import MIMEText
@@ -7,11 +8,11 @@ from validatos.validatos import Validatos as val
 from decorador import Decorador as dec
 
 
-
-class Listas_cliente(Cliente, Manejador_db):
+class Listas_cliente(Canciones, Cliente, Manejador_db):
     def __init__(self):
         Manejador_db.__init__(self)
         Cliente.__init__(self)
+        Canciones.__init__(self)
         
 # Función para realizar la consulta de datos de la canción como id_canción, nombre_canción, interprete, album
     def id_cancion_lista(self) -> list:
@@ -30,7 +31,7 @@ class Listas_cliente(Cliente, Manejador_db):
         lista_info_cancion = [id_cancion, nombre_cancion, interprete, album, genero]
         return lista_info_cancion
 
-        # La función acontinuación se encarga de reproducir la canción que el usuario elija ingresando el id
+        # La función a continuación se encarga de reproducir la canción que el usuario elija ingresando el id
 
     # Función para consultar la cantidad de canciones por plan de acuerdo al registro del cliente
     def plan_cliente(self, id_cliente: int) -> int:
@@ -41,16 +42,14 @@ class Listas_cliente(Cliente, Manejador_db):
         cant_canciones = cursor_obj.fetchone()
         return cant_canciones
 
-
     # Función que reliza un conteo de los registros en la tabla listas de acuerdo al id_cliente suministrado
     def contar_lista(self, id_cliente: int) -> str or int:
         cursor_obj = self.con.cursor()
         cursor_obj.execute(f'SELECT COUNT(*) FROM listas WHERE id_cliente = {id_cliente}')
         cantidad_listas = cursor_obj.fetchone()
-        if cantidad_listas[0] == None:
+        if cantidad_listas[0] is None:
             return 0
         return cantidad_listas
-
 
     # Función para consultar las canciones existentes en la tabla canciones y mostrarlas en pantalla
     def consulta_tabla_canciones_lista(self):
@@ -62,7 +61,6 @@ class Listas_cliente(Cliente, Manejador_db):
             id, nombre, genero, album, interprete = row
             print("{:<12} {:<20} {:<20} {:<20} {:<20}".format(id, nombre, genero, album, interprete))
 
-
     # Función para agregar en una tupla la información correspondiente para la tabla listas
     # necesitamos el id_cliente y la lista info_canciones
     def info_lista(self, id_cliente: int) -> tuple:
@@ -71,14 +69,12 @@ class Listas_cliente(Cliente, Manejador_db):
         info_canciones.append(id_c)
         return info_canciones
 
-
     # Función para registrar la información en la tabla listas
     def registrar_lista_cliente(self, tupla: tuple):
         cursor = self.con.cursor()
         cursor.execute('''INSERT INTO listas VALUES (?,?,?,?,?,?)''', tupla)
         self.con.commit()
         dec.print_line_success("¡¡El registro se ha realizado exitosamente!!")
-
 
     # Función para consultar la lista de canciones registradas en la tabla listas
     # de acuerdo al id suministrado por el cliente
@@ -91,15 +87,12 @@ class Listas_cliente(Cliente, Manejador_db):
             id, nombre, interprete, album, genero = row
             print("{:<12} {:<30} {:<20} {:20} {:<20}".format(id, nombre, interprete, album, genero))
 
-
     # Función que borra una lista de reproducción de la tabla listas de acuerdo al id_cliente suministrado
     def borrar_lista(self, id_cliente: int) -> str:
         cursor_obj = self.con.cursor()
         cursor_obj.execute(f'DELETE FROM listas WHERE id_cliente = {id_cliente}')
         self.con.commit()
-        return print('Tu lista ha sido eliminada')
-    
-    
+        return dec.print_line_success('Tu lista ha sido eliminada')
 
     # Función que consulta la información ingresa por el cliente en la tabla listas, retorna una tupla
     # una tupla de listas con la información completa de la lista de reproducción
@@ -107,10 +100,19 @@ class Listas_cliente(Cliente, Manejador_db):
         cursor_obj = self.con.cursor()
         cursor_obj.execute(f'SELECT id_cancion, nombre_cancion, interprete, album, genero FROM listas WHERE id_cliente = {id_cliente}')
         cantidad_canciones = cursor_obj.fetchall()
-        if cantidad_canciones == []:
+        if not cantidad_canciones:
             return False
         else:
             return cantidad_canciones
+
+    def consulta_tabla_listas_cancion(self, id_cliente: int) -> bool or tuple:
+        cursor_obj = self.con.cursor()
+        cursor_obj.execute(f'SELECT id_cancion FROM listas WHERE id_cliente = {id_cliente}')
+        cantidad_canciones = cursor_obj.fetchone()
+        if not cantidad_canciones:
+            return False
+        else:
+            return True
 
     # Función que obtiene el correo del cliente
 
@@ -125,7 +127,6 @@ class Listas_cliente(Cliente, Manejador_db):
             id, nombre_cancion, interprete, album, genero = row
             lista_str += (f"<tr><td>{id}</td><td>{nombre_cancion}</td><td>{interprete}</td><td>{album}</td><td>{genero}</td></tr>")
         return lista_str
-
 
     # Función para enviar el mensaje con la lista de reproducción del cliente
     def enviar_mensaje(self, id_cliente: int):
