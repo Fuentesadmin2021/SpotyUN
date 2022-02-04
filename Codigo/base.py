@@ -14,7 +14,7 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
-class Actualizar():
+class M():
     def __init__(self):
         self.con = Actualizar.__sql_conexion(self)
 
