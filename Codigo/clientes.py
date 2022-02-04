@@ -118,7 +118,7 @@ class Cliente(Manejador_db):
     # Función que obtiene la información de todas los clientes y la retorna en una lista
     def get_clientes(self):
         cursor_obj = self.con.cursor()
-        cursor_obj.execute('SELECT id_cliente, nombre_cliente, apellido FROM  clientes')
+        cursor_obj.execute('SELECT * FROM  clientes')
         lista_clientes = cursor_obj.fetchall()
         return lista_clientes
 
@@ -126,9 +126,16 @@ class Cliente(Manejador_db):
     def orden_consulta(self, lista: list) -> tuple:
         dec.print_line_menu('''
                             ¿EN QUE ORDEN DESEA OBTENER LA CONSULTA?
-                        1. Por id
-                        2. Por nombre
-                        3. por apellido\n''')
+                        1.  Por id
+                        2.  Por nombre
+                        3.  Por apellido
+                        4.  Por pais
+                        5.  Por ciudad
+                        6.  Por celular
+                        7.  Por correo
+                        8.  Por fecha de pago
+                        9.  Por numero de tarjeta de credito
+                        10. Por estado de pago\n''')
 
         opc = input("\n\tDigite una opcion: ")
         if opc == '1':
@@ -143,14 +150,55 @@ class Cliente(Manejador_db):
             orden = sorted(lista, key=lambda apellido: apellido[2])
             return orden
 
+        elif opc == '4':
+            orden = sorted(lista, key=lambda pais: pais[3])
+            return orden
+        
+        elif opc == '5':
+            orden = sorted(lista, key=lambda ciudad: ciudad[4])
+            return orden
+        
+        elif opc == '6':
+            orden = sorted(lista, key=lambda celular: celular[5])
+            return orden
+        
+        elif opc == '7':
+            orden = sorted(lista, key=lambda correo: correo[6])
+            return orden
+        
+        elif opc == '8':
+            orden = sorted(lista, key=lambda fecha_pago: fecha_pago[7])
+            return orden
+
+        elif opc == '9':
+            orden = sorted(lista, key=lambda numero_tc: numero_tc[8])
+            return orden
+        
+        elif opc == '10':
+            orden = sorted(lista, key=lambda estado_pago: estado_pago[9])
+            return orden
+
+
+
+  
+
     # La función acontinación se encarga de mostrar un listado de la información basica de los clientes
     def consulta_clientes(self, tupla):
-        print("\n{:<20} {:<20} {:<20}".format('IDENTIFICACIÓN', 'NOMBRE', 'APELLIDO'))
+        print("\n{:<20} {:<20} {:<20} {:<20} {:<20} {:<20} {:<35} {:<20} {:<20} {:<20}".format('IDENTIFICACIÓN', 'NOMBRE', 'APELLIDO', 'PAIS', 'CIUDAD', 'CELULAR', 'CORREO', 'FECHA DE PAGO', 'NUMERO TC', 'ESTADO PAGO'))
         for row in tupla:
             self.__id = row[0]
             self.__nombre = row[1]
             self.__apellido = row[2]
-            print("{:<20} {:<20} {:<20}".format(self.__id, self.__nombre, self.__apellido))
+            self.__pais = row[3]
+            self.__ciudad = row[4]
+            self.__celular = row[5]
+            self.__correo = row[6]
+            self.__fecha_pago = row[7]
+            self.__numero_tc = row[8]
+            self.__estado_pago = row[9]
+
+            print("{:<20} {:<20} {:<20} {:<20} {:<20} {:<20} {:<35} {:<20} {:<20} {:<20}".format(self.__id, self.__nombre, self.__apellido, self.__pais, self.__ciudad,
+                   self.__celular, self.__correo, self.__fecha_pago, self.__numero_tc, self.__estado_pago))
 
     # Función que se encarga de armar una tupla con la información de un cliente
     def armar_tupla(self):

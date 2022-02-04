@@ -165,8 +165,8 @@ class Listas_cliente(Canciones, Cliente, Manejador_db):
         servidor = smtplib.SMTP('smtp.gmail.com', 587)
         servidor.starttls()
         correo = Listas_cliente.get_correo_cliente(self, id_cliente)
-        servidor.login('ovillalbaunal@gmail.com', 'programacion_segundo_semestre_2021')
-        servidor.sendmail('ovillalbaunal@gmail.com', correo, texto)
+        servidor.login('conectandotropadelta@gmail.com', 'conectandodelta')
+        servidor.sendmail('conectandotropadelta@gmail.com', correo, texto)
         servidor.quit()
         dec.print_line_success("Envio exitoso")
 
