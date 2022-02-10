@@ -59,19 +59,19 @@ class Canciones(Manejador_db):
                 dec.print_line_error('\n¡La información entregada presenta un error, por favor verifique e ingrese nuevamente!\n')
 
     def guardar_imagen(self):
-        ruta = f"../SpotyUN_Lista/Imagenes/{self._Canciones__nombre}.jpg"
+        ruta = f"../Descargas/Imagenes/{self.__nombre}.jpg"
         try:
             with open(ruta, 'wb') as file:
-                return file.write(self._Canciones__imagen), ruta
+                return file.write(self.__imagen), ruta
         except:
             pass
         
 
     def guardar_cancion(self):
-        ruta = f"../SpotyUN_Lista/Canciones/{self._Canciones__nombre}.mp3"
+        ruta = f"../Descargas/Canciones/{self.__nombre}.mp3"
         try:
             with open(ruta, 'wb') as file:
-                return file.write(self._Canciones__audio), ruta
+                return file.write(self.__audio), ruta
         except:
             pass
 
@@ -121,6 +121,14 @@ class Canciones(Manejador_db):
         cursor_obj.execute('SELECT id_cancion, nombre_cancion, genero, album, interprete  FROM canciones')
         lista_canciones = cursor_obj.fetchall()
         return lista_canciones
+    
+     # Función que obtiene la información de todas las canciones y la retorna en una lista
+    def get_lista_canciones(self):
+        cursor_obj = self.con.cursor()
+        cursor_obj.execute('SELECT * FROM canciones')
+        lista_canciones = cursor_obj.fetchall()
+        return lista_canciones
+
 
     def reproducir_cancion(self, dir_cancion, id_cliente):
         mixer.init()
