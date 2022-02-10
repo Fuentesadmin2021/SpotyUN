@@ -56,10 +56,10 @@ class Listas_cliente(Canciones, Cliente, Manejador_db):
         cursor_obj = self.con.cursor()
         cursor_obj.execute('SELECT id_cancion, nombre_cancion, genero, album, interprete  FROM canciones')
         cantidad_canciones = cursor_obj.fetchall()
-        print("\n{:<12} {:<20} {:<20} {:<20} {:<20}".format('ID', 'NOMBRE', 'GENERO', 'ALBUM', 'INTERPRETE(S)'))
+        print("\n{:<12} {:<45} {:<20} {:<20} {:<20}".format('ID', 'NOMBRE', 'GENERO', 'ALBUM', 'INTERPRETE(S)'))
         for row in cantidad_canciones:
             id, nombre, genero, album, interprete = row
-            print("{:<12} {:<20} {:<20} {:<20} {:<20}".format(id, nombre, genero, album, interprete))
+            print("{:<12} {:<45} {:<20} {:<20} {:<20}".format(id, nombre, genero, album, interprete))
 
     # Función para agregar en una tupla la información correspondiente para la tabla listas
     # necesitamos el id_cliente y la lista info_canciones
@@ -107,12 +107,14 @@ class Listas_cliente(Canciones, Cliente, Manejador_db):
 
     def consulta_tabla_listas_cancion(self, id_cliente: int, id_cancion: int) -> bool or tuple:
         cursor_obj = self.con.cursor()
-        cursor_obj.execute(f'SELECT id_cancion = {id_cancion} FROM listas WHERE id_cliente = {id_cliente}')
+        cursor_obj.execute(f'SELECT COUNT (*) FROM listas WHERE id_cliente = {id_cliente} AND id_cancion = {id_cancion}')
         cantidad_canciones = cursor_obj.fetchone()
-        if len(cantidad_canciones) == 0:
-            return False
-        else:
+        print(cantidad_canciones)
+        print(type(cantidad_canciones))
+        if cantidad_canciones[0] >= 1:
             return True
+        else:
+            return False
 
     # Función que obtiene el correo del cliente
 

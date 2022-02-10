@@ -249,11 +249,9 @@ def menu_lista(id_cliente: int):
                     '¡No tienes canciones en tu lista de reproducción!\nCrea una lista para poder reproducir canciones')
             else:
                 prueba.consulta_tabla_listas(id_cliente)
-                tupla = prueba.get_cancion()
-                id_validacion = val.existencia_tablas(prueba.con, 'listas', 'id_cancion', 'id_cancion', tupla[0])
-                while id_validacion:
-                    tupla = prueba.get_cancion()
-                    id_validacion = val.existencia_tablas(prueba.con, 'listas', 'id_cancion', 'id_cancion', tupla[0])
+                while not prueba.get_cancion():
+                    dec.print_line_error('¡Esta canción no esta en tu lista de reproducción!')
+                    prueba.consulta_tabla_listas(id_cliente)
                 prueba.reproducir_cancion(prueba.guardar_cancion()[1], id_cliente)
         elif opc == "7":
             state = False
