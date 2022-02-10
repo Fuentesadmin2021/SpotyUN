@@ -118,7 +118,7 @@ class SpotyUNI(QtWidgets.QMainWindow):
             try:
                 nombre = self.lista_informacion[index][1]
                 cancion = self.lista_informacion[index][6]
-                ruta = f"Descargas/Canciones/{nombre}.mp3"
+                ruta = f"../SpotyUN_Lista/Canciones/{nombre}.mp3"
                 print(ruta, nombre)
                 with open(ruta, 'wb') as file:
                     file.write(cancion)
