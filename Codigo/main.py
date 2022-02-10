@@ -41,6 +41,9 @@ def menu_planes():
         elif (opc == '6'):
             salir_menu = True
 
+        elif (opc == '6'):
+            salir_menu = True
+
         else:
             dec.print_line_error("\t\n¡Opcion no valida. Digite una opción nuevamente!")
 

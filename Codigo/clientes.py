@@ -197,7 +197,7 @@ class Cliente(Manejador_db):
             self.__numero_tc = row[8]
             self.__estado_pago = row[9]
 
-            print("{:<20} {:<20} {:<20} {:<20} {:<20} {:<20} {:<35} {:<20} {:<20} {:<20}".format(self.__id, self.__nombre, self.__apellido, self.__pais, self.__ciudad,
+            print("{:<20} {:<20} {:<20} {:<20} {:<20} {:<20} {:<20} {:<20} {:<20} {:<20}".format(self.__id, self.__nombre, self.__apellido, self.__pais, self.__ciudad,
                    self.__celular, self.__correo, self.__fecha_pago, self.__numero_tc, self.__estado_pago))
 
     # Función que se encarga de armar una tupla con la información de un cliente
