@@ -11,7 +11,7 @@ class Manejador_db():
     # Conexion con la base de datos
     def __sql_conexion(self):
         try:
-            con = sqlite3.connect('SpotyUN_2.db')
+            con = sqlite3.connect('SpotyUN.db')
             return con
         
         except Error:
