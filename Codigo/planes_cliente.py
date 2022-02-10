@@ -51,8 +51,7 @@ class Planes_cliente(Planes):
         dec.print_line_menu('''
                             ¿EN QUE ORDEN DESEA OBTENER LA CONSULTA?
                         1. Por número de identificación del cliente   
-                        2. Por numero de identificación del plan
-                        3. por apellido\n''')
+                        2. Por numero de identificación del plan\n''')
 
         opc = input("\n\tDigite una opcion: ")
         if opc == '1':
@@ -68,7 +67,19 @@ class Planes_cliente(Planes):
         for row in tupla:
             self.__id_cliente = row[0]
             self.__id_plan_c = row[1]
-        print("{:<15} {:<20}".format(self.__id_cliente, self.__id_plan_c))
+            print("{:<15} {:<20}".format(self.__id_cliente, self.__id_plan_c))
+
+    def consulta_agrupada(self):
+        cursor_obj = self.con.cursor()
+        cursor_obj.execute(f'SELECT COUNT(id_cliente) FROM planes_cliente')
+        number = cursor_obj.fetchone()
+        print(f'\nLa cantidad de usuarios totales es: {number[0]}\n')
+        cursor_obj.execute(f'SELECT COUNT (*) FROM planes_cliente GROUP BY id_plan')
+        lista_pp_cliente = cursor_obj.fetchall()
+        count = 1
+        for i in lista_pp_cliente:
+            print(f'El plan con id {count} se contrato: {i[0]} veces')
+            count += 1
 
     #  Función que se encarga de armar una tupla con el el id del plan contratado por el cliente
     def armar_arreglo(self):

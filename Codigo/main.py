@@ -138,16 +138,23 @@ def menu_planes_cliente():
         dec.print_line_menu('''
                     MENU SECCIÓN PLANES CLIENTE
                 1. Consultar plan por cliente
-                2. Consulta general de planes
+                2. Consulta general de planes contratados
                 3. Ir al menu anterior\n''')
 
         opc = input("\n\tDigite una opcion: ")
 
         if opc == "1":
-            p_cliente.consulta_planes(p_cliente.get_plan_por_cliente())
+            try:
+                p_cliente.consulta_planes(p_cliente.get_plan_por_cliente())
+
+            except:
+                dec.print_line_error("\t\n¡ERROR! No existe un cliente con ese número de identificación")
 
         elif opc == "2":
             p_cliente.consulta_planes(p_cliente.orden_consulta(p_cliente.get_planes_ordenados()))
+            print('')
+            print("*" * 50)
+            p_cliente.consulta_agrupada()
 
         elif opc == "3":
             salir_menu = True
@@ -201,7 +208,8 @@ def menu_lista(id_cliente: int):
                                 if opc_next == 's':
                                     next = True
                                 elif opc_next == 'n':
-                                    opc_email = input("""\n¿Desea enviar correo electrónico con la lista de reproducción? s/n: """).lower()
+                                    opc_email = input(
+                                        """\n¿Desea enviar correo electrónico con la lista de reproducción? s/n: """).lower()
                                     if opc_email == 's':
                                         prueba.enviar_mensaje(id_cliente)
                                         next = True
