@@ -1,10 +1,20 @@
+'''Del modulo manejador_db importamos la Clase ManejadorDB para poder
+utilizar la conexón con la base de datos'''
 from manejador_db import Manejador_db
+'''Del modulo decorador se importa la clase decorador para poder
+darle formato a los diferentes print que aparecen en el programa'''
 from decorador import Decorador as dec
+'''Se generó un paquete de instalación por medio pip para poder utilizar la librería
+validatos, creada para el proyecto, para poder validar los datos ingresados por el usuario'''
 from validatos.validatos import Validatos as val
 
+"""El paquete mixer del modulo pygame importado a continuación es utilizado como
+herramienta para la reproducción de las canciones a traves del método mixer"""
+"""Importamos el paquete manejadorbd para relizar agunas operaciones en la base de datos"""
 from pygame import mixer
 
 
+'''Se genera la clase Canciones'''
 class Canciones(Manejador_db):
     def __init__(self):
         Manejador_db.__init__(self)
@@ -66,6 +76,7 @@ class Canciones(Manejador_db):
         except:
             pass
 
+    #Método para que guarda la canción extraida desde la base de datos en el equipo
     def guardar_cancion(self):
         ruta = f"..\\SpotyUN_Lista\\Canciones\\{self.__nombre}.mp3"
         try:
@@ -73,6 +84,7 @@ class Canciones(Manejador_db):
                 return file.write(self.__audio), ruta
         except:
             pass
+
 
     def consulta_tabla_listas(self, id_cliente: int):
         cursor_obj = self.con.cursor()
@@ -92,7 +104,7 @@ class Canciones(Manejador_db):
         id_busqueda = busqueda + str(id)
         cursor_obj.execute(id_busqueda)
         cancion = cursor_obj.fetchall()
-        print(len(cancion))
+        #print(len(cancion))
         if len(cancion) != 0:
             for row in cancion:
                 self.__id = row[0]
@@ -134,14 +146,16 @@ class Canciones(Manejador_db):
         cursor_obj.execute('SELECT * FROM canciones')
         lista_canciones = cursor_obj.fetchall()
         return lista_canciones
-
-    def reproducir_cancion(self, dir_cancion, id_cliente):
+    #Función para reproducir una canción
+    def reproducir_cancion(self, dir_cancion):
         mixer.init()
         mixer.music.load(dir_cancion)
         mixer.music.set_volume(0.2)
         mixer.music.play()
-        reproducir = True
-        while reproducir:
+
+    #Función que muestra el menú de opciones para el usuario
+    def menu_canciones_reproduccion(self, id_cliente):
+        while True:
             try:
                 print("\n\tpulse p para detener canción")
                 print("\tpulse r para reanudar canción")
@@ -157,10 +171,10 @@ class Canciones(Manejador_db):
                     while not self.get_cancion():
                         dec.print_line_error('¡Esta canción no esta en tu lista de reproducción!')
                         Canciones.consulta_tabla_listas(id_cliente)
-                    Canciones.reproducir_cancion(self, Canciones.guardar_cancion(self)[1], id_cliente)
+                    Canciones.reproducir_cancion(self, Canciones.guardar_cancion(self)[1])
                 elif opcion == "s":
                     mixer.music.stop()
-                    reproducir = False
+                    break
             except:
                 dec.print_line_error('La canción ya se esta reproduciendo')
 

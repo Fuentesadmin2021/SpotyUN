@@ -1,5 +1,4 @@
-from subprocess import HIGH_PRIORITY_CLASS
-from validatos.validatos import Validatos as val
+'''Se importan las clases necesarias para el funcionamiento del programa'''
 from manejador_db import Manejador_db
 
 from create import Database
@@ -252,7 +251,9 @@ def menu_lista(id_cliente: int):
                 while not prueba.get_cancion():
                     dec.print_line_error('¡Esta canción no esta en tu lista de reproducción!')
                     prueba.consulta_tabla_listas(id_cliente)
-                prueba.reproducir_cancion(prueba.guardar_cancion()[1], id_cliente)
+                prueba.reproducir_cancion(prueba.guardar_cancion()[1])
+                prueba.menu_canciones_reproduccion(id_cliente)
+
         elif opc == "7":
             state = False
 

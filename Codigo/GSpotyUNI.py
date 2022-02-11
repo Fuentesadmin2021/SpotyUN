@@ -1,17 +1,28 @@
+'''Se importa la librería sys para poder ejecutar acciones dentro del sistema operativo'''
 import sys
+'''Se importa el modulo de la clase principal de la interfaz grafica'''
 from SpotyUNI import *
+'''Se importa la clase QTCOre importamos la clase QBasicTimer para gestionar el tiempo de ejecucion de las canciones'''
 from PyQt5.QtCore import QBasicTimer
-from PyQt5.QtCore import pyqtSlot
+
+
+#from PyQt5.QtCore import pyqtSlot
 
 # from PySide2 import QtCore
 # from PySide2 import QtCore, QtGui, QtWidgets
 # from PySide2.QtCore import QPropertyAnimation # paquete necesario para crear el menu lateral desplegable
 
-from PyQt5 import QtCore
+
 from PyQt5 import QtCore, QtGui, QtWidgets
+'''Se importa QPropertyAnimation para relizar la animacion de la barra lateral desplegable'''
 from PyQt5.QtCore import QPropertyAnimation  # paquete necesario para crear el menu lateral desplegable
+"""El paquete mixer del modulo pygame importado a continuación es utilizado como
+herramienta para la reproducción de las canciones a traves del método mixer"""
 from pygame import mixer
+'''Se importa Mutagen para realizar el manejo de los archivos mp3, para conocer el tiempo de la cancion'''
 import mutagen
+
+'''Se importa la clase cancion para poder utilizarla en el programa'''
 from canciones import Canciones
 
 

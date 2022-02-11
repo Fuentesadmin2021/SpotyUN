@@ -1,3 +1,6 @@
+'''# Se importa la librería sqlite3 para el manejo de una base de datos a través de Python
+# De este módulo sqlite3 se importa el método Error que generará una excepción en caso de error
+# de la conexión con la base de datos'''
 import sqlite3
 from sqlite3 import Error
 
