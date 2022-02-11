@@ -1,10 +1,15 @@
 from clientes import Cliente
 from canciones import Canciones
 from manejador_db import Manejador_db
+''' Funciones importadas para realizar el manejo y envió de los correos
+# Función smtlib usada para porder enviar un correo por medio del programa
+# De  email.mime.text se importa el método MIMEText para el manejo de texto dentro del correo
+# De email.mime.multipart se importa el método MIMEMultipart para el manejo de multiples partes dentro del correo
+# como asunto del correo, copias ocultas y demás datos de importancia para el correo'''
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
-from validatos.validatos import Validatos as val
+
 from decorador import Decorador as dec
 
 
@@ -109,8 +114,6 @@ class Listas_cliente(Canciones, Cliente, Manejador_db):
         cursor_obj = self.con.cursor()
         cursor_obj.execute(f'SELECT COUNT (*) FROM listas WHERE id_cliente = {id_cliente} AND id_cancion = {id_cancion}')
         cantidad_canciones = cursor_obj.fetchone()
-        print(cantidad_canciones)
-        print(type(cantidad_canciones))
         if cantidad_canciones[0] >= 1:
             return True
         else:
@@ -167,8 +170,8 @@ class Listas_cliente(Canciones, Cliente, Manejador_db):
         servidor = smtplib.SMTP('smtp.gmail.com', 587)
         servidor.starttls()
         correo = Listas_cliente.get_correo_cliente(self, id_cliente)
-        servidor.login('conectandotropadelta@gmail.com', 'conectandodelta')
-        servidor.sendmail('conectandotropadelta@gmail.com', correo, texto)
+        servidor.login('ovillalbaunal@gmail.com', 'programcion_segundo')
+        servidor.sendmail('ovillalbaunal@gmail.com', correo, texto)
         servidor.quit()
         dec.print_line_success("Envio exitoso")
 

@@ -12,17 +12,20 @@
 # from PySide2.QtGui import *
 # from PySide2.QtWidgets import *
 
+'''Se importa la librería de PyQt5 Para crear los objetos para la interfaz gráfica'''
 
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 
-
+'''Clase para crear las declaramos los objetos de la interfaz gráfica'''
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
         MainWindow.resize(1274, 647)
+
+        #Declaración de la ventana principal
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.verticalLayout = QVBoxLayout(self.centralwidget)

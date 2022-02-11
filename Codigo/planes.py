@@ -1,3 +1,4 @@
+'''Se importan de los modulos las Clases necesarias para el funcionamiento del programa'''
 from manejador_db import Manejador_db
 from decorador import Decorador as dec
 from validatos.validatos import Validatos as val

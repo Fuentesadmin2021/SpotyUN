@@ -2,6 +2,13 @@ from planes_cliente import Planes_cliente
 from manejador_db import Manejador_db
 from decorador import Decorador as dec
 from validatos.validatos import Validatos as val
+
+"""De la librería datetime se importa la clase datetime, la cuál nos permite registrar
+de manera automática la fecha y hora del registro del cliente en el metodo cliente"""
+"""Se importa los diferentes clases para el manejo de modulos dentro de cliente"""
+"""Importamos el modulo validacion_datos para realizar las diferentes validaciones de los datos
+para la base de datos"""
+"""Se importa el modulo decorador para realizar lo diferentes decoradores de los métodos"""
 from datetime import datetime
 
 
